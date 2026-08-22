@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/AtaCanYmc/PixelSprint/compare/v1.0.0...v1.1.0) (2026-08-22)
+
+
+### Features
+
+* add support for downloading reports in DOCX and PDF formats, update UI elements accordingly ([c17df55](https://github.com/AtaCanYmc/PixelSprint/commit/c17df55613e9ef643c2bd294fcbe2bed475ca797))
+* enhance i18n support in modals and update UI elements for better accessibility ([10a36bc](https://github.com/AtaCanYmc/PixelSprint/commit/10a36bc977758fd4400d783a7184975ee8b29fa0))
+
+
+### Bug Fixes
+
+* update logo file extension from PNG to JPEG in README ([ff2bc2d](https://github.com/AtaCanYmc/PixelSprint/commit/ff2bc2d5fc53b597b037dc978dbbc3ed7240d9ca))
+
 ## 1.0.0 (2026-08-22)
 
 
