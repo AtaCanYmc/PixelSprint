@@ -1,11 +1,13 @@
 /**
  * PixelSprint Board Component (TypeScript)
+ * Handles rendering retro columns, cards, voting, and drag/move with i18n support
  */
 
-import { store } from '../core/store.js';
-import { audioSynth } from '../core/audio.js';
-import { escapeHtml } from '../utils/helpers.js';
-import { RetroCard, RetroCategory } from '../types/index.js';
+import { store } from '../core/store';
+import { audioSynth } from '../core/audio';
+import { i18n } from '../i18n';
+import { escapeHtml } from '../utils/helpers';
+import { RetroCard, RetroCategory } from '../types';
 
 export class BoardComponent {
   private listWentWell: HTMLElement | null;
@@ -36,6 +38,7 @@ export class BoardComponent {
 
   public init(): void {
     store.subscribe(() => this.render());
+    i18n.subscribe(() => this.render());
 
     if (this.searchInput) {
       this.searchInput.addEventListener('input', () => this.render());
@@ -45,14 +48,14 @@ export class BoardComponent {
       this.boardContainer.addEventListener('click', (e: MouseEvent) => this.handleCardClick(e));
     }
 
-    this.mobileTabBtns.forEach(btn => {
+    this.mobileTabBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
         audioSynth.playClick();
-        this.mobileTabBtns.forEach(b => b.classList.remove('active'));
+        this.mobileTabBtns.forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
 
         const targetTabId = btn.dataset['tab'];
-        document.querySelectorAll('.board-column').forEach(col => {
+        document.querySelectorAll('.board-column').forEach((col) => {
           if (col.id === targetTabId) {
             col.classList.add('active-tab');
           } else {
@@ -89,7 +92,7 @@ export class BoardComponent {
         store.moveCard(id, targetCat);
       }
     } else if (action === 'delete') {
-      if (confirm('Bu anonim kartı silmek istediğinizden emin misiniz?')) {
+      if (confirm(i18n.t('deleteCardConfirm'))) {
         audioSynth.playDelete();
         store.deleteCard(id);
       }
@@ -97,6 +100,8 @@ export class BoardComponent {
   }
 
   public render(): void {
+    this.updateStaticHeaders();
+
     const filterText = this.searchInput ? this.searchInput.value.toLowerCase().trim() : '';
     const cards = store.getCards();
 
@@ -112,8 +117,12 @@ export class BoardComponent {
       action: { el: this.listAction, countEl: this.countAction, items: [] }
     };
 
-    cards.forEach(card => {
-      if (filterText && !card.text.toLowerCase().includes(filterText) && !card.author.toLowerCase().includes(filterText)) {
+    cards.forEach((card) => {
+      if (
+        filterText &&
+        !card.text.toLowerCase().includes(filterText) &&
+        !card.author.toLowerCase().includes(filterText)
+      ) {
         return;
       }
       if (lists[card.category]) {
@@ -121,25 +130,26 @@ export class BoardComponent {
       }
     });
 
-    (Object.keys(lists) as RetroCategory[]).forEach(cat => {
+    (Object.keys(lists) as RetroCategory[]).forEach((cat) => {
       const col = lists[cat];
       if (!col.el || !col.countEl) return;
 
       col.countEl.textContent = col.items.length.toString();
 
       if (col.items.length === 0) {
-        col.el.innerHTML = `<div class="empty-msg">[Bu sütunda henüz kart yok]</div>`;
+        col.el.innerHTML = `<div class="empty-msg">${escapeHtml(i18n.t('emptyColumnMsg'))}</div>`;
         return;
       }
 
-      col.el.innerHTML = col.items.map(card => {
-        const up = card.upvotes || 0;
-        const down = card.downvotes || 0;
-        const score = up - down;
-        const scoreClass = score > 0 ? 'score-positive' : score < 0 ? 'score-negative' : '';
-        const scoreStr = score > 0 ? `+${score}` : `${score}`;
+      col.el.innerHTML = col.items
+        .map((card) => {
+          const up = card.upvotes || 0;
+          const down = card.downvotes || 0;
+          const score = up - down;
+          const scoreClass = score > 0 ? 'score-positive' : score < 0 ? 'score-negative' : '';
+          const scoreStr = score > 0 ? `+${score}` : `${score}`;
 
-        return `
+          return `
           <div class="win-outset retro-card ${card.category}" data-id="${card.id}">
             <div class="card-header">
               <span class="card-author">👤 ${escapeHtml(card.author)}</span>
@@ -152,28 +162,40 @@ export class BoardComponent {
               <div class="card-actions">
                 <!-- Reddit Style Vote Group -->
                 <div class="vote-group">
-                  <button class="win-btn win-btn-sm vote-btn upvote-btn" data-action="upvote" data-id="${card.id}" title="Upvote (Artır)">
+                  <button class="win-btn win-btn-sm vote-btn upvote-btn" data-action="upvote" data-id="${card.id}" title="${escapeHtml(i18n.t('upvoteTooltip'))}">
                     ▲ ${up}
                   </button>
                   <span class="vote-score ${scoreClass}">${scoreStr}</span>
-                  <button class="win-btn win-btn-sm vote-btn downvote-btn" data-action="downvote" data-id="${card.id}" title="Downvote (Azalt)">
+                  <button class="win-btn win-btn-sm vote-btn downvote-btn" data-action="downvote" data-id="${card.id}" title="${escapeHtml(i18n.t('downvoteTooltip'))}">
                     ▼ ${down}
                   </button>
                 </div>
 
                 <!-- Move Quick Buttons -->
-                ${card.category !== 'went_well' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="went_well" title="Went Well'e Taşı">🟢</button>` : ''}
-                ${card.category !== 'improvement' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="improvement" title="Improvement'a Taşı">🔴</button>` : ''}
-                ${card.category !== 'action' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="action" title="Action Items'a Taşı">💡</button>` : ''}
+                ${card.category !== 'went_well' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="went_well" title="${escapeHtml(i18n.t('moveCardTitle'))}">🟢</button>` : ''}
+                ${card.category !== 'improvement' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="improvement" title="${escapeHtml(i18n.t('moveCardTitle'))}">🔴</button>` : ''}
+                ${card.category !== 'action' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="action" title="${escapeHtml(i18n.t('moveCardTitle'))}">💡</button>` : ''}
               </div>
 
-              <button class="win-btn win-btn-sm" data-action="delete" data-id="${card.id}" title="Kartı Sil">
+              <button class="win-btn win-btn-sm" data-action="delete" data-id="${card.id}" title="Sil">
                 ❌
               </button>
             </div>
           </div>
         `;
-      }).join('');
+        })
+        .join('');
     });
+  }
+
+  private updateStaticHeaders(): void {
+    const colWentWellHeader = document.querySelector('#col-went-well .column-header span:first-child');
+    const colImprovementHeader = document.querySelector('#col-improvement .column-header span:first-child');
+    const colActionHeader = document.querySelector('#col-action .column-header span:first-child');
+    if (colWentWellHeader) colWentWellHeader.textContent = i18n.t('colWentWellTitle');
+    if (colImprovementHeader) colImprovementHeader.textContent = i18n.t('colImprovementTitle');
+    if (colActionHeader) colActionHeader.textContent = i18n.t('colActionTitle');
+
+    if (this.searchInput) this.searchInput.placeholder = i18n.t('searchPlaceholder');
   }
 }

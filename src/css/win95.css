@@ -51,7 +51,33 @@
 
 .win-titlebar-controls {
   display: flex;
-  gap: 2px;
+  align-items: center;
+  gap: 3px;
+}
+
+/* Win95 Language Selector Dropdown */
+.lang-selector-select {
+  background-color: var(--win-gray);
+  color: var(--win-black);
+  border: 2px solid;
+  border-color: var(--win-white) var(--win-gray-dark) var(--win-gray-dark) var(--win-white);
+  box-shadow: 1px 1px 0 var(--win-black);
+  font-family: var(--font-retro), sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  height: 20px;
+  padding: 0 2px 0 4px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 0;
+  margin-right: 2px;
+}
+
+.lang-selector-select option {
+  background-color: var(--win-white);
+  color: var(--win-black);
+  font-family: var(--font-retro), sans-serif;
+  font-size: 12px;
 }
 
 /* Retro Buttons */
@@ -72,7 +98,8 @@
   outline: none;
 }
 
-.win-btn:active, .win-btn.pressed {
+.win-btn:active,
+.win-btn.pressed {
   border-color: var(--win-gray-dark) var(--win-white) var(--win-white) var(--win-gray-dark);
   box-shadow: inset 1px 1px 0 var(--win-black);
   padding: 4px 7px 2px 9px;
@@ -276,6 +303,40 @@ textarea.form-control {
   margin: 4px 2px;
 }
 
+/* Start Menu Language Section */
+.start-menu-item-lang {
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.start-menu-lang-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--win-black);
+}
+
+.start-menu-lang-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.start-menu-lang-buttons .lang-btn {
+  flex: 1;
+  font-size: 11px;
+  padding: 2px 4px;
+  height: 22px;
+}
+
+.start-menu-lang-buttons .lang-btn.pressed {
+  font-weight: bold;
+  background-color: var(--win-white);
+}
+
 /* Win95 Session Table */
 .session-table {
   width: 100%;
@@ -284,7 +345,8 @@ textarea.form-control {
   background-color: var(--win-white);
 }
 
-.session-table th, .session-table td {
+.session-table th,
+.session-table td {
   padding: 6px 8px;
   text-align: left;
   border: 1px solid var(--win-gray-dark);
@@ -346,7 +408,13 @@ textarea.form-control {
 }
 
 @keyframes pulseOffline {
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
 }

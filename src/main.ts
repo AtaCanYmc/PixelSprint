@@ -3,17 +3,18 @@
  */
 
 import './css/main.css';
-import { store } from './core/store.js';
-import { pwaInstaller } from './core/pwa.js';
-import { audioSynth } from './core/audio.js';
-import { DashboardComponent } from './components/dashboard.js';
-import { BoardComponent } from './components/board.js';
-import { ModalComponent } from './components/modal.js';
-import { ExportComponent } from './components/export.js';
-import { TaskbarComponent } from './components/taskbar.js';
-import { ShareComponent } from './components/share.js';
+import { i18n } from './i18n';
+import { store } from './core/store';
+import { pwaInstaller } from './core/pwa';
+import { DashboardComponent } from './components/dashboard';
+import { BoardComponent } from './components/board';
+import { ModalComponent } from './components/modal';
+import { ExportComponent } from './components/export';
+import { TaskbarComponent } from './components/taskbar';
+import { ShareComponent } from './components/share';
 
 document.addEventListener('DOMContentLoaded', () => {
+  i18n.init();
   store.init();
   pwaInstaller.init();
 
@@ -44,5 +45,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  console.log('[PixelSprint] QR Share & Retro App initialized successfully.');
+  console.log('[PixelSprint] Multi-Language i18n & Retro App initialized successfully.');
 });

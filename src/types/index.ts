@@ -52,3 +52,5 @@ export interface RealtimeMessage {
   timestamp: number;
   payload?: any;
 }
+
+export type Language = 'tr' | 'en' | 'fr';

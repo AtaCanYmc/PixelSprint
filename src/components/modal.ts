@@ -1,10 +1,12 @@
 /**
  * PixelSprint Modal Component (TypeScript)
+ * Handles Add Card modal and About modal with i18n support
  */
 
-import { store } from '../core/store.js';
-import { audioSynth } from '../core/audio.js';
-import { RetroCategory } from '../types/index.js';
+import { store } from '../core/store';
+import { audioSynth } from '../core/audio';
+import { i18n } from '../i18n';
+import { RetroCategory } from '../types';
 
 export class ModalComponent {
   private modalAddCard: HTMLElement | null;
@@ -20,7 +22,9 @@ export class ModalComponent {
   }
 
   public init(): void {
-    document.querySelectorAll('.btn-close-modal').forEach(btn => {
+    i18n.subscribe(() => this.updateLocalizedText());
+
+    document.querySelectorAll('.btn-close-modal').forEach((btn) => {
       btn.addEventListener('click', () => {
         const modal = btn.closest('.modal-overlay') as HTMLElement | null;
         if (modal) this.closeModal(modal);
@@ -52,10 +56,26 @@ export class ModalComponent {
     }
 
     const btnAbout = document.getElementById('btn-about-trigger');
+    const btnAboutDash = document.querySelector('.btn-about-dash');
     const smAbout = document.getElementById('sm-about');
 
     if (btnAbout && this.modalAbout) btnAbout.addEventListener('click', () => this.openModal(this.modalAbout));
+    if (btnAboutDash && this.modalAbout) btnAboutDash.addEventListener('click', () => this.openModal(this.modalAbout));
     if (smAbout && this.modalAbout) smAbout.addEventListener('click', () => this.openModal(this.modalAbout));
+
+    this.updateLocalizedText();
+  }
+
+  private updateLocalizedText(): void {
+    const btnOpenAdd = document.getElementById('btn-open-add-modal');
+    const btnExport = document.getElementById('btn-open-export');
+    const btnClear = document.getElementById('btn-clear-board');
+    const btnInstall = document.getElementById('btn-install-pwa');
+
+    if (btnOpenAdd) btnOpenAdd.innerHTML = `<span>➕</span> ${i18n.t('btnAddCard')}`;
+    if (btnExport) btnExport.innerHTML = `<span>💾</span> ${i18n.t('btnExportReport')}`;
+    if (btnClear) btnClear.innerHTML = `<span>🗑️</span> ${i18n.t('btnClearBoard')}`;
+    if (btnInstall) btnInstall.innerHTML = `<span>📱</span> ${i18n.t('btnInstallPwa')}`;
   }
 
   public openModal(modalEl: HTMLElement | null): void {

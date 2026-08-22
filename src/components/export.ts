@@ -1,12 +1,13 @@
 /**
  * PixelSprint Export Component (TypeScript)
- * Formats and downloads retrospective reports as .TXT, .CSV, and .XLSX (Excel)
+ * Formats and downloads retrospective reports as .TXT, .CSV, and .XLSX (Excel) with i18n support
  */
 
-import { store } from '../core/store.js';
-import { audioSynth } from '../core/audio.js';
-import { CATEGORIES } from '../utils/constants.js';
-import { RetroCategory } from '../types/index.js';
+import { store } from '../core/store';
+import { audioSynth } from '../core/audio';
+import { i18n } from '../i18n';
+import { CATEGORIES } from '../utils/constants';
+import { RetroCategory } from '../types';
 
 export class ExportComponent {
   private modalExport: HTMLElement | null;
@@ -32,6 +33,8 @@ export class ExportComponent {
   }
 
   public init(): void {
+    i18n.subscribe(() => this.updateLocalizedText());
+
     if (this.btnOpenExport) {
       this.btnOpenExport.addEventListener('click', () => this.showExportModal());
     }
@@ -54,28 +57,43 @@ export class ExportComponent {
     if (this.btnDownloadXlsx) {
       this.btnDownloadXlsx.addEventListener('click', () => this.downloadXlsxReport());
     }
+
+    this.updateLocalizedText();
+  }
+
+  private updateLocalizedText(): void {
+    if (this.btnCopyExport) this.btnCopyExport.textContent = i18n.t('btnCopy');
+    if (this.btnDownloadTxt) this.btnDownloadTxt.innerHTML = `<strong>${i18n.t('btnDownloadTxt')}</strong>`;
+    if (this.btnDownloadCsv) this.btnDownloadCsv.innerHTML = `<strong>${i18n.t('btnDownloadCsv')}</strong>`;
+    if (this.btnDownloadXlsx) this.btnDownloadXlsx.innerHTML = `<strong>${i18n.t('btnDownloadXlsx')}</strong>`;
   }
 
   public generateReportText(): string {
     const cards = store.getCards();
     let report = `==========================================\n`;
-    report += ` PIXELSPRINT - SPRINT RETROSPECTIVE RAPORU\n`;
-    report += ` Tarih: ${new Date().toLocaleDateString('tr-TR')} ${new Date().toLocaleTimeString('tr-TR')}\n`;
+    report += ` PIXELSPRINT - SPRINT RETROSPECTIVE REPORT\n`;
+    report += ` Date: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}\n`;
     report += `==========================================\n\n`;
 
-    CATEGORIES.forEach(cat => {
-      const catCards = cards.filter(c => c.category === cat.key);
-      report += `${cat.title} (${catCards.length} Kart)\n`;
+    CATEGORIES.forEach((cat) => {
+      const catCards = cards.filter((c) => c.category === cat.key);
+      const catTitleMap: Record<RetroCategory, string> = {
+        went_well: i18n.t('colWentWellTitle'),
+        improvement: i18n.t('colImprovementTitle'),
+        action: i18n.t('colActionTitle')
+      };
+
+      report += `${catTitleMap[cat.key]} (${catCards.length})\n`;
       report += `------------------------------------------\n`;
       if (catCards.length === 0) {
-        report += `(Kart eklenmedi)\n`;
+        report += `(Empty)\n`;
       } else {
         catCards.forEach((card, i) => {
           const up = card.upvotes || 0;
           const down = card.downvotes || 0;
           const score = up - down;
           const scoreStr = score > 0 ? `+${score}` : `${score}`;
-          report += `${i + 1}. [${card.author}] [Skor: ${scoreStr} (▲${up} / ▼${down})]\n`;
+          report += `${i + 1}. [${card.author}] [Score: ${scoreStr} (▲${up} / ▼${down})]\n`;
           report += `   "${card.text.replace(/\n/g, '\n   ')}"\n\n`;
         });
       }
@@ -99,7 +117,7 @@ export class ExportComponent {
     this.exportTextArea.select();
     navigator.clipboard.writeText(this.exportTextArea.value).then(() => {
       audioSynth.playSuccess();
-      alert('Retro raporu panoya kopyalandı! 📋');
+      alert(i18n.t('copySuccess'));
     });
   }
 
@@ -113,15 +131,15 @@ export class ExportComponent {
     audioSynth.playClick();
     const cards = store.getCards();
     const categoryMap: Record<RetroCategory, string> = {
-      went_well: 'Went Well (İyi Yaptık)',
-      improvement: 'Needs Improvement (Batırdık/Gelişmeli)',
-      action: 'Action Items (Aksiyonlar)'
+      went_well: i18n.t('colWentWellTitle'),
+      improvement: i18n.t('colImprovementTitle'),
+      action: i18n.t('colActionTitle')
     };
 
     let csv = '\uFEFF';
-    csv += `"Kategori";"Yazar (Kod Adı)";"Mesaj";"Skor";"Upvote (▲)";"Downvote (▼)";"Saat"\n`;
+    csv += `"Kategori";"Yazar";"Mesaj";"Skor";"Upvote";"Downvote";"Saat"\n`;
 
-    cards.forEach(card => {
+    cards.forEach((card) => {
       const catTitle = categoryMap[card.category] || card.category;
       const cleanText = card.text.replace(/"/g, '""').replace(/\n/g, ' ');
       const up = card.upvotes || 0;
@@ -137,9 +155,9 @@ export class ExportComponent {
     audioSynth.playClick();
     const cards = store.getCards();
     const categoryMap: Record<RetroCategory, string> = {
-      went_well: 'Went Well (İyi Yaptık)',
-      improvement: 'Needs Improvement (Batırdık/Gelişmeli)',
-      action: 'Action Items (Aksiyonlar)'
+      went_well: i18n.t('colWentWellTitle'),
+      improvement: i18n.t('colImprovementTitle'),
+      action: i18n.t('colActionTitle')
     };
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
@@ -165,17 +183,18 @@ export class ExportComponent {
     xml += `      <Column ss:Width="80"/>\n`;
     xml += `      <Row ss:StyleID="Header">\n`;
     xml += `        <Cell><Data ss:Type="String">Kategori</Data></Cell>\n`;
-    xml += `        <Cell><Data ss:Type="String">Yazar (Kod Adı)</Data></Cell>\n`;
+    xml += `        <Cell><Data ss:Type="String">Yazar</Data></Cell>\n`;
     xml += `        <Cell><Data ss:Type="String">Mesaj</Data></Cell>\n`;
     xml += `        <Cell><Data ss:Type="String">Skor</Data></Cell>\n`;
-    xml += `        <Cell><Data ss:Type="String">Upvote (▲)</Data></Cell>\n`;
-    xml += `        <Cell><Data ss:Type="String">Downvote (▼)</Data></Cell>\n`;
+    xml += `        <Cell><Data ss:Type="String">Upvote</Data></Cell>\n`;
+    xml += `        <Cell><Data ss:Type="String">Downvote</Data></Cell>\n`;
     xml += `        <Cell><Data ss:Type="String">Saat</Data></Cell>\n`;
     xml += `      </Row>\n`;
 
-    cards.forEach(card => {
+    cards.forEach((card) => {
       const catTitle = categoryMap[card.category] || card.category;
-      const escapeXml = (str: string) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      const escapeXml = (str: string) =>
+        str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
       const up = card.upvotes || 0;
       const down = card.downvotes || 0;
       const score = up - down;
@@ -194,7 +213,11 @@ export class ExportComponent {
     xml += `  </Worksheet>\n`;
     xml += `</Workbook>\n`;
 
-    this.triggerDownload(xml, `PixelSprint_Retro_${this.getDateStr()}.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    this.triggerDownload(
+      xml,
+      `PixelSprint_Retro_${this.getDateStr()}.xlsx`,
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
   }
 
   private getDateStr(): string {
