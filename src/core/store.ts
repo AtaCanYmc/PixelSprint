@@ -142,8 +142,8 @@ class RetroStore {
     } else {
       const demoSession: RetroSession = {
         id: 'retro-demo-sprint-1',
-        title: 'Demo Sprint 42 Retrospektif',
-        createdAt: new Date().toLocaleDateString('tr-TR'),
+        title: 'Demo Sprint Retrospective',
+        createdAt: new Date().toLocaleDateString(),
         updatedAt: getCurrentTimeString(),
         cardCount: INITIAL_DEMO_CARDS.length
       };
@@ -158,12 +158,12 @@ class RetroStore {
   }
 
   public createSession(title: string): RetroSession {
-    const cleanTitle = title.trim() || 'Yeni Sprint Retrospektif';
+    const cleanTitle = title.trim() || 'Sprint Retrospective';
     const id = 'retro-' + Date.now().toString(36) + '-' + Math.random().toString(36).substr(2, 4);
     const newSession: RetroSession = {
       id,
       title: cleanTitle,
-      createdAt: new Date().toLocaleDateString('tr-TR'),
+      createdAt: new Date().toLocaleDateString(),
       updatedAt: getCurrentTimeString(),
       cardCount: 0
     };
@@ -179,8 +179,8 @@ class RetroStore {
     if (!session) {
       session = {
         id: sessionId,
-        title: `Retro Pano (${sessionId})`,
-        createdAt: new Date().toLocaleDateString('tr-TR'),
+        title: `Retro Board (${sessionId})`,
+        createdAt: new Date().toLocaleDateString(),
         updatedAt: getCurrentTimeString(),
         cardCount: 0
       };

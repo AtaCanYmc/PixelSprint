@@ -224,23 +224,27 @@
     <div id="modal-add-card" class="modal-overlay hidden">
       <div class="win-window modal-window">
         <div class="win-titlebar">
-          <div class="win-titlebar-title"><span>➕</span> Yeni Anonim Retro Kartı</div>
+          <div class="win-titlebar-title">
+            <span>➕</span> <span id="txt-modal-add-title">Yeni Anonim Retro Kartı</span>
+          </div>
           <div class="win-titlebar-controls">
             <button class="win-btn win-btn-sm btn-close-modal">X</button>
           </div>
         </div>
         <form id="add-card-form" class="modal-body">
           <div class="form-group">
-            <label class="form-label" for="card-category">Kategori / Sütun Seçin:</label>
+            <label class="form-label" for="card-category" id="txt-label-select-cat">Kategori / Sütun Seçin:</label>
             <select id="card-category" class="form-control win-inset" required>
-              <option value="went_well">🟢 Neyi İyi Yaptık? (Went Well)</option>
-              <option value="improvement">🔴 Neyi Batırdık / Gelişmeli? (Needs Improvement)</option>
-              <option value="action">💡 Aksiyonlar & Fikirler (Action Items)</option>
+              <option value="went_well" id="opt-went-well">🟢 Neyi İyi Yaptık? (Went Well)</option>
+              <option value="improvement" id="opt-improvement">
+                🔴 Neyi Batırdık / Gelişmeli? (Needs Improvement)
+              </option>
+              <option value="action" id="opt-action">💡 Aksiyonlar & Fikirler (Action Items)</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="card-text">Mesajınız (Tamamen Anonim):</label>
+            <label class="form-label" for="card-text" id="txt-label-message">Mesajınız (Tamamen Anonim):</label>
             <textarea
               id="card-text"
               class="form-control win-inset"
@@ -251,23 +255,26 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="win-btn btn-close-modal">İptal</button>
-            <button type="submit" class="win-btn"><strong>[💾 Kaydet ve Gönder]</strong></button>
+            <button type="button" class="win-btn btn-close-modal" id="btn-cancel-add">İptal</button>
+            <button type="submit" class="win-btn" id="btn-save-card"><strong>[💾 Kaydet ve Gönder]</strong></button>
           </div>
         </form>
       </div>
     </div>
+
     <!-- MODAL: Share QR Code -->
     <div id="modal-share-qr" class="modal-overlay hidden">
       <div class="win-window modal-window" style="max-width: 440px">
         <div class="win-titlebar">
-          <div class="win-titlebar-title"><span>📱</span> Retro Oturumunu Paylaş (QR Kod)</div>
+          <div class="win-titlebar-title">
+            <span>📱</span> <span id="txt-modal-share-title">Retro Oturumunu Paylaş (QR Kod)</span>
+          </div>
           <div class="win-titlebar-controls">
             <button class="win-btn win-btn-sm btn-close-modal">X</button>
           </div>
         </div>
         <div class="modal-body" style="text-align: center; gap: 12px">
-          <p>
+          <p id="txt-share-desc">
             Ekip arkadaşlarınız telefon kameraları ile aşağıdaki QR kodu okutarak bu Retro panosuna anında katılabilir:
           </p>
 
@@ -293,7 +300,7 @@
           </div>
 
           <div class="form-group" style="text-align: left">
-            <label class="form-label" for="share-url-input">Doğrudan Katılım Linki:</label>
+            <label class="form-label" for="share-url-input" id="txt-label-direct-link">Doğrudan Katılım Linki:</label>
             <div style="display: flex; gap: 6px">
               <input
                 type="text"
@@ -308,7 +315,7 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="win-btn btn-close-modal">Kapat</button>
+            <button type="button" class="win-btn btn-close-modal" id="btn-close-share">Kapat</button>
           </div>
         </div>
       </div>
@@ -318,13 +325,17 @@
     <div id="modal-export" class="modal-overlay hidden">
       <div class="win-window modal-window" style="max-width: 540px">
         <div class="win-titlebar">
-          <div class="win-titlebar-title"><span>💾</span> Retro Özet Raporu</div>
+          <div class="win-titlebar-title">
+            <span>💾</span> <span id="txt-modal-export-title">Retro Özet Raporu</span>
+          </div>
           <div class="win-titlebar-controls">
             <button class="win-btn win-btn-sm btn-close-modal">X</button>
           </div>
         </div>
         <div class="modal-body">
-          <p>Sprint Retrospektif özetini metin, CSV veya Excel (XLSX) formatında indirebilirsiniz:</p>
+          <p id="txt-export-desc">
+            Sprint Retrospektif özetini metin, CSV veya Excel (XLSX) formatında indirebilirsiniz:
+          </p>
           <textarea
             id="export-text-area"
             class="form-control win-inset"
@@ -337,7 +348,7 @@
             <button type="button" class="win-btn" id="btn-download-txt"><strong>💾 .TXT</strong></button>
             <button type="button" class="win-btn" id="btn-download-csv"><strong>📊 .CSV</strong></button>
             <button type="button" class="win-btn" id="btn-download-xlsx"><strong>📈 .XLSX</strong></button>
-            <button type="button" class="win-btn btn-close-modal">Kapat</button>
+            <button type="button" class="win-btn btn-close-modal" id="btn-close-export">Kapat</button>
           </div>
         </div>
       </div>
@@ -347,7 +358,9 @@
     <div id="modal-about" class="modal-overlay hidden">
       <div class="win-window modal-window">
         <div class="win-titlebar">
-          <div class="win-titlebar-title"><span>❓</span> PixelSprint v1.0 Hakkında</div>
+          <div class="win-titlebar-title">
+            <span>❓</span> <span id="txt-modal-about-title">PixelSprint v1.0 Hakkında</span>
+          </div>
           <div class="win-titlebar-controls">
             <button class="win-btn win-btn-sm btn-close-modal">X</button>
           </div>
@@ -357,21 +370,21 @@
             <div style="font-size: 36px">💾</div>
             <div>
               <h3>PixelSprint 95</h3>
-              <p>Retro Sprint Retrospective Board</p>
+              <p id="txt-about-subhead">Retro Sprint Retrospective Board</p>
             </div>
           </div>
           <div class="win-inset" style="padding: 10px; font-size: 12px; background: #fff">
-            <p>
+            <p id="txt-about-desc1">
               <strong>PixelSprint</strong>, yazılım ekipleri için 90'lar Windows 95 ve Terminal estetiğinde hazırlanmış
               anonim bir Sprint Sonu Retrospektif uygulamasıdır.
             </p>
             <br />
-            <p>• <strong>%100 Anonim:</strong> Hiçbir kullanıcı adı veya ID kaydedilmez.</p>
-            <p>• <strong>Offline Destekli (PWA):</strong> İnternet bağlantısı olmadan da çalışır.</p>
-            <p>• <strong>Yerel Depolama:</strong> Verileriniz `localStorage` üzerinde saklanır.</p>
+            <p id="txt-about-desc2">• %100 Anonim: Hiçbir kullanıcı adı veya ID kaydedilmez.</p>
+            <p id="txt-about-desc3">• WebRTC P2P Real-time Sync: Cihazlar arası anlık canlı senkronizasyon.</p>
+            <p id="txt-about-desc4">• Offline Destekli (PWA): İnternet bağlantısı olmadan da çalışır.</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="win-btn btn-close-modal">Tamam</button>
+            <button type="button" class="win-btn btn-close-modal" id="btn-close-about">Tamam</button>
           </div>
         </div>
       </div>
