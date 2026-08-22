@@ -1,6 +1,6 @@
 # 💾 PixelSprint
 
-> **90'lar Windows 95 ve Terminal Estetiğinde, %100 Anonim, Mobil Uyumlu ve Kurulabilir (PWA) Sprint Retrospektif Panosu.**
+> **100% Anonymous, Mobile-Friendly, Installable (PWA) Sprint Retrospective Board with a 90s Windows 95 & Terminal Aesthetic.**
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?logo=typescript)](https://www.typescriptlang.org/)
@@ -9,107 +9,121 @@
 
 ---
 
-## 💻 Proje Hakkında (About PixelSprint)
+## 💻 About PixelSprint
 
-**PixelSprint**, yazılım geliştirme ekiplerinin Sprint Sonu Retrospektif (Retro) toplantılarında kullanılmak üzere tasarlanmış nostaljik bir web uygulamasıdır. 90'ların unutulmaz Windows 95 ve klasik yesil/siyah terminal estetiğini modern web teknolojileri (Vite, TypeScript, PWA, Workbox) ile buluşturur.
+**PixelSprint** is a nostalgic, full-featured retrospective application designed for software development teams conducting Sprint End Retrospectives (Retro). It combines the iconic 90s Windows 95 desktop experience and classic matrix-style green-on-black terminal aesthetics with modern web engineering standards (Vite, TypeScript, Progressive Web App, Workbox).
 
-- **%100 Anonimlik**: Kullanıcı kaydı veya ID takibi yapılmaz. Her karta rastgele retro kod adları verilir (`FloppyDisk-95#404`, `Agent-404#101` vb.).
-- **Çevrimdışı Destek (PWA)**: İnternet bağlantısı olmadan çalışır ve cihazlara masaüstü/mobil uygulama olarak yüklenebilir.
-- **Yerel Depolama (localStorage)**: Veriler tamamen kullanıcı tarayıcısında saklanır.
+- **100% Anonymity**: No registration, login, or tracking. Every note automatically receives a randomized retro agent codename (`FloppyDisk-95#404`, `Agent-404#101`, etc.).
+- **Offline Support (PWA)**: Runs fully offline and can be installed directly to iOS, Android, macOS, and Windows home screens as a native-like app.
+- **Client-Side Storage (`localStorage`)**: All data remains strictly inside the user's browser storage.
 
 ---
 
-## ⭐ Öne Çıkan Özellikler
+## ⭐ Key Features
 
 ### 1. 🗔 Authentic Windows 95 UI / UX
-- Win95 masaüstü mavisi (`#008080` Teal), klasik mavi-lacivert başlık çubukları ve 3D kabarık (outset) çerçeveler.
-- Ekranın altında çalışan **Win95 Başlat Çubuğu (Taskbar)** ve **Başlat Menüsü (Start Menu)**.
-- Web Audio API ile üretilmiş nostaljik retro **ses efektleri** (Ses Açma/Kapama düğmesiyle).
+- Win95 desktop teal background (`#008080`), classic blue titlebars, bevel outset/inset 3D borders.
+- Live **Win95 Taskbar** with a functional **Start Menu** and live system clock.
+- Built-in retro Web Audio API sound synthesizer with a sound toggle (`🔊`).
 
-### 2. 🚀 Retro Oturum Yöneticisi (Session Dashboard) & Session ID
-- **Ana Sayfa (Session Dashboard)** üzerinden yeni retro oturumları oluşturabilir veya geçmiş oturumlar arasında geçiş yapabilirsiniz.
-- Her retro oturumunun benzersiz bir **Session ID**'si vardır (örn. `#session=retro-demo-sprint-1`).
+### 2. 🚀 Retro Session Manager & Session ID
+- **Dashboard Launcher**: Create new retrospective sessions with custom titles (e.g. *Sprint 45 Retrospective*) or view past saved sessions.
+- **Session ID & URL Routing**: Every retro session generates a unique Session ID (e.g. `#session=retro-demo-sprint-1`) for instant navigation and bookmarking.
 
-### 3. 📱 QR Kod ile Hızlı Mobil Katılım
-- **`Paylaş (QR)`** butonuna tıklandığında oluşturulan QR Kodu, toplantıdaki katılımcılar cep telefonu kameraları ile okutarak retro panosuna anında bağlanabilir.
+### 3. 📱 QR Code Mobile Participant Sharing
+- Click **`Paylaş (QR)`** in the toolbar or Start Menu to generate an instant interactive **QR Code**.
+- Meeting participants can scan the QR Code using their smartphone cameras to immediately join the retro session and submit anonymous notes from their phones.
 
-### 4. ⬆️⬇️ Reddit Tarzı Upvote & Downvote (Karma Skoru)
-- Kartlarda `▲ Upvote` (+1) ve `▼ Downvote` (-1) oylama sistemi.
-- Pozitif skorlar yeşil, negatif skorlar kırmızı renkle vurgulanır.
+### 4. ⬆️⬇️ Reddit-Style Upvote & Downvote System
+- Reddit-style karma score on retro notes with `▲ Upvote` (+1) and `▼ Downvote` (-1) buttons.
+- Color-coded live score badges (green for positive score, red for negative score).
 
-### 5. 🟢🔴💡 Retrospektif Sütunları
-- **🟢 Went Well**: Neyi iyi yaptık?
-- **🔴 Needs Improvement**: Neyi batırdık / neleri düzeltmeliyiz?
-- **💡 Action Items**: Aksiyonlar ve yeni fikirler.
+### 5. 🟢🔴💡 Retrospective Categories
+- **🟢 Went Well**: What went well during the sprint?
+- **🔴 Needs Improvement**: Bugs, bottlenecks, and areas for improvement.
+- **💡 Action Items**: Actionable tasks and new ideas.
 
-### 6. 💾 Gelişmiş Rapor Dışa Aktarma (Export)
-- Sprint özetinizi **.TXT**, **.CSV** (Excel uyumlu UTF-8 BOM) ve **.XLSX** (Excel XML Spreadsheet) formatlarında indirebilir veya panoya kopyalayabilirsiniz.
+### 6. 💾 Multi-Format Exporting (.TXT, .CSV, .XLSX)
+- Export retro summaries as formatted **.TXT** text files, **.CSV** (Excel-compatible UTF-8 BOM), or native **.XLSX** (Excel XML Spreadsheet) files.
 
 ---
 
-## 📁 Proje Klasör Yapısı
+## 📁 Project Directory Structure
 
 ```
 PixelSprint/
-├── vite.config.ts            # Vite & VitePWA Konfigürasyonu
-├── index.html                # Vite HTML Giriş Noktası
-├── tsconfig.json             # TypeScript Konfigürasyonu
-├── package.json              # npm Scriptleri ve Bağımlılıklar
+├── vite.config.ts            # Vite & VitePWA Configuration
+├── index.html                # Main HTML Entry Point
+├── tsconfig.json             # TypeScript Configuration
+├── package.json              # Dependencies and NPM Scripts
 ├── LICENSE                   # Apache License 2.0
-├── SECURITY.md               # Güvenlik Politikası
-├── CODE_OF_CONDUCT.md        # Topluluk Kuralları
-├── CONTRIBUTING.md           # Katkı Sağlama Rehberi
-├── release-please-config.json # Release Please Konfigürasyonu
-├── .release-please-manifest.json # Release Please Sürüm Takibi
+├── SECURITY.md               # Security Policy
+├── CODE_OF_CONDUCT.md        # Contributor Covenant Code of Conduct
+├── CONTRIBUTING.md           # Contribution Guidelines & Conventional Commits
+├── release-please-config.json # Release Please Configuration
+├── .release-please-manifest.json # Version Tracking Manifest
 │
 ├── .github/
-│   ├── dependabot.yml        # Dependabot Konfigürasyonu
+│   ├── dependabot.yml        # Dependabot Configuration
 │   └── workflows/
-│       └── release-please.yml# Release Please GitHub Action İş Akışı
+│       ├── deploy.yml        # GitHub Pages Automated Deployment Workflow
+│       ├── ci.yml            # Continuous Integration PR Check
+│       └── release-please.yml# Automated Versioning & Release Workflow
 │
-├── public/                   # Statik İkon ve Varlıklar
+├── public/                   # Static Assets (Favicon, PWA Icons)
 │   ├── favicon.png
 │   └── icons/
 │
-└── src/                      # TypeScript & CSS Kaynak Kodları
-    ├── main.ts               # Ana Uygulama Giriş Noktası
-    ├── css/                  # Modüler CSS Stilleri
-    ├── types/                # TypeScript Arabirim Tanımları
-    ├── core/                 # Store, Audio Synth ve PWA Katmanı
-    ├── components/           # Dashboard, Board, Modal, Export, Share ve Taskbar
-    └── utils/                # Sabitler ve Yardımcı Fonksiyonlar
+└── src/                      # TypeScript & CSS Source Code
+    ├── main.ts               # Application Entry Point
+    ├── css/                  # Modular CSS Styles (win95, retro-board, responsive)
+    ├── types/                # TypeScript Interfaces & Definitions
+    ├── core/                 # Store, Audio Synth, and PWA Installer
+    ├── components/           # Dashboard, Board, Modal, Export, Share, and Taskbar
+    └── utils/                # Constants and Helper Functions
 ```
 
 ---
 
-## 🛠️ Kurulum ve Geliştirme (Development)
+## 🛠️ Installation & Local Development
 
-### 1. Depoyu Klonlayın ve Bağımlılıkları Yükleyin:
+### 1. Clone Repository & Install Dependencies:
 ```bash
 git clone https://github.com/your-org/PixelSprint.git
 cd PixelSprint
 npm install
 ```
 
-### 2. Geliştirme Sunucusunu Başlatın (Dev Server):
+### 2. Run Local Development Server (HMR):
 ```bash
 npm run dev
 ```
-Geliştirici sunucusu `http://localhost:5173` adresinde başlatılır.
+Open `http://localhost:5173` in your browser.
 
-### 3. Canlıya Üretim Derlemesi Alın (Production Build):
+### 3. Build Production Bundle:
 ```bash
 npm run build
 ```
-Derleme çıktısı `dist/` klasöründe oluşur.
+The optimized PWA production assets will be generated in `dist/`.
 
-### 4. Üretim Derlemesini Önizleyin:
+### 4. Preview Production Build:
 ```bash
 npm run preview
 ```
 
 ---
 
-## 📜 Lisans
+## 🚀 GitHub Pages Deployment
 
-Bu proje **[Apache License 2.0](LICENSE)** altında lisanslanmıştır.
+This repository includes automated GitHub Actions CI/CD workflows (`.github/workflows/deploy.yml`). 
+
+To enable automatic GitHub Pages deployment:
+1. Go to **Settings > Pages** in your GitHub repository.
+2. Select **GitHub Actions** as the source.
+3. Every push to `main` will automatically build and deploy the app to GitHub Pages!
+
+---
+
+## 📜 License
+
+Distributed under the **[Apache License 2.0](LICENSE)**.
