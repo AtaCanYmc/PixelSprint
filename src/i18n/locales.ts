@@ -89,6 +89,19 @@ export interface Translations {
   aboutDesc3: string;
   aboutDesc4: string;
 
+  // PWA Guide Modal
+  modalPwaTitle: string;
+  pwaHeading: string;
+  pwaSubheading: string;
+  iosTitle: string;
+  iosStep1: string;
+  iosStep2: string;
+  androidTitle: string;
+  androidStep1: string;
+  androidStep2: string;
+  btnInstallNow: string;
+  btnGotIt: string;
+
   // Taskbar & Start Menu
   startBtnText: string;
   startMenuHome: string;
@@ -185,6 +198,18 @@ export const locales: Record<Language, Translations> = {
     aboutDesc3: 'WebRTC P2P Real-time Sync: Cihazlar arası anlık canlı senkronizasyon.',
     aboutDesc4: 'Offline Destekli (PWA): İnternet bağlantısı olmadan da çalışır.',
 
+    modalPwaTitle: 'PixelSprint.exe - Mobil Kurulum Rehberi',
+    pwaHeading: 'Ana Ekrana Uygulama Olarak Ekle',
+    pwaSubheading: "PixelSprint'i tek tıkla tam ekran kullanın!",
+    iosTitle: '🍏 iOS (Safari) Kullanıcıları:',
+    iosStep1: 'Ekranın altındaki Paylaş (Share ⎋) butonuna dokunun.',
+    iosStep2: 'Açılan menüde "Ana Ekrana Ekle" seçeneğini seçin.',
+    androidTitle: '🤖 Android (Chrome) Kullanıcıları:',
+    androidStep1: 'Sağ üstteki Seçenekler (⋮) menüsüne dokunun.',
+    androidStep2: '"Uygulamayı Yükle" veya "Ana Ekrana Ekle" butonuna basın.',
+    btnInstallNow: '📱 Uygulamayı Şimdi Yükle',
+    btnGotIt: '[👍 Anladım]',
+
     startBtnText: 'Başlat',
     startMenuHome: 'Ana Sayfaya Dön (Dashboard)',
     startMenuAddCard: 'Yeni Anonim Kart Ekle',
@@ -276,6 +301,18 @@ export const locales: Record<Language, Translations> = {
     aboutDesc2: '100% Anonymous: No usernames or user IDs stored.',
     aboutDesc3: 'WebRTC P2P Real-time Sync: Instant multi-device live sync.',
     aboutDesc4: 'Offline Ready (PWA): Works completely without an internet connection.',
+
+    modalPwaTitle: 'PixelSprint.exe - Mobile Setup Guide',
+    pwaHeading: 'Add to Home Screen as an App',
+    pwaSubheading: 'Use PixelSprint fullscreen with one click!',
+    iosTitle: '🍏 iOS (Safari) Users:',
+    iosStep1: 'Tap the Share (⎋) button at the bottom of the screen.',
+    iosStep2: 'Select "Add to Home Screen" from the menu.',
+    androidTitle: '🤖 Android (Chrome) Users:',
+    androidStep1: 'Tap the Options (⋮) menu in the top right corner.',
+    androidStep2: 'Tap "Install App" or "Add to Home Screen".',
+    btnInstallNow: '📱 Install App Now',
+    btnGotIt: '[👍 Got It]',
 
     startBtnText: 'Start',
     startMenuHome: 'Return to Home (Dashboard)',
@@ -369,6 +406,18 @@ export const locales: Record<Language, Translations> = {
     aboutDesc2: "100% Anonyme : Aucun nom d'utilisateur ni ID stocké.",
     aboutDesc3: 'WebRTC P2P Sync Temps Réel : Synchronisation en direct entre appareils.',
     aboutDesc4: 'Prêt pour le Mode Hors Ligne (PWA) : Fonctionne entièrement sans connexion Internet.',
+
+    modalPwaTitle: "PixelSprint.exe - Guide d'Installation Mobile",
+    pwaHeading: "Ajouter à l'Écran d'Accueil",
+    pwaSubheading: 'Utilisez PixelSprint en plein écran en un clic !',
+    iosTitle: '🍏 Utilisateurs iOS (Safari) :',
+    iosStep1: "Appuyez sur le bouton Partager (⎋) en bas de l'écran.",
+    iosStep2: 'Sélectionnez "Sur l\'écran d\'accueil" dans le menu.',
+    androidTitle: '🤖 Utilisateurs Android (Chrome) :',
+    androidStep1: 'Appuyez sur le menu Options (⋮) en haut à droite.',
+    androidStep2: 'Appuyez sur "Installer l\'application" ou "Ajouter à l\'écran d\'accueil".',
+    btnInstallNow: "📱 Installer l'Application Maintenant",
+    btnGotIt: '[👍 Compris]',
 
     startBtnText: 'Démarrer',
     startMenuHome: "Retour à l'Accueil (Tableau de Bord)",

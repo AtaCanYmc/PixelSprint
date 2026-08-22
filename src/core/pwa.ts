@@ -72,12 +72,15 @@ class PWAInstaller {
   }
 
   private listenForInstallPrompt(): void {
+    const btnTriggerPwaInstall = document.getElementById('btn-trigger-pwa-install');
+
     window.addEventListener('beforeinstallprompt', (e: Event) => {
       e.preventDefault();
       this.deferredPrompt = e as BeforeInstallPromptEvent;
 
       if (this.btnInstallToolbar) this.btnInstallToolbar.style.display = 'inline-flex';
       if (this.btnInstallStartMenu) this.btnInstallStartMenu.style.display = 'flex';
+      if (btnTriggerPwaInstall) btnTriggerPwaInstall.style.display = 'inline-flex';
     });
 
     const triggerInstall = (): void => {
@@ -90,6 +93,7 @@ class PWAInstaller {
         this.deferredPrompt = null;
         if (this.btnInstallToolbar) this.btnInstallToolbar.style.display = 'none';
         if (this.btnInstallStartMenu) this.btnInstallStartMenu.style.display = 'none';
+        if (btnTriggerPwaInstall) btnTriggerPwaInstall.style.display = 'none';
       });
     };
 
@@ -98,6 +102,9 @@ class PWAInstaller {
     }
     if (this.btnInstallStartMenu) {
       this.btnInstallStartMenu.addEventListener('click', triggerInstall);
+    }
+    if (btnTriggerPwaInstall) {
+      btnTriggerPwaInstall.addEventListener('click', triggerInstall);
     }
   }
 }

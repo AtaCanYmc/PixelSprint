@@ -16,6 +16,14 @@ body {
   box-sizing: border-box;
 }
 
+.desktop-view {
+  display: block;
+}
+
+.mobile-view {
+  display: none;
+}
+
 .mobile-tabs {
   display: none;
   gap: 4px;
@@ -118,18 +126,75 @@ body {
     width: 100%;
     display: block;
   }
+}
 
-  .session-table {
-    min-width: 520px; /* Enables horizontal swipe inside table container without breaking layout */
+/* Mobile Dashboard Cards & Controls (max-width: 640px) */
+@media (max-width: 640px) {
+  .desktop-view {
+    display: none;
   }
 
-  .session-code {
-    max-width: 110px;
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    vertical-align: middle;
+  .mobile-view {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #form-new-session {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #form-new-session input,
+  #form-new-session button {
+    width: 100%;
+  }
+
+  #btn-create-session,
+  #btn-join-session {
+    min-height: 36px;
+  }
+
+  .session-mobile-card {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: var(--win-gray);
+    color: var(--win-black);
+  }
+
+  .session-mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .session-mobile-title {
+    font-size: 13px;
+    word-break: break-word;
+  }
+
+  .session-mobile-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--win-black);
+  }
+
+  .session-mobile-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .session-mobile-actions .win-btn {
+    flex: 1;
+    min-height: 32px;
+    font-size: 12px;
   }
 }
 
@@ -142,7 +207,7 @@ body {
   }
 
   .taskbar-item {
-    display: none; /* Hide taskbar tab title on narrow mobile to prevent pushing clock */
+    display: none;
   }
 
   .start-btn {
@@ -165,13 +230,11 @@ body {
     white-space: nowrap;
   }
 
-  /* Window Titlebar text truncation */
   .win-titlebar-title {
     font-size: 12px;
     max-width: 200px;
   }
 
-  /* Retro Card padding & text wrap */
   .card-body {
     font-size: 12px;
     padding: 6px;

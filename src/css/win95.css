@@ -144,7 +144,25 @@
   width: 100%;
   max-width: 480px;
   background-color: var(--win-gray);
+  color: var(--win-black);
   z-index: 1001;
+}
+
+[data-theme='dark'] .modal-window {
+  background-color: var(--win-gray);
+  color: var(--win-black);
+  border: 2px solid;
+  border-color: var(--win-gray-light) var(--win-gray-dark) var(--win-gray-dark) var(--win-gray-light);
+}
+
+[data-theme='dark'] .win-inset,
+[data-theme='dark'] .form-control.win-inset {
+  background-color: var(--win-white);
+  color: var(--win-black);
+}
+
+[data-theme='dark'] #qr-code-canvas {
+  filter: invert(0.9) hue-rotate(180deg);
 }
 
 .modal-body {
@@ -344,6 +362,7 @@ textarea.form-control {
   border-collapse: collapse;
   font-size: 12px;
   background-color: var(--win-white);
+  color: var(--win-black);
 }
 
 .session-table th,
@@ -351,23 +370,27 @@ textarea.form-control {
   padding: 6px 8px;
   text-align: left;
   border: 1px solid var(--win-gray-dark);
+  color: var(--win-black);
 }
 
 .session-table th {
-  background-color: var(--win-gray-light);
+  background-color: var(--win-gray);
+  color: var(--win-black);
   font-weight: bold;
 }
 
 .session-table tr:nth-child(even) {
-  background-color: #f5f5f5;
+  background-color: rgba(0, 0, 0, 0.04);
 }
 
 .session-code {
   font-family: var(--font-mono), monospace;
-  background-color: #e0e0e0;
-  padding: 2px 4px;
+  background-color: #e8e8e8;
+  color: #111111;
+  padding: 2px 6px;
   border: 1px solid #b0b0b0;
   font-size: 11px;
+  border-radius: 2px;
 }
 
 .session-badge {
@@ -378,6 +401,22 @@ textarea.form-control {
   padding: 1px 6px;
   font-size: 11px;
   border-radius: 2px;
+}
+
+[data-theme='dark'] .session-table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme='dark'] .session-code {
+  background-color: #0d1117;
+  color: #00ff66;
+  border: 1px solid #30363d;
+}
+
+[data-theme='dark'] .session-badge {
+  background-color: #1c3320;
+  color: #66bb6a;
+  border: 1px solid #2e7d32;
 }
 
 .session-actions {

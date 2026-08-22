@@ -1,6 +1,6 @@
 /**
  * PixelSprint Modal Component (TypeScript)
- * Handles Add Card modal and About modal with complete 100% i18n support
+ * Handles Add Card modal, About modal, and Mobile PWA Setup Guide modal with complete 100% i18n support
  */
 
 import { store } from '../core/store';
@@ -11,12 +11,14 @@ import { RetroCategory } from '../types';
 export class ModalComponent {
   private modalAddCard: HTMLElement | null;
   private modalAbout: HTMLElement | null;
+  private modalPwaGuide: HTMLElement | null;
   private addCardForm: HTMLFormElement | null;
   private startMenu: HTMLElement | null;
 
   constructor() {
     this.modalAddCard = document.getElementById('modal-add-card');
     this.modalAbout = document.getElementById('modal-about');
+    this.modalPwaGuide = document.getElementById('modal-pwa-guide');
     this.addCardForm = document.getElementById('add-card-form') as HTMLFormElement | null;
     this.startMenu = document.getElementById('start-menu');
   }
@@ -64,6 +66,20 @@ export class ModalComponent {
     if (smAbout && this.modalAbout) smAbout.addEventListener('click', () => this.openModal(this.modalAbout));
 
     this.updateLocalizedText();
+    this.checkMobilePwaFirstVisit();
+  }
+
+  private checkMobilePwaFirstVisit(): void {
+    const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
+    const hasSeenGuide = localStorage.getItem('pixelsprint_pwa_guide_seen');
+
+    if (isMobile && !isStandalone && !hasSeenGuide && this.modalPwaGuide) {
+      setTimeout(() => {
+        this.openModal(this.modalPwaGuide);
+        localStorage.setItem('pixelsprint_pwa_guide_seen', 'true');
+      }, 600);
+    }
   }
 
   private updateLocalizedText(): void {
@@ -134,6 +150,31 @@ export class ModalComponent {
     if (txtAboutDesc3) txtAboutDesc3.textContent = `• ${i18n.t('aboutDesc3')}`;
     if (txtAboutDesc4) txtAboutDesc4.textContent = `• ${i18n.t('aboutDesc4')}`;
     if (btnCloseAbout) btnCloseAbout.textContent = i18n.t('btnClose');
+
+    // PWA Guide Modal i18n
+    const txtModalPwaTitle = document.getElementById('txt-modal-pwa-title');
+    const txtPwaHeading = document.getElementById('txt-pwa-heading');
+    const txtPwaSubheading = document.getElementById('txt-pwa-subheading');
+    const txtIosTitle = document.getElementById('txt-ios-title');
+    const txtIosStep1 = document.getElementById('txt-ios-step1');
+    const txtIosStep2 = document.getElementById('txt-ios-step2');
+    const txtAndroidTitle = document.getElementById('txt-android-title');
+    const txtAndroidStep1 = document.getElementById('txt-android-step1');
+    const txtAndroidStep2 = document.getElementById('txt-android-step2');
+    const txtBtnInstallNow = document.getElementById('txt-btn-install-now');
+    const btnClosePwaGuide = document.getElementById('btn-close-pwa-guide');
+
+    if (txtModalPwaTitle) txtModalPwaTitle.textContent = i18n.t('modalPwaTitle');
+    if (txtPwaHeading) txtPwaHeading.textContent = i18n.t('pwaHeading');
+    if (txtPwaSubheading) txtPwaSubheading.textContent = i18n.t('pwaSubheading');
+    if (txtIosTitle) txtIosTitle.textContent = i18n.t('iosTitle');
+    if (txtIosStep1) txtIosStep1.textContent = i18n.t('iosStep1');
+    if (txtIosStep2) txtIosStep2.textContent = i18n.t('iosStep2');
+    if (txtAndroidTitle) txtAndroidTitle.textContent = i18n.t('androidTitle');
+    if (txtAndroidStep1) txtAndroidStep1.textContent = i18n.t('androidStep1');
+    if (txtAndroidStep2) txtAndroidStep2.textContent = i18n.t('androidStep2');
+    if (txtBtnInstallNow) txtBtnInstallNow.textContent = i18n.t('btnInstallNow');
+    if (btnClosePwaGuide) btnClosePwaGuide.innerHTML = `<strong>${i18n.t('btnGotIt')}</strong>`;
   }
 
   public openModal(modalEl: HTMLElement | null): void {

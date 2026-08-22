@@ -1,6 +1,6 @@
 /**
- * PixelSprint Dashboard / Session Manager Component (TypeScript)
- * Handles listing retro sessions, creating new sessions, and joining by Session ID with i18n
+ * PixelSprint Dashboard Component (TypeScript)
+ * Handles Retro Session creation, listing, joining, and management with full responsive mobile & i18n support
  */
 
 import { store } from '../core/store';
@@ -11,45 +11,46 @@ import { escapeHtml } from '../utils/helpers';
 export class DashboardComponent {
   private windowDashboard: HTMLElement | null;
   private windowBoard: HTMLElement | null;
-  private sessionListContainer: HTMLElement | null;
   private formNewSession: HTMLFormElement | null;
+  private sessionTitleInput: HTMLInputElement | null;
   private inputJoinSession: HTMLInputElement | null;
   private btnJoinSession: HTMLElement | null;
+  private sessionListContainer: HTMLElement | null;
 
   constructor() {
     this.windowDashboard = document.getElementById('window-dashboard');
     this.windowBoard = document.getElementById('window-board');
-    this.sessionListContainer = document.getElementById('session-list-container');
     this.formNewSession = document.getElementById('form-new-session') as HTMLFormElement | null;
+    this.sessionTitleInput = document.getElementById('session-title-input') as HTMLInputElement | null;
     this.inputJoinSession = document.getElementById('input-join-session') as HTMLInputElement | null;
     this.btnJoinSession = document.getElementById('btn-join-session');
+    this.sessionListContainer = document.getElementById('session-list-container');
   }
 
   public init(): void {
     store.subscribe(() => this.render());
-    i18n.subscribe(() => this.render());
+    i18n.subscribe(() => this.updateStaticTexts());
 
-    // Create New Session Form
+    // New Session Form Submission
     if (this.formNewSession) {
       this.formNewSession.addEventListener('submit', (e: SubmitEvent) => {
         e.preventDefault();
-        const inputTitle = document.getElementById('session-title-input') as HTMLInputElement | null;
-        if (inputTitle && inputTitle.value.trim()) {
+        const title = this.sessionTitleInput ? this.sessionTitleInput.value : '';
+        if (title.trim()) {
           audioSynth.playSuccess();
-          const session = store.createSession(inputTitle.value);
-          inputTitle.value = '';
-          store.setActiveSession(session.id);
+          store.createSession(title);
+          if (this.sessionTitleInput) this.sessionTitleInput.value = '';
         }
       });
     }
 
-    // Join Session by ID
+    // Join Session by ID Terminal
     const handleJoin = () => {
-      if (this.inputJoinSession && this.inputJoinSession.value.trim()) {
+      const sessionId = this.inputJoinSession ? this.inputJoinSession.value.trim() : '';
+      if (sessionId) {
         audioSynth.playClick();
-        const sessionId = this.inputJoinSession.value.trim();
-        this.inputJoinSession.value = '';
         store.setActiveSession(sessionId);
+        if (this.inputJoinSession) this.inputJoinSession.value = '';
       }
     };
 
@@ -134,42 +135,74 @@ export class DashboardComponent {
       return;
     }
 
+    const tableRowsHtml = sessions
+      .map(
+        (s) => `
+      <tr>
+        <td><strong>🚀 ${escapeHtml(s.title)}</strong></td>
+        <td><code class="session-code">${escapeHtml(s.id)}</code></td>
+        <td><span class="session-badge">${s.cardCount || 0}</span></td>
+        <td>${escapeHtml(s.createdAt)}</td>
+        <td>
+          <div class="session-actions">
+            <button class="win-btn win-btn-sm" data-session-action="open" data-id="${s.id}">
+              ${escapeHtml(i18n.t('btnOpen'))}
+            </button>
+            <button class="win-btn win-btn-sm" data-session-action="delete" data-id="${s.id}">
+              ❌
+            </button>
+          </div>
+        </td>
+      </tr>
+    `
+      )
+      .join('');
+
+    const mobileCardsHtml = sessions
+      .map(
+        (s) => `
+      <div class="win-outset session-mobile-card">
+        <div class="session-mobile-header">
+          <strong class="session-mobile-title">🚀 ${escapeHtml(s.title)}</strong>
+          <span class="session-badge">${s.cardCount || 0}</span>
+        </div>
+        <div class="session-mobile-meta">
+          <code class="session-code">${escapeHtml(s.id)}</code>
+          <span class="session-mobile-date">📅 ${escapeHtml(s.createdAt)}</span>
+        </div>
+        <div class="session-mobile-actions">
+          <button class="win-btn win-btn-sm btn-mobile-open" data-session-action="open" data-id="${s.id}">
+            ${escapeHtml(i18n.t('btnOpen'))}
+          </button>
+          <button class="win-btn win-btn-sm btn-mobile-delete" data-session-action="delete" data-id="${s.id}">
+            ❌
+          </button>
+        </div>
+      </div>
+    `
+      )
+      .join('');
+
     this.sessionListContainer.innerHTML = `
-      <table class="session-table win-inset">
-        <thead>
-          <tr>
-            <th>${escapeHtml(i18n.t('colTitle'))}</th>
-            <th>${escapeHtml(i18n.t('colSessionId'))}</th>
-            <th>${escapeHtml(i18n.t('colCardCount'))}</th>
-            <th>${escapeHtml(i18n.t('colCreatedAt'))}</th>
-            <th>${escapeHtml(i18n.t('colActions'))}</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${sessions
-            .map(
-              (s) => `
+      <div class="session-table-wrapper desktop-view">
+        <table class="session-table win-inset">
+          <thead>
             <tr>
-              <td><strong>🚀 ${escapeHtml(s.title)}</strong></td>
-              <td><code class="session-code">${escapeHtml(s.id)}</code></td>
-              <td><span class="session-badge">${s.cardCount || 0}</span></td>
-              <td>${escapeHtml(s.createdAt)}</td>
-              <td>
-                <div class="session-actions">
-                  <button class="win-btn win-btn-sm" data-session-action="open" data-id="${s.id}">
-                    ${escapeHtml(i18n.t('btnOpen'))}
-                  </button>
-                  <button class="win-btn win-btn-sm" data-session-action="delete" data-id="${s.id}">
-                    ❌
-                  </button>
-                </div>
-              </td>
+              <th>${escapeHtml(i18n.t('colTitle'))}</th>
+              <th>${escapeHtml(i18n.t('colSessionId'))}</th>
+              <th>${escapeHtml(i18n.t('colCardCount'))}</th>
+              <th>${escapeHtml(i18n.t('colCreatedAt'))}</th>
+              <th>${escapeHtml(i18n.t('colActions'))}</th>
             </tr>
-          `
-            )
-            .join('')}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            ${tableRowsHtml}
+          </tbody>
+        </table>
+      </div>
+      <div class="session-mobile-list mobile-view">
+        ${mobileCardsHtml}
+      </div>
     `;
   }
 }

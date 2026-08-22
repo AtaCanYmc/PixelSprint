@@ -286,7 +286,8 @@
             class="win-inset"
             style="
               padding: 16px;
-              background: #ffffff;
+              background: var(--win-white);
+              color: var(--win-black);
               display: flex;
               flex-direction: column;
               align-items: center;
@@ -294,9 +295,12 @@
               gap: 8px;
             "
           >
-            <canvas id="qr-code-canvas" style="width: 220px; height: 220px; border: 2px solid #000"></canvas>
+            <canvas
+              id="qr-code-canvas"
+              style="width: 220px; height: 220px; border: 2px solid var(--win-black)"
+            ></canvas>
             <div
-              style="font-family: var(--font-mono), monospace; font-size: 11px; color: #404040"
+              style="font-family: var(--font-mono), monospace; font-size: 11px; color: var(--win-black); opacity: 0.8"
               id="share-session-id-label"
             >
               Session ID: --
@@ -379,7 +383,10 @@
               <p id="txt-about-subhead">Retro Sprint Retrospective Board</p>
             </div>
           </div>
-          <div class="win-inset" style="padding: 10px; font-size: 12px; background: #fff">
+          <div
+            class="win-inset"
+            style="padding: 10px; font-size: 12px; background: var(--win-white); color: var(--win-black)"
+          >
             <p id="txt-about-desc1">
               <strong>PixelSprint</strong>, yazılım ekipleri için 90'lar Windows 95 ve Terminal estetiğinde hazırlanmış
               anonim bir Sprint Sonu Retrospektif uygulamasıdır.
@@ -391,6 +398,71 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="win-btn btn-close-modal" id="btn-close-about">Tamam</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: Mobile PWA Installation Guide -->
+    <div id="modal-pwa-guide" class="modal-overlay hidden">
+      <div class="win-window modal-window" style="max-width: 440px">
+        <div class="win-titlebar">
+          <div class="win-titlebar-title">
+            <span>📱</span> <span id="txt-modal-pwa-title">PixelSprint.exe - Mobil Kurulum Rehberi</span>
+          </div>
+          <div class="win-titlebar-controls">
+            <button class="win-btn win-btn-sm btn-close-modal">X</button>
+          </div>
+        </div>
+        <div class="modal-body" style="gap: 12px">
+          <div style="display: flex; gap: 12px; align-items: center">
+            <div style="font-size: 36px">📲</div>
+            <div>
+              <h3 id="txt-pwa-heading">Ana Ekrana Uygulama Olarak Ekle</h3>
+              <p id="txt-pwa-subheading" style="font-size: 11px; opacity: 0.8">
+                PixelSprint'i tek tıkla tam ekran kullanın!
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="win-inset"
+            style="
+              padding: 12px;
+              font-size: 12px;
+              background: var(--win-white);
+              color: var(--win-black);
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+            "
+          >
+            <div id="pwa-ios-instructions">
+              <strong id="txt-ios-title">🍏 iOS (Safari) Kullanıcıları:</strong>
+              <ol style="margin: 4px 0 0 18px; padding: 0">
+                <li id="txt-ios-step1">Ekranın altındaki Paylaş (Share ⎋) butonuna dokunun.</li>
+                <li id="txt-ios-step2">Açılan menüde "Ana Ekrana Ekle" seçeneğini seçin.</li>
+              </ol>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--win-gray-dark); margin: 4px 0" />
+
+            <div id="pwa-android-instructions">
+              <strong id="txt-android-title">🤖 Android (Chrome) Kullanıcıları:</strong>
+              <ol style="margin: 4px 0 0 18px; padding: 0">
+                <li id="txt-android-step1">Sağ üstteki Seçenekler (⋮) menüsüne dokunun.</li>
+                <li id="txt-android-step2">"Uygulamayı Yükle" veya "Ana Ekrana Ekle" butonuna basın.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="flex-wrap: wrap; gap: 6px">
+            <button type="button" class="win-btn" id="btn-trigger-pwa-install" style="display: none">
+              <strong id="txt-btn-install-now">📱 Uygulamayı Şimdi Yükle</strong>
+            </button>
+            <button type="button" class="win-btn btn-close-modal" id="btn-close-pwa-guide">
+              <strong>[👍 Anladım]</strong>
+            </button>
           </div>
         </div>
       </div>
