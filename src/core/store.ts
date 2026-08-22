@@ -1,6 +1,6 @@
 /**
  * PixelSprint Core State Store (TypeScript)
- * Handles Retro Sessions, Per-Session Cards, and Real-time Synchronization
+ * Handles Retro Sessions, Per-Session Cards, Per-Device Vote Locking, and Real-time Synchronization
  */
 
 import { RetroCard, RetroCategory, RetroSession, StateChangeListener, RealtimeMessage } from '../types';
@@ -9,20 +9,45 @@ import { generateAnonymousCodename, getCurrentTimeString } from '../utils/helper
 import { audioSynth } from './audio';
 import { realtimeSync } from './sync';
 
+export type UserVoteState = 'up' | 'down' | null;
+
 class RetroStore {
   private sessions: RetroSession[] = [];
   private activeSessionId: string | null = null;
   private cards: RetroCard[] = [];
+  private userVotes: Record<string, UserVoteState> = {};
   private listeners: StateChangeListener[] = [];
 
   public init(): void {
     this.loadSessions();
+    this.loadUserVotes();
     this.setupRealtimeListeners();
     this.checkUrlHash();
 
     window.addEventListener('hashchange', () => {
       this.checkUrlHash();
     });
+  }
+
+  private loadUserVotes(): void {
+    const saved = localStorage.getItem('pixelsprint_user_votes');
+    if (saved) {
+      try {
+        this.userVotes = JSON.parse(saved) as Record<string, UserVoteState>;
+      } catch (e) {
+        this.userVotes = {};
+      }
+    } else {
+      this.userVotes = {};
+    }
+  }
+
+  private saveUserVotes(): void {
+    localStorage.setItem('pixelsprint_user_votes', JSON.stringify(this.userVotes));
+  }
+
+  public getUserVote(cardId: string): UserVoteState {
+    return this.userVotes[cardId] || null;
   }
 
   private setupRealtimeListeners(): void {
@@ -37,23 +62,15 @@ class RetroStore {
           break;
 
         case 'UPVOTE_CARD':
-          if (msg.payload?.id) {
-            const card = this.cards.find((c) => c.id === msg.payload.id);
-            if (card) {
-              card.upvotes = (card.upvotes || 0) + 1;
-              this.saveCardsForActiveSession();
-              audioSynth.playUpvote();
-            }
-          }
-          break;
-
         case 'DOWNVOTE_CARD':
           if (msg.payload?.id) {
             const card = this.cards.find((c) => c.id === msg.payload.id);
             if (card) {
-              card.downvotes = (card.downvotes || 0) + 1;
+              if (msg.payload.upvotes !== undefined) card.upvotes = msg.payload.upvotes;
+              if (msg.payload.downvotes !== undefined) card.downvotes = msg.payload.downvotes;
               this.saveCardsForActiveSession();
-              audioSynth.playDownvote();
+              if (msg.type === 'UPVOTE_CARD') audioSynth.playUpvote();
+              else audioSynth.playDownvote();
             }
           }
           break;
@@ -72,6 +89,8 @@ class RetroStore {
         case 'DELETE_CARD':
           if (msg.payload?.id) {
             this.cards = this.cards.filter((c) => c.id !== msg.payload.id);
+            delete this.userVotes[msg.payload.id];
+            this.saveUserVotes();
             this.saveCardsForActiveSession();
             audioSynth.playDelete();
           }
@@ -79,12 +98,13 @@ class RetroStore {
 
         case 'CLEAR_CARDS':
           this.cards = [];
+          this.userVotes = {};
+          this.saveUserVotes();
           this.saveCardsForActiveSession();
           audioSynth.playDelete();
           break;
 
         case 'REQUEST_SYNC':
-          // Respond with current cards state to new peers
           realtimeSync.broadcast('SYNC_STATE', this.cards);
           break;
 
@@ -225,7 +245,7 @@ class RetroStore {
     if (!this.activeSessionId) return;
     localStorage.setItem(STORAGE_KEYS.CARDS_PREFIX + this.activeSessionId, JSON.stringify(this.cards));
     this.updateActiveSessionCardCount();
-    this.notify(); // Always trigger UI subscribers to re-render DOM instantly!
+    this.notify();
   }
 
   private updateActiveSessionCardCount(): void {
@@ -268,20 +288,54 @@ class RetroStore {
 
   public upvoteCard(id: string): void {
     const card = this.cards.find((c) => c.id === id);
-    if (card) {
+    if (!card) return;
+
+    const currentVote = this.getUserVote(id);
+
+    if (currentVote === 'up') {
+      // Untoggle upvote
+      card.upvotes = Math.max(0, (card.upvotes || 0) - 1);
+      delete this.userVotes[id];
+    } else if (currentVote === 'down') {
+      // Switch from downvote to upvote
+      card.downvotes = Math.max(0, (card.downvotes || 0) - 1);
       card.upvotes = (card.upvotes || 0) + 1;
-      this.saveCardsForActiveSession();
-      realtimeSync.broadcast('UPVOTE_CARD', { id });
+      this.userVotes[id] = 'up';
+    } else {
+      // New upvote
+      card.upvotes = (card.upvotes || 0) + 1;
+      this.userVotes[id] = 'up';
     }
+
+    this.saveUserVotes();
+    this.saveCardsForActiveSession();
+    realtimeSync.broadcast('UPVOTE_CARD', { id, upvotes: card.upvotes, downvotes: card.downvotes });
   }
 
   public downvoteCard(id: string): void {
     const card = this.cards.find((c) => c.id === id);
-    if (card) {
+    if (!card) return;
+
+    const currentVote = this.getUserVote(id);
+
+    if (currentVote === 'down') {
+      // Untoggle downvote
+      card.downvotes = Math.max(0, (card.downvotes || 0) - 1);
+      delete this.userVotes[id];
+    } else if (currentVote === 'up') {
+      // Switch from upvote to downvote
+      card.upvotes = Math.max(0, (card.upvotes || 0) - 1);
       card.downvotes = (card.downvotes || 0) + 1;
-      this.saveCardsForActiveSession();
-      realtimeSync.broadcast('DOWNVOTE_CARD', { id });
+      this.userVotes[id] = 'down';
+    } else {
+      // New downvote
+      card.downvotes = (card.downvotes || 0) + 1;
+      this.userVotes[id] = 'down';
     }
+
+    this.saveUserVotes();
+    this.saveCardsForActiveSession();
+    realtimeSync.broadcast('DOWNVOTE_CARD', { id, upvotes: card.upvotes, downvotes: card.downvotes });
   }
 
   public moveCard(id: string, targetCategory: RetroCategory): void {
@@ -295,12 +349,16 @@ class RetroStore {
 
   public deleteCard(id: string): void {
     this.cards = this.cards.filter((c) => c.id !== id);
+    delete this.userVotes[id];
+    this.saveUserVotes();
     this.saveCardsForActiveSession();
     realtimeSync.broadcast('DELETE_CARD', { id });
   }
 
   public clearAll(): void {
     this.cards = [];
+    this.userVotes = {};
+    this.saveUserVotes();
     this.saveCardsForActiveSession();
     realtimeSync.broadcast('CLEAR_CARDS');
   }

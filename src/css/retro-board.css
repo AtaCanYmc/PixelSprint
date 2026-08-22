@@ -29,7 +29,7 @@
   padding: 2px 6px;
   background-color: #000000;
   color: #00ff00;
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
   font-size: 12px;
   border: 2px solid;
   border-color: var(--win-gray-dark) var(--win-white) var(--win-white) var(--win-gray-dark);
@@ -41,7 +41,7 @@
   background: transparent;
   border: none;
   color: #00ff00;
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
   font-size: 12px;
   outline: none;
   width: 100%;
@@ -98,7 +98,7 @@
   padding: 1px 6px;
   border-radius: 2px;
   font-size: 11px;
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
   border: 1px solid var(--win-black);
 }
 
@@ -136,7 +136,7 @@
   text-align: center;
   padding: 20px 10px;
   color: #ffffff;
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
   font-size: 12px;
   background: rgba(0, 0, 0, 0.4);
   border: 1px dashed var(--win-white);
@@ -153,8 +153,14 @@
 }
 
 @keyframes popIn {
-  from { transform: scale(0.96); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .retro-card.went_well {
@@ -176,7 +182,7 @@
   padding: 3px 6px;
   background-color: #a0a0a0;
   border-bottom: 1px solid var(--win-gray-dark);
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
   font-size: 11px;
 }
 
@@ -228,7 +234,7 @@
 }
 
 .vote-btn {
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
   font-size: 11px;
   padding: 1px 4px;
 }
@@ -243,8 +249,20 @@
   background-color: #bbdefb;
 }
 
+.upvote-btn.active-upvote {
+  color: #d84315;
+  background-color: #ffe0b2;
+  font-weight: bold;
+}
+
+.downvote-btn.active-downvote {
+  color: #1565c0;
+  background-color: #bbdefb;
+  font-weight: bold;
+}
+
 .vote-score {
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
   font-weight: bold;
   font-size: 11px;
   min-width: 24px;

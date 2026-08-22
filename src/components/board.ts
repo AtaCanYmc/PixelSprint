@@ -149,6 +149,10 @@ export class BoardComponent {
           const scoreClass = score > 0 ? 'score-positive' : score < 0 ? 'score-negative' : '';
           const scoreStr = score > 0 ? `+${score}` : `${score}`;
 
+          const userVote = store.getUserVote(card.id);
+          const upActive = userVote === 'up' ? 'active-upvote pressed' : '';
+          const downActive = userVote === 'down' ? 'active-downvote pressed' : '';
+
           return `
           <div class="win-outset retro-card ${card.category}" data-id="${card.id}">
             <div class="card-header">
@@ -162,11 +166,11 @@ export class BoardComponent {
               <div class="card-actions">
                 <!-- Reddit Style Vote Group -->
                 <div class="vote-group">
-                  <button class="win-btn win-btn-sm vote-btn upvote-btn" data-action="upvote" data-id="${card.id}" title="${escapeHtml(i18n.t('upvoteTooltip'))}">
+                  <button class="win-btn win-btn-sm vote-btn upvote-btn ${upActive}" data-action="upvote" data-id="${card.id}" title="${escapeHtml(i18n.t('upvoteTooltip'))}">
                     ▲ ${up}
                   </button>
                   <span class="vote-score ${scoreClass}">${scoreStr}</span>
-                  <button class="win-btn win-btn-sm vote-btn downvote-btn" data-action="downvote" data-id="${card.id}" title="${escapeHtml(i18n.t('downvoteTooltip'))}">
+                  <button class="win-btn win-btn-sm vote-btn downvote-btn ${downActive}" data-action="downvote" data-id="${card.id}" title="${escapeHtml(i18n.t('downvoteTooltip'))}">
                     ▼ ${down}
                   </button>
                 </div>
