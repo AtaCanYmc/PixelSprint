@@ -76,9 +76,12 @@ export class BoardComponent {
 
     if (!id) return;
 
-    if (action === 'like') {
-      audioSynth.playLike();
-      store.likeCard(id);
+    if (action === 'upvote') {
+      audioSynth.playUpvote();
+      store.upvoteCard(id);
+    } else if (action === 'downvote') {
+      audioSynth.playDownvote();
+      store.downvoteCard(id);
     } else if (action === 'move') {
       const targetCat = btn.dataset['target'] as RetroCategory | undefined;
       if (targetCat) {
@@ -129,30 +132,48 @@ export class BoardComponent {
         return;
       }
 
-      col.el.innerHTML = col.items.map(card => `
-        <div class="win-outset retro-card ${card.category}" data-id="${card.id}">
-          <div class="card-header">
-            <span class="card-author">👤 ${escapeHtml(card.author)}</span>
-            <span class="card-time">⏱️ ${escapeHtml(card.timestamp)}</span>
-          </div>
-          <div class="card-body">
-            ${escapeHtml(card.text).replace(/\n/g, '<br>')}
-          </div>
-          <div class="card-footer">
-            <div class="card-actions">
-              <button class="win-btn win-btn-sm like-btn ${card.likes > 0 ? 'liked' : ''}" data-action="like" data-id="${card.id}">
-                👍 ${card.likes || 0}
-              </button>
-              ${card.category !== 'went_well' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="went_well" title="Went Well'e Taşı">🟢</button>` : ''}
-              ${card.category !== 'improvement' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="improvement" title="Improvement'a Taşı">🔴</button>` : ''}
-              ${card.category !== 'action' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="action" title="Action Items'a Taşı">💡</button>` : ''}
+      col.el.innerHTML = col.items.map(card => {
+        const up = card.upvotes || 0;
+        const down = card.downvotes || 0;
+        const score = up - down;
+        const scoreClass = score > 0 ? 'score-positive' : score < 0 ? 'score-negative' : '';
+        const scoreStr = score > 0 ? `+${score}` : `${score}`;
+
+        return `
+          <div class="win-outset retro-card ${card.category}" data-id="${card.id}">
+            <div class="card-header">
+              <span class="card-author">👤 ${escapeHtml(card.author)}</span>
+              <span class="card-time">⏱️ ${escapeHtml(card.timestamp)}</span>
             </div>
-            <button class="win-btn win-btn-sm" data-action="delete" data-id="${card.id}" title="Kartı Sil">
-              ❌
-            </button>
+            <div class="card-body">
+              ${escapeHtml(card.text).replace(/\n/g, '<br>')}
+            </div>
+            <div class="card-footer">
+              <div class="card-actions">
+                <!-- Reddit Style Vote Group -->
+                <div class="vote-group">
+                  <button class="win-btn win-btn-sm vote-btn upvote-btn" data-action="upvote" data-id="${card.id}" title="Upvote (Artır)">
+                    ▲ ${up}
+                  </button>
+                  <span class="vote-score ${scoreClass}">${scoreStr}</span>
+                  <button class="win-btn win-btn-sm vote-btn downvote-btn" data-action="downvote" data-id="${card.id}" title="Downvote (Azalt)">
+                    ▼ ${down}
+                  </button>
+                </div>
+
+                <!-- Move Quick Buttons -->
+                ${card.category !== 'went_well' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="went_well" title="Went Well'e Taşı">🟢</button>` : ''}
+                ${card.category !== 'improvement' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="improvement" title="Improvement'a Taşı">🔴</button>` : ''}
+                ${card.category !== 'action' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="action" title="Action Items'a Taşı">💡</button>` : ''}
+              </div>
+
+              <button class="win-btn win-btn-sm" data-action="delete" data-id="${card.id}" title="Kartı Sil">
+                ❌
+              </button>
+            </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     });
   }
 }

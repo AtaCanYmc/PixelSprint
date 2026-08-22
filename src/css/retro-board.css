@@ -109,9 +109,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background-color: #7f7f7f;
-  background-image: radial-gradient(#606060 15%, transparent 16%);
-  background-size: 8px 8px;
+  background-color: #808080;
 }
 
 .column-content::-webkit-scrollbar {
@@ -219,12 +217,46 @@
   gap: 4px;
 }
 
-.like-btn {
-  font-weight: bold;
-  background-color: #e0e0e0;
+/* Reddit Style Vote Controls */
+.vote-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background-color: var(--win-gray-light);
+  padding: 1px 3px;
+  border: 1px solid var(--win-gray-dark);
 }
 
-.like-btn.liked {
-  background-color: #ffeb3b;
-  border-color: #808080 #ffffff #ffffff #808080;
+.vote-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 1px 4px;
+}
+
+.upvote-btn:hover {
+  color: #d84315;
+  background-color: #ffe0b2;
+}
+
+.downvote-btn:hover {
+  color: #1565c0;
+  background-color: #bbdefb;
+}
+
+.vote-score {
+  font-family: var(--font-mono);
+  font-weight: bold;
+  font-size: 11px;
+  min-width: 24px;
+  text-align: center;
+  padding: 0 3px;
+  color: var(--win-black);
+}
+
+.vote-score.score-positive {
+  color: #2e7d32; /* Green score for positive */
+}
+
+.vote-score.score-negative {
+  color: #c62828; /* Red score for negative */
 }

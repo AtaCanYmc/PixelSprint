@@ -49,20 +49,9 @@ body, html {
   font-size: 13px;
 }
 
-/* CRT Overlay Effect */
+/* CRT Overlay Effect (Disabled for smooth flat view) */
 .crt-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 9999;
-  background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%, 
-    rgba(0, 0, 0, 0.05) 50%
-  );
-  background-size: 100% 4px;
+  display: none;
 }
 
 /* Main Container */

@@ -68,7 +68,7 @@ class RetroAudioSynth {
     } catch (e) {}
   }
 
-  public playLike(): void {
+  public playUpvote(): void {
     if (!this.enabled) return;
     this.init();
     if (!this.audioCtx) return;
@@ -77,8 +77,28 @@ class RetroAudioSynth {
       const osc = this.audioCtx.createOscillator();
       const gain = this.audioCtx.createGain();
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(600, now);
-      osc.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
+      osc.frequency.setValueAtTime(500, now);
+      osc.frequency.exponentialRampToValueAtTime(1000, now + 0.08);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+      osc.connect(gain);
+      gain.connect(this.audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.08);
+    } catch (e) {}
+  }
+
+  public playDownvote(): void {
+    if (!this.enabled) return;
+    this.init();
+    if (!this.audioCtx) return;
+    try {
+      const now = this.audioCtx.currentTime;
+      const osc = this.audioCtx.createOscillator();
+      const gain = this.audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(700, now);
+      osc.frequency.exponentialRampToValueAtTime(350, now + 0.08);
       gain.gain.setValueAtTime(0.12, now);
       gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
       osc.connect(gain);

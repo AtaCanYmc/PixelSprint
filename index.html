@@ -18,85 +18,137 @@
   <!-- Main Application Container -->
   <div id="app-container">
 
-    <!-- Top Toolbar Window -->
-    <div id="toolbar-window" class="win-window">
+    <!-- Dashboard / Session Launcher Window -->
+    <div id="window-dashboard" class="win-window" style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
       <div class="win-titlebar">
         <div class="win-titlebar-title">
           <span>💾</span>
-          <span>PixelSprint v1.0 - Sprint Sonu Retrospektif Pano</span>
+          <span>PixelSprint v1.0 - Retro Oturum Yöneticisi (Dashboard)</span>
         </div>
         <div class="win-titlebar-controls">
-          <button class="win-btn win-btn-sm" id="btn-sound-toggle" title="Ses Efektlerini Aç/Kapat">🔊</button>
-          <button class="win-btn win-btn-sm" id="btn-about-trigger" title="Hakkında">?</button>
-        </div>
-      </div>
-      
-      <div class="toolbar-body">
-        <div class="toolbar-group">
-          <button class="win-btn" id="btn-open-add-modal">
-            <span>➕</span> <strong>Yeni Kart Ekle</strong>
-          </button>
-          <button class="win-btn" id="btn-open-export">
-            <span>💾</span> Rapor İndir
-          </button>
-          <button class="win-btn" id="btn-clear-board">
-            <span>🗑️</span> Temizle
-          </button>
-          <button class="win-btn" id="btn-install-pwa" style="display: none;">
-            <span>📱</span> Uygulamayı Yükle
-          </button>
-        </div>
-
-        <div class="terminal-search">
-          <span>C:\PixelSprint&gt;</span>
-          <input type="text" id="search-input" placeholder="Filtrele veya ara..." autocomplete="off">
+          <button class="win-btn win-btn-sm btn-sound-toggle-dash">🔊</button>
+          <button class="win-btn win-btn-sm btn-about-dash">?</button>
         </div>
       </div>
 
-      <!-- Mobile Screen Responsive Column Tabs -->
-      <div class="mobile-tabs win-outset">
-        <button class="win-btn mobile-tab-btn active" data-tab="col-went-well">🟢 Went Well</button>
-        <button class="win-btn mobile-tab-btn" data-tab="col-improvement">🔴 Improvement</button>
-        <button class="win-btn mobile-tab-btn" data-tab="col-action">💡 Actions</button>
+      <div style="padding: 12px; display: flex; flex-direction: column; gap: 12px; height: 100%; overflow-y: auto;">
+        <!-- Create New Session Form -->
+        <div class="win-outset" style="padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+          <h3 style="display: flex; align-items: center; gap: 6px;">➕ <strong>Yeni Retro Oturumu Başlat</strong></h3>
+          <form id="form-new-session" style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="text" id="session-title-input" class="form-control win-inset" placeholder="Sprint Başlığı (örn. Sprint 45 Retrospektif)" required style="flex-grow: 1;">
+            <button type="submit" class="win-btn"><strong>[🚀 Retro Oluştur & Katıl]</strong></button>
+          </form>
+        </div>
+
+        <!-- Join By ID Terminal -->
+        <div class="win-outset" style="padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+          <h3 style="display: flex; align-items: center; gap: 6px;">🔗 <strong>Oturum Kimliği (Session ID) ile Katıl</strong></h3>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <div class="terminal-search" style="flex-grow: 1; max-width: none;">
+              <span>C:\PixelSprint&gt; join</span>
+              <input type="text" id="input-join-session" placeholder="Session ID yapıştır (örn. retro-demo-sprint-1)..." autocomplete="off">
+            </div>
+            <button type="button" class="win-btn" id="btn-join-session"><strong>[▶ Oturuma Git]</strong></button>
+          </div>
+        </div>
+
+        <!-- Existing Sessions List Table -->
+        <div class="win-outset" style="padding: 12px; display: flex; flex-direction: column; gap: 8px; flex-grow: 1;">
+          <h3>📋 <strong>Mevcut Retro Oturumlarınız</strong></h3>
+          <div id="session-list-container" style="flex-grow: 1; overflow-y: auto;">
+            <!-- Rendered by DashboardComponent -->
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Retro Retrospective Columns Grid -->
-    <div id="board-container">
+    <!-- Active Retro Board Window Container -->
+    <div id="window-board" style="display: none; flex-direction: column; height: 100%; gap: 8px;">
       
-      <!-- 🟢 Went Well Column -->
-      <div class="win-window board-column col-went-well active-tab" id="col-went-well">
-        <div class="column-header">
-          <span>🟢 Neyi İyi Yaptık? (Went Well)</span>
-          <span class="column-count" id="count-went-well">0</span>
+      <!-- Top Toolbar Window -->
+      <div id="toolbar-window" class="win-window">
+        <div class="win-titlebar">
+          <div class="win-titlebar-title">
+            <span>💾</span>
+            <span id="board-session-title">PixelSprint - Retro Board</span>
+          </div>
+          <div class="win-titlebar-controls">
+            <button class="win-btn win-btn-sm" id="btn-sound-toggle" title="Ses Efektlerini Aç/Kapat">🔊</button>
+            <button class="win-btn win-btn-sm" id="btn-about-trigger" title="Hakkında">?</button>
+          </div>
         </div>
-        <div class="column-content" id="list-went-well">
-          <!-- Retro cards will be dynamically rendered here -->
+        
+        <div class="toolbar-body">
+          <div class="toolbar-group">
+            <button class="win-btn" id="btn-share-link">
+              <span>📱</span> <strong>Paylaş (QR)</strong>
+            </button>
+            <button class="win-btn" id="btn-open-add-modal">
+              <span>➕</span> Yeni Kart
+            </button>
+            <button class="win-btn" id="btn-open-export">
+              <span>💾</span> Rapor İndir
+            </button>
+            <button class="win-btn" id="btn-clear-board">
+              <span>🗑️</span> Temizle
+            </button>
+            <button class="win-btn" id="btn-install-pwa" style="display: none;">
+              <span>📱</span> Uygulamayı Yükle
+            </button>
+          </div>
+
+          <div class="terminal-search">
+            <span>C:\PixelSprint&gt;</span>
+            <input type="text" id="search-input" placeholder="Filtrele veya ara..." autocomplete="off">
+          </div>
+        </div>
+
+        <!-- Mobile Screen Responsive Column Tabs -->
+        <div class="mobile-tabs win-outset">
+          <button class="win-btn mobile-tab-btn active" data-tab="col-went-well">🟢 Went Well</button>
+          <button class="win-btn mobile-tab-btn" data-tab="col-improvement">🔴 Improvement</button>
+          <button class="win-btn mobile-tab-btn" data-tab="col-action">💡 Actions</button>
         </div>
       </div>
 
-      <!-- 🔴 Needs Improvement Column -->
-      <div class="win-window board-column col-improvement" id="col-improvement">
-        <div class="column-header">
-          <span>🔴 Neyi Batırdık / Gelişmeli? (Bugs & Fixes)</span>
-          <span class="column-count" id="count-improvement">0</span>
+      <!-- Retro Retrospective Columns Grid -->
+      <div id="board-container">
+        
+        <!-- 🟢 Went Well Column -->
+        <div class="win-window board-column col-went-well active-tab" id="col-went-well">
+          <div class="column-header">
+            <span>🟢 Neyi İyi Yaptık? (Went Well)</span>
+            <span class="column-count" id="count-went-well">0</span>
+          </div>
+          <div class="column-content" id="list-went-well">
+            <!-- Retro cards will be dynamically rendered here -->
+          </div>
         </div>
-        <div class="column-content" id="list-improvement">
-          <!-- Retro cards will be dynamically rendered here -->
-        </div>
-      </div>
 
-      <!-- 💡 Action Items / Ideas Column -->
-      <div class="win-window board-column col-action" id="col-action">
-        <div class="column-header">
-          <span>💡 Aksiyonlar & Fikirler (Action Items)</span>
-          <span class="column-count" id="count-action">0</span>
+        <!-- 🔴 Needs Improvement Column -->
+        <div class="win-window board-column col-improvement" id="col-improvement">
+          <div class="column-header">
+            <span>🔴 Neyi Batırdık / Gelişmeli? (Bugs & Fixes)</span>
+            <span class="column-count" id="count-improvement">0</span>
+          </div>
+          <div class="column-content" id="list-improvement">
+            <!-- Retro cards will be dynamically rendered here -->
+          </div>
         </div>
-        <div class="column-content" id="list-action">
-          <!-- Retro cards will be dynamically rendered here -->
-        </div>
-      </div>
 
+        <!-- 💡 Action Items / Ideas Column -->
+        <div class="win-window board-column col-action" id="col-action">
+          <div class="column-header">
+            <span>💡 Aksiyonlar & Fikirler (Action Items)</span>
+            <span class="column-count" id="count-action">0</span>
+          </div>
+          <div class="column-content" id="list-action">
+            <!-- Retro cards will be dynamically rendered here -->
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
@@ -104,8 +156,15 @@
   <div id="start-menu" class="win-outset hidden">
     <div class="start-menu-banner">PIXELSPRINT 95</div>
     <div class="start-menu-items">
+      <div class="start-menu-item" id="sm-home">
+        <span>🏠</span> <strong>Ana Sayfaya Dön (Dashboard)</strong>
+      </div>
+      <div class="start-menu-separator"></div>
       <div class="start-menu-item" id="sm-add-card">
         <span>➕</span> Yeni Anonim Kart Ekle
+      </div>
+      <div class="start-menu-item" id="sm-share-qr">
+        <span>📱</span> Retro Oturumunu Paylaş (QR Kod)
       </div>
       <div class="start-menu-item" id="sm-export">
         <span>💾</span> Retro Raporunu İndir (.txt)
@@ -175,11 +234,45 @@
         </div>
       </form>
     </div>
+  </div>  <!-- MODAL: Share QR Code -->
+  <div id="modal-share-qr" class="modal-overlay hidden">
+    <div class="win-window modal-window" style="max-width: 440px;">
+      <div class="win-titlebar">
+        <div class="win-titlebar-title">
+          <span>📱</span> Retro Oturumunu Paylaş (QR Kod)
+        </div>
+        <div class="win-titlebar-controls">
+          <button class="win-btn win-btn-sm btn-close-modal">X</button>
+        </div>
+      </div>
+      <div class="modal-body" style="text-align: center; gap: 12px;">
+        <p>Ekip arkadaşlarınız telefon kameraları ile aşağıdaki QR kodu okutarak bu Retro panosuna anında katılabilir:</p>
+
+        <div class="win-inset" style="padding: 16px; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
+          <canvas id="qr-code-canvas" style="width: 220px; height: 220px; border: 2px solid #000;"></canvas>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: #404040;" id="share-session-id-label">
+            Session ID: --
+          </div>
+        </div>
+
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label">Doğrudan Katılım Linki:</label>
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="share-url-input" class="form-control win-inset" readonly style="font-family: var(--font-mono); font-size: 11px;">
+            <button type="button" class="win-btn" id="btn-copy-share-url">📋 Kopyala</button>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="win-btn btn-close-modal">Kapat</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- MODAL: Export Report -->
   <div id="modal-export" class="modal-overlay hidden">
-    <div class="win-window modal-window">
+    <div class="win-window modal-window" style="max-width: 540px;">
       <div class="win-titlebar">
         <div class="win-titlebar-title">
           <span>💾</span> Retro Özet Raporu
@@ -189,11 +282,13 @@
         </div>
       </div>
       <div class="modal-body">
-        <p>Sprint Retrospektif özetini dosya olarak indirebilir veya kopyalayabilirsiniz:</p>
+        <p>Sprint Retrospektif özetini metin, CSV veya Excel (XLSX) formatında indirebilirsiniz:</p>
         <textarea id="export-text-area" class="form-control win-inset" style="height: 180px; font-family: var(--font-mono);" readonly></textarea>
-        <div class="modal-footer">
-          <button type="button" class="win-btn" id="btn-copy-export">📋 Metni Kopyala</button>
-          <button type="button" class="win-btn" id="btn-download-txt"><strong>💾 .TXT İndir</strong></button>
+        <div class="modal-footer" style="flex-wrap: wrap; gap: 6px;">
+          <button type="button" class="win-btn" id="btn-copy-export">📋 Kopyala</button>
+          <button type="button" class="win-btn" id="btn-download-txt"><strong>💾 .TXT</strong></button>
+          <button type="button" class="win-btn" id="btn-download-csv"><strong>📊 .CSV</strong></button>
+          <button type="button" class="win-btn" id="btn-download-xlsx"><strong>📈 .XLSX</strong></button>
           <button type="button" class="win-btn btn-close-modal">Kapat</button>
         </div>
       </div>

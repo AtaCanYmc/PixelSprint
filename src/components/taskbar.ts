@@ -11,6 +11,7 @@ export class TaskbarComponent {
   private taskbarClock: HTMLElement | null;
   private soundIndicator: HTMLElement | null;
   private btnSoundToggle: HTMLElement | null;
+  private smHome: HTMLElement | null;
   private smSound: HTMLElement | null;
   private btnClearBoard: HTMLElement | null;
   private smClear: HTMLElement | null;
@@ -21,6 +22,7 @@ export class TaskbarComponent {
     this.taskbarClock = document.getElementById('taskbar-clock');
     this.soundIndicator = document.getElementById('sound-indicator');
     this.btnSoundToggle = document.getElementById('btn-sound-toggle');
+    this.smHome = document.getElementById('sm-home');
     this.smSound = document.getElementById('sm-sound');
     this.btnClearBoard = document.getElementById('btn-clear-board');
     this.smClear = document.getElementById('sm-clear');
@@ -41,6 +43,15 @@ export class TaskbarComponent {
           this.startMenu.classList.add('hidden');
           this.startBtn?.classList.remove('pressed');
         }
+      });
+    }
+
+    if (this.smHome) {
+      this.smHome.addEventListener('click', () => {
+        audioSynth.playClick();
+        if (this.startMenu) this.startMenu.classList.add('hidden');
+        if (this.startBtn) this.startBtn.classList.remove('pressed');
+        store.exitSession();
       });
     }
 

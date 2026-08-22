@@ -5,7 +5,9 @@
 import { CategoryConfig, RetroCard } from '../types/index.js';
 
 export const STORAGE_KEYS = {
-  CARDS: 'pixelsprint_cards_v1',
+  CARDS_PREFIX: 'pixelsprint_cards_session_',
+  SESSIONS: 'pixelsprint_sessions_v1',
+  ACTIVE_SESSION: 'pixelsprint_active_session_v1',
   SOUND: 'pixelsprint_sound_v1'
 } as const;
 
@@ -26,7 +28,8 @@ export const INITIAL_DEMO_CARDS: readonly RetroCard[] = [
     id: 'card-demo-1',
     category: 'went_well',
     text: 'Sprint hedeflerimizin %90\'ını zamanında canlıya aldık. Ekip iletişimi harikaydı! 🚀',
-    likes: 3,
+    upvotes: 4,
+    downvotes: 0,
     timestamp: '14:20:00',
     author: 'FloppyDisk-95#404'
   },
@@ -34,7 +37,8 @@ export const INITIAL_DEMO_CARDS: readonly RetroCard[] = [
     id: 'card-demo-2',
     category: 'improvement',
     text: 'Kod inceleme (PR) süreçleri Cuma günleri çok yavaşlıyor. PR kuralları belirlemeliyiz.',
-    likes: 5,
+    upvotes: 6,
+    downvotes: 1,
     timestamp: '14:22:15',
     author: 'Agent-404#101'
   },
@@ -42,7 +46,8 @@ export const INITIAL_DEMO_CARDS: readonly RetroCard[] = [
     id: 'card-demo-3',
     category: 'action',
     text: 'CI/CD pipeline test adımlarını paralelleştirerek build süresini düşürelim.',
-    likes: 4,
+    upvotes: 5,
+    downvotes: 0,
     timestamp: '14:25:30',
     author: 'Byte-Runner#777'
   }

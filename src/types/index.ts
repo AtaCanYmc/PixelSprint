@@ -8,9 +8,19 @@ export interface RetroCard {
   id: string;
   category: RetroCategory;
   text: string;
-  likes: number;
+  upvotes: number;
+  downvotes: number;
+  likes?: number;
   timestamp: string;
   author: string;
+}
+
+export interface RetroSession {
+  id: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  cardCount?: number;
 }
 
 export interface CategoryConfig {
