@@ -8,7 +8,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)](https://vitejs.dev/)
 [![PWA Ready](https://img.shields.io/badge/PWA-Installable-008080?logo=pwa)](https://web.dev/progressive-web-apps/)
-[![Realtime Sync](https://img.shields.io/badge/Realtime-Multi--Tab%20%26%20Device-green?logo=lightning)](https://github.com/your-org/PixelSprint)
+[![Realtime Sync](https://img.shields.io/badge/Realtime-Multi--Tab%20%26%20Device-green?logo=lightning)](https://github.com/AtaCanYmc/PixelSprint)
 
 ---
 
@@ -115,7 +115,7 @@ PixelSprint/
 ### 1. Clone Repository & Install Dependencies:
 
 ```bash
-git clone https://github.com/your-org/PixelSprint.git
+git clone https://github.com/AtaCanYmc/PixelSprint.git
 cd PixelSprint
 npm install
 ```
