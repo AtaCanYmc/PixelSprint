@@ -6,6 +6,7 @@
 import { RetroCard, RetroCategory, RetroSession, StateChangeListener, RealtimeMessage } from '../types';
 import { STORAGE_KEYS, INITIAL_DEMO_CARDS } from '../utils/constants';
 import { generateAnonymousCodename, getCurrentTimeString } from '../utils/helpers';
+import { audioSynth } from './audio';
 import { realtimeSync } from './sync';
 
 class RetroStore {
@@ -28,63 +29,69 @@ class RetroStore {
     realtimeSync.onMessage((msg: RealtimeMessage) => {
       switch (msg.type) {
         case 'ADD_CARD':
-          if (msg.payload && !this.cards.some(c => c.id === msg.payload.id)) {
+          if (msg.payload && !this.cards.some((c) => c.id === msg.payload.id)) {
             this.cards.unshift(msg.payload as RetroCard);
-            this.saveCardsForActiveSession(false);
+            this.saveCardsForActiveSession();
+            audioSynth.playSuccess();
           }
           break;
 
         case 'UPVOTE_CARD':
           if (msg.payload?.id) {
-            const card = this.cards.find(c => c.id === msg.payload.id);
+            const card = this.cards.find((c) => c.id === msg.payload.id);
             if (card) {
               card.upvotes = (card.upvotes || 0) + 1;
-              this.saveCardsForActiveSession(false);
+              this.saveCardsForActiveSession();
+              audioSynth.playUpvote();
             }
           }
           break;
 
         case 'DOWNVOTE_CARD':
           if (msg.payload?.id) {
-            const card = this.cards.find(c => c.id === msg.payload.id);
+            const card = this.cards.find((c) => c.id === msg.payload.id);
             if (card) {
               card.downvotes = (card.downvotes || 0) + 1;
-              this.saveCardsForActiveSession(false);
+              this.saveCardsForActiveSession();
+              audioSynth.playDownvote();
             }
           }
           break;
 
         case 'MOVE_CARD':
           if (msg.payload?.id && msg.payload?.category) {
-            const card = this.cards.find(c => c.id === msg.payload.id);
+            const card = this.cards.find((c) => c.id === msg.payload.id);
             if (card) {
               card.category = msg.payload.category as RetroCategory;
-              this.saveCardsForActiveSession(false);
+              this.saveCardsForActiveSession();
+              audioSynth.playClick();
             }
           }
           break;
 
         case 'DELETE_CARD':
           if (msg.payload?.id) {
-            this.cards = this.cards.filter(c => c.id !== msg.payload.id);
-            this.saveCardsForActiveSession(false);
+            this.cards = this.cards.filter((c) => c.id !== msg.payload.id);
+            this.saveCardsForActiveSession();
+            audioSynth.playDelete();
           }
           break;
 
         case 'CLEAR_CARDS':
           this.cards = [];
-          this.saveCardsForActiveSession(false);
+          this.saveCardsForActiveSession();
+          audioSynth.playDelete();
           break;
 
         case 'REQUEST_SYNC':
-          // Respond with current cards state
+          // Respond with current cards state to new peers
           realtimeSync.broadcast('SYNC_STATE', this.cards);
           break;
 
         case 'SYNC_STATE':
           if (Array.isArray(msg.payload)) {
             this.cards = msg.payload as RetroCard[];
-            this.saveCardsForActiveSession(false);
+            this.saveCardsForActiveSession();
           }
           break;
       }
@@ -148,7 +155,7 @@ class RetroStore {
   }
 
   public setActiveSession(sessionId: string): void {
-    let session = this.sessions.find(s => s.id === sessionId);
+    let session = this.sessions.find((s) => s.id === sessionId);
     if (!session) {
       session = {
         id: sessionId,
@@ -176,7 +183,7 @@ class RetroStore {
   }
 
   public deleteSession(sessionId: string): void {
-    this.sessions = this.sessions.filter(s => s.id !== sessionId);
+    this.sessions = this.sessions.filter((s) => s.id !== sessionId);
     localStorage.removeItem(STORAGE_KEYS.CARDS_PREFIX + sessionId);
     this.saveSessions();
 
@@ -198,9 +205,9 @@ class RetroStore {
     if (saved) {
       try {
         const rawCards = JSON.parse(saved) as RetroCard[];
-        this.cards = rawCards.map(c => ({
+        this.cards = rawCards.map((c) => ({
           ...c,
-          upvotes: c.upvotes !== undefined ? c.upvotes : (c.likes || 0),
+          upvotes: c.upvotes !== undefined ? c.upvotes : c.likes || 0,
           downvotes: c.downvotes !== undefined ? c.downvotes : 0
         }));
       } catch (e) {
@@ -214,18 +221,16 @@ class RetroStore {
     this.notify();
   }
 
-  private saveCardsForActiveSession(shouldBroadcast: boolean = true): void {
+  private saveCardsForActiveSession(): void {
     if (!this.activeSessionId) return;
     localStorage.setItem(STORAGE_KEYS.CARDS_PREFIX + this.activeSessionId, JSON.stringify(this.cards));
     this.updateActiveSessionCardCount();
-    if (shouldBroadcast) {
-      this.notify();
-    }
+    this.notify(); // Always trigger UI subscribers to re-render DOM instantly!
   }
 
   private updateActiveSessionCardCount(): void {
     if (!this.activeSessionId) return;
-    const session = this.sessions.find(s => s.id === this.activeSessionId);
+    const session = this.sessions.find((s) => s.id === this.activeSessionId);
     if (session) {
       session.cardCount = this.cards.length;
       session.updatedAt = getCurrentTimeString();
@@ -236,12 +241,12 @@ class RetroStore {
   public subscribe(listener: StateChangeListener): () => void {
     this.listeners.push(listener);
     return () => {
-      this.listeners = this.listeners.filter(l => l !== listener);
+      this.listeners = this.listeners.filter((l) => l !== listener);
     };
   }
 
   private notify(): void {
-    this.listeners.forEach(listener => listener(this.cards));
+    this.listeners.forEach((listener) => listener(this.cards));
   }
 
   public addCard(category: RetroCategory, text: string): RetroCard | null {
@@ -262,7 +267,7 @@ class RetroStore {
   }
 
   public upvoteCard(id: string): void {
-    const card = this.cards.find(c => c.id === id);
+    const card = this.cards.find((c) => c.id === id);
     if (card) {
       card.upvotes = (card.upvotes || 0) + 1;
       this.saveCardsForActiveSession();
@@ -271,7 +276,7 @@ class RetroStore {
   }
 
   public downvoteCard(id: string): void {
-    const card = this.cards.find(c => c.id === id);
+    const card = this.cards.find((c) => c.id === id);
     if (card) {
       card.downvotes = (card.downvotes || 0) + 1;
       this.saveCardsForActiveSession();
@@ -280,7 +285,7 @@ class RetroStore {
   }
 
   public moveCard(id: string, targetCategory: RetroCategory): void {
-    const card = this.cards.find(c => c.id === id);
+    const card = this.cards.find((c) => c.id === id);
     if (card) {
       card.category = targetCategory;
       this.saveCardsForActiveSession();
@@ -289,7 +294,7 @@ class RetroStore {
   }
 
   public deleteCard(id: string): void {
-    this.cards = this.cards.filter(c => c.id !== id);
+    this.cards = this.cards.filter((c) => c.id !== id);
     this.saveCardsForActiveSession();
     realtimeSync.broadcast('DELETE_CARD', { id });
   }
@@ -310,7 +315,7 @@ class RetroStore {
 
   public getActiveSession(): RetroSession | null {
     if (!this.activeSessionId) return null;
-    return this.sessions.find(s => s.id === this.activeSessionId) || null;
+    return this.sessions.find((s) => s.id === this.activeSessionId) || null;
   }
 
   public getActiveSessionId(): string | null {
