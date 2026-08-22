@@ -1,4 +1,4 @@
-![PixelSprint Logo](.github/screenshots/logo.png)
+![PixelSprint Logo](.github/screenshots/logo.jpeg)
 
 # 💾 PixelSprint
 
