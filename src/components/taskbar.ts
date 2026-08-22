@@ -1,11 +1,12 @@
 /**
  * PixelSprint Taskbar & Start Menu Component (TypeScript)
- * Handles Taskbar clock, Start Menu, sound toggle, and i18n localization
+ * Handles Taskbar clock, Start Menu, sound toggle, theme toggle, and i18n localization
  */
 
 import { store } from '../core/store';
 import { audioSynth } from '../core/audio';
 import { i18n } from '../i18n';
+import { themeEngine } from '../core/theme';
 import { Language } from '../types';
 
 export class TaskbarComponent {
@@ -16,6 +17,7 @@ export class TaskbarComponent {
   private btnSoundToggle: HTMLElement | null;
   private smHome: HTMLElement | null;
   private smSound: HTMLElement | null;
+  private smTheme: HTMLElement | null;
   private btnClearBoard: HTMLElement | null;
   private smClear: HTMLElement | null;
 
@@ -27,12 +29,14 @@ export class TaskbarComponent {
     this.btnSoundToggle = document.getElementById('btn-sound-toggle');
     this.smHome = document.getElementById('sm-home');
     this.smSound = document.getElementById('sm-sound');
+    this.smTheme = document.getElementById('sm-theme');
     this.btnClearBoard = document.getElementById('btn-clear-board');
     this.smClear = document.getElementById('sm-clear');
   }
 
   public init(): void {
     i18n.subscribe(() => this.updateLocalizedText());
+    themeEngine.subscribe(() => this.updateThemeUI());
 
     if (this.startBtn && this.startMenu) {
       this.startBtn.addEventListener('click', (e: MouseEvent) => {
@@ -49,6 +53,21 @@ export class TaskbarComponent {
           this.startBtn?.classList.remove('pressed');
         }
       });
+    }
+
+    // Theme Toggle Listeners
+    const handleThemeToggle = () => {
+      audioSynth.playClick();
+      themeEngine.toggleTheme();
+      if (this.startMenu) this.startMenu.classList.add('hidden');
+    };
+
+    document.querySelectorAll('.btn-theme-toggle').forEach((btn) => {
+      btn.addEventListener('click', handleThemeToggle);
+    });
+
+    if (this.smTheme) {
+      this.smTheme.addEventListener('click', handleThemeToggle);
     }
 
     // Language Buttons in Start Menu
@@ -96,7 +115,20 @@ export class TaskbarComponent {
     this.updateClock();
     setInterval(() => this.updateClock(), 1000);
     this.updateSoundUI();
+    this.updateThemeUI();
     this.updateLocalizedText();
+  }
+
+  private updateThemeUI(): void {
+    const isDark = themeEngine.getTheme() === 'dark';
+    const icon = isDark ? '☀️' : '🌙';
+    document.querySelectorAll('.btn-theme-toggle').forEach((btn) => {
+      btn.textContent = icon;
+    });
+
+    if (this.smTheme) {
+      this.smTheme.innerHTML = `<span>${icon}</span> ${i18n.t('startMenuTheme')}`;
+    }
   }
 
   private updateLocalizedText(): void {
@@ -118,6 +150,7 @@ export class TaskbarComponent {
     if (smInstall) smInstall.innerHTML = `<span>📲</span> ${i18n.t('startMenuInstall')}`;
     if (smAbout) smAbout.innerHTML = `<span>❓</span> ${i18n.t('startMenuAbout')}`;
     if (this.smClear) this.smClear.innerHTML = `<span>🗑️</span> ${i18n.t('startMenuClear')}`;
+    this.updateThemeUI();
 
     // Highlight active language button in Start Menu
     const currentLang = i18n.getLanguage();

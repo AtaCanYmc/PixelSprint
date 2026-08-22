@@ -54,3 +54,4 @@ export interface RealtimeMessage {
 }
 
 export type Language = 'tr' | 'en' | 'fr';
+export type ThemeMode = 'light' | 'dark';

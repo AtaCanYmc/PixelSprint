@@ -12,7 +12,7 @@
   --win-white: #ffffff;
   --win-blue-start: #000080;
   --win-blue-end: #1084d0;
-  
+
   /* Retrospective Category Colors */
   --cat-went-well-bg: #e6f4ea;
   --cat-went-well-border: #2e7d32;
@@ -29,6 +29,19 @@
   /* Fonts */
   --font-retro: 'MS Sans Serif', Tahoma, Geneva, 'Courier New', monospace;
   --font-mono: 'Courier New', Courier, monospace;
+  --card-header-bg: #a0a0a0;
+}
+
+[data-theme='dark'] {
+  --win-teal: #12181a;
+  --win-gray: #2b2e36;
+  --win-gray-light: #3a3e4a;
+  --win-gray-dark: #15171c;
+  --win-black: #f0f4f8;
+  --win-white: #1e2026;
+  --win-blue-start: #0f1c3f;
+  --win-blue-end: #1e3a8a;
+  --card-header-bg: #1a1c23;
 }
 
 * {
@@ -39,10 +52,11 @@
   -webkit-font-smoothing: none;
 }
 
-body, html {
+body,
+html {
   width: 100%;
   height: 100%;
-  font-family: var(--font-retro);
+  font-family: var(--font-retro), sans-serif;
   background-color: var(--win-teal);
   color: var(--win-black);
   overflow: hidden;

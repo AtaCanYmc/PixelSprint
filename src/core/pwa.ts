@@ -7,6 +7,7 @@ import { registerSW } from 'virtual:pwa-register';
 import { BeforeInstallPromptEvent } from '../types';
 import { audioSynth } from './audio';
 import { realtimeSync } from './sync';
+import { i18n } from '../i18n';
 
 class PWAInstaller {
   private deferredPrompt: BeforeInstallPromptEvent | null = null;
@@ -41,16 +42,19 @@ class PWAInstaller {
       const isOnline = navigator.onLine;
       if (this.networkStatusBadge) {
         if (isOnline) {
-          this.networkStatusBadge.textContent = '🟢 ONLINE';
+          this.networkStatusBadge.textContent = i18n.t('badgeOnline');
           this.networkStatusBadge.className = 'network-badge online';
           this.networkStatusBadge.title = 'Bağlantı aktif. Gerçek zamanlı senkronizasyon çalışıyor.';
         } else {
-          this.networkStatusBadge.textContent = '⚠️ ERR_RETRO_OFFLINE';
+          this.networkStatusBadge.textContent = i18n.t('badgeOffline');
           this.networkStatusBadge.className = 'network-badge offline';
-          this.networkStatusBadge.title = 'İnternet bağlantısı kesildi! Kartlar çevrimdışı localStorage üzerinde saklanacak.';
+          this.networkStatusBadge.title =
+            'İnternet bağlantısı kesildi! Kartlar çevrimdışı localStorage üzerinde saklanacak.';
         }
       }
     };
+
+    i18n.subscribe(() => updateStatus());
 
     window.addEventListener('online', () => {
       updateStatus();

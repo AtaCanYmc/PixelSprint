@@ -28,6 +28,7 @@
             <span id="txt-dashboard-title">PixelSprint v1.0 - Retro Oturum Yöneticisi (Dashboard)</span>
           </div>
           <div class="win-titlebar-controls">
+            <button class="win-btn win-btn-sm btn-theme-toggle" title="Tema Değiştir (Light/Dark)">🌙</button>
             <button class="win-btn win-btn-sm btn-sound-toggle-dash">🔊</button>
             <button class="win-btn win-btn-sm btn-about-dash">?</button>
           </div>
@@ -95,6 +96,13 @@
               <span id="board-session-title">PixelSprint - Retro Board</span>
             </div>
             <div class="win-titlebar-controls">
+              <button
+                class="win-btn win-btn-sm btn-theme-toggle"
+                id="btn-theme-toggle-board"
+                title="Tema Değiştir (Light/Dark)"
+              >
+                🌙
+              </button>
               <button class="win-btn win-btn-sm" id="btn-sound-toggle" title="Ses Efektlerini Aç/Kapat">🔊</button>
               <button class="win-btn win-btn-sm" id="btn-about-trigger" title="Hakkında">?</button>
             </div>
@@ -179,6 +187,7 @@
         <div class="start-menu-item" id="sm-share-qr"><span>📱</span> Retro Oturumunu Paylaş (QR Kod)</div>
         <div class="start-menu-item" id="sm-export"><span>💾</span> Retro Raporunu İndir (.txt)</div>
         <div class="start-menu-item" id="sm-sound"><span>🔊</span> Ses Efektleri (Açık/Kapalı)</div>
+        <div class="start-menu-item" id="sm-theme"><span>🌙</span> Koyu Tema / Light Mode</div>
         <div class="start-menu-item" id="sm-install" style="display: none">
           <span>📲</span> PixelSprint.exe Yükle (PWA)
         </div>

@@ -94,6 +94,7 @@ export interface Translations {
   startMenuShareQr: string;
   startMenuExport: string;
   startMenuSound: string;
+  startMenuTheme: string;
   startMenuInstall: string;
   startMenuAbout: string;
   startMenuClear: string;
@@ -186,12 +187,13 @@ export const locales: Record<Language, Translations> = {
     startMenuShareQr: 'Retro Oturumunu Paylaş (QR Kod)',
     startMenuExport: 'Retro Raporunu İndir (.txt)',
     startMenuSound: 'Ses Efektleri (Açık/Kapalı)',
+    startMenuTheme: 'Koyu Tema / Light Mode',
     startMenuInstall: 'PixelSprint.exe Yükle (PWA)',
     startMenuAbout: 'Hakkında',
     startMenuClear: 'Panoyu Temizle',
 
-    badgeOnline: '🟢 ONLINE',
-    badgeOffline: '⚠️ ERR_RETRO_OFFLINE',
+    badgeOnline: '🛜 ONLINE',
+    badgeOffline: '📡❌ ERR_RETRO_OFFLINE',
     badgeP2pSync: '🟢 P2P SYNC'
   },
 
@@ -275,12 +277,13 @@ export const locales: Record<Language, Translations> = {
     startMenuShareQr: 'Share Retro Session (QR Code)',
     startMenuExport: 'Export Retro Report (.txt)',
     startMenuSound: 'Sound Effects (On/Off)',
+    startMenuTheme: 'Dark / Light Mode',
     startMenuInstall: 'Install PixelSprint.exe (PWA)',
     startMenuAbout: 'About',
     startMenuClear: 'Clear Board',
 
-    badgeOnline: '🟢 ONLINE',
-    badgeOffline: '⚠️ ERR_RETRO_OFFLINE',
+    badgeOnline: '🛜 ONLINE',
+    badgeOffline: '📡❌ ERR_RETRO_OFFLINE',
     badgeP2pSync: '🟢 P2P SYNC'
   },
 
@@ -365,12 +368,13 @@ export const locales: Record<Language, Translations> = {
     startMenuShareQr: 'Partager Session Rétro (Code QR)',
     startMenuExport: 'Exporter Rapport Rétro (.txt)',
     startMenuSound: 'Effets Sonores (Activé/Désactivé)',
+    startMenuTheme: 'Thème Sombre / Clair',
     startMenuInstall: 'Installer PixelSprint.exe (PWA)',
     startMenuAbout: 'À propos',
     startMenuClear: 'Effacer Tableau',
 
-    badgeOnline: '🟢 EN LIGNE',
-    badgeOffline: '⚠️ ERR_RETRO_HORS_LIGNE',
+    badgeOnline: '🛜 EN LIGNE',
+    badgeOffline: '📡❌ ERR_RETRO_HORS_LIGNE',
     badgeP2pSync: '🟢 SYNC P2P'
   }
 };

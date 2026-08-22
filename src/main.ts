@@ -4,6 +4,7 @@
 
 import './css/main.css';
 import { i18n } from './i18n';
+import { themeEngine } from './core/theme';
 import { store } from './core/store';
 import { pwaInstaller } from './core/pwa';
 import { DashboardComponent } from './components/dashboard';
@@ -15,6 +16,7 @@ import { ShareComponent } from './components/share';
 
 document.addEventListener('DOMContentLoaded', () => {
   i18n.init();
+  themeEngine.init();
   store.init();
   pwaInstaller.init();
 
