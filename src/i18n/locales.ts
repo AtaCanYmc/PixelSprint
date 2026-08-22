@@ -70,6 +70,8 @@ export interface Translations {
   btnDownloadTxt: string;
   btnDownloadCsv: string;
   btnDownloadXlsx: string;
+  btnDownloadDocx: string;
+  btnDownloadPdf: string;
   btnClose: string;
   copySuccess: string;
 
@@ -164,6 +166,8 @@ export const locales: Record<Language, Translations> = {
     btnDownloadTxt: '.TXT',
     btnDownloadCsv: '.CSV',
     btnDownloadXlsx: '.XLSX',
+    btnDownloadDocx: '.DOCX',
+    btnDownloadPdf: '.PDF',
     btnClose: 'Kapat',
     copySuccess: 'Retro özet raporu panoya kopyalandı!',
 
@@ -255,6 +259,8 @@ export const locales: Record<Language, Translations> = {
     btnDownloadTxt: '.TXT',
     btnDownloadCsv: '.CSV',
     btnDownloadXlsx: '.XLSX',
+    btnDownloadDocx: '.DOCX',
+    btnDownloadPdf: '.PDF',
     btnClose: 'Close',
     copySuccess: 'Retro summary report copied to clipboard!',
 
@@ -345,6 +351,8 @@ export const locales: Record<Language, Translations> = {
     btnDownloadTxt: '.TXT',
     btnDownloadCsv: '.CSV',
     btnDownloadXlsx: '.XLSX',
+    btnDownloadDocx: '.DOCX',
+    btnDownloadPdf: '.PDF',
     btnClose: 'Fermer',
     copySuccess: 'Rapport résumé copié dans le presse-papiers !',
 

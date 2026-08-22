@@ -1,3 +1,5 @@
+![PixelSprint Logo](.github/screenshots/logo.png)
+
 # 💾 PixelSprint
 
 > **100% Anonymous, Mobile-Friendly, Installable (PWA) Sprint Retrospective Board with a 90s Windows 95 & Terminal Aesthetic.**
