@@ -1,6 +1,20 @@
 /* ==========================================
-   PixelSprint - Responsive Mobile CSS
+   PixelSprint - Mobile Responsive CSS
    ========================================== */
+
+/* Ensure root & body never scroll horizontally */
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
 
 .mobile-tabs {
   display: none;
@@ -22,10 +36,14 @@
   border-color: var(--win-gray-dark) var(--win-white) var(--win-white) var(--win-gray-dark);
 }
 
+/* Tablet & Mobile Layout (max-width: 768px) */
 @media (max-width: 768px) {
   #app-container {
     padding: 4px 4px 42px 4px;
     gap: 4px;
+    width: 100vw;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   .mobile-tabs {
@@ -46,14 +64,129 @@
 
   .terminal-search {
     max-width: 100%;
+    width: 100%;
   }
 
   .toolbar-body {
     flex-direction: column;
     align-items: stretch;
+    gap: 6px;
+    padding: 4px;
   }
 
   .toolbar-group {
-    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: 100%;
+  }
+
+  .toolbar-group .win-btn {
+    flex: 1 1 auto;
+    font-size: 11px;
+    padding: 4px 6px;
+    justify-content: center;
+  }
+
+  /* Modals on mobile */
+  .modal-window {
+    max-width: calc(100vw - 16px) !important;
+    width: 100%;
+  }
+
+  .modal-body {
+    padding: 8px;
+    gap: 8px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .modal-footer {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .modal-footer .win-btn {
+    flex: 1 1 auto;
+  }
+
+  /* Session Dashboard Table Responsive Scroll */
+  #session-list-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    width: 100%;
+    display: block;
+  }
+
+  .session-table {
+    min-width: 520px; /* Enables horizontal swipe inside table container without breaking layout */
+  }
+
+  .session-code {
+    max-width: 110px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+}
+
+/* Small Mobile Screens (max-width: 480px) */
+@media (max-width: 480px) {
+  /* Taskbar mobile optimization */
+  #taskbar {
+    height: 38px;
+    padding: 2px 2px;
+  }
+
+  .taskbar-item {
+    display: none; /* Hide taskbar tab title on narrow mobile to prevent pushing clock */
+  }
+
+  .start-btn {
+    padding: 0 6px;
+    font-size: 12px;
+  }
+
+  .taskbar-right {
+    padding: 0 4px;
+    gap: 4px;
+    font-size: 10px;
+  }
+
+  .network-badge {
+    font-size: 10px;
+    padding: 1px 4px;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Window Titlebar text truncation */
+  .win-titlebar-title {
+    font-size: 12px;
+    max-width: 200px;
+  }
+
+  /* Retro Card padding & text wrap */
+  .card-body {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .card-footer {
+    padding: 3px 4px;
+  }
+
+  .vote-group {
+    padding: 1px 2px;
+  }
+
+  .vote-btn {
+    padding: 1px 3px;
+    font-size: 10px;
   }
 }
