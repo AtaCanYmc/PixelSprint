@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PixelSprint - Retro Sprint Retrospective</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <meta name="theme-color" content="#000080">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PixelSprint">
+</head>
+<body>
+
+  <!-- Retro CRT Scanline Overlay -->
+  <div id="crt-overlay" class="crt-overlay"></div>
+
+  <!-- Main Application Container -->
+  <div id="app-container">
+
+    <!-- Top Toolbar Window -->
+    <div id="toolbar-window" class="win-window">
+      <div class="win-titlebar">
+        <div class="win-titlebar-title">
+          <span>💾</span>
+          <span>PixelSprint v1.0 - Sprint Sonu Retrospektif Pano</span>
+        </div>
+        <div class="win-titlebar-controls">
+          <button class="win-btn win-btn-sm" id="btn-sound-toggle" title="Ses Efektlerini Aç/Kapat">🔊</button>
+          <button class="win-btn win-btn-sm" id="btn-about-trigger" title="Hakkında">?</button>
+        </div>
+      </div>
+      
+      <div class="toolbar-body">
+        <div class="toolbar-group">
+          <button class="win-btn" id="btn-open-add-modal">
+            <span>➕</span> <strong>Yeni Kart Ekle</strong>
+          </button>
+          <button class="win-btn" id="btn-open-export">
+            <span>💾</span> Rapor İndir
+          </button>
+          <button class="win-btn" id="btn-clear-board">
+            <span>🗑️</span> Temizle
+          </button>
+          <button class="win-btn" id="btn-install-pwa" style="display: none;">
+            <span>📱</span> Uygulamayı Yükle
+          </button>
+        </div>
+
+        <div class="terminal-search">
+          <span>C:\PixelSprint&gt;</span>
+          <input type="text" id="search-input" placeholder="Filtrele veya ara..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Mobile Screen Responsive Column Tabs -->
+      <div class="mobile-tabs win-outset">
+        <button class="win-btn mobile-tab-btn active" data-tab="col-went-well">🟢 Went Well</button>
+        <button class="win-btn mobile-tab-btn" data-tab="col-improvement">🔴 Improvement</button>
+        <button class="win-btn mobile-tab-btn" data-tab="col-action">💡 Actions</button>
+      </div>
+    </div>
+
+    <!-- Retro Retrospective Columns Grid -->
+    <div id="board-container">
+      
+      <!-- 🟢 Went Well Column -->
+      <div class="win-window board-column col-went-well active-tab" id="col-went-well">
+        <div class="column-header">
+          <span>🟢 Neyi İyi Yaptık? (Went Well)</span>
+          <span class="column-count" id="count-went-well">0</span>
+        </div>
+        <div class="column-content" id="list-went-well">
+          <!-- Retro cards will be dynamically rendered here -->
+        </div>
+      </div>
+
+      <!-- 🔴 Needs Improvement Column -->
+      <div class="win-window board-column col-improvement" id="col-improvement">
+        <div class="column-header">
+          <span>🔴 Neyi Batırdık / Gelişmeli? (Bugs & Fixes)</span>
+          <span class="column-count" id="count-improvement">0</span>
+        </div>
+        <div class="column-content" id="list-improvement">
+          <!-- Retro cards will be dynamically rendered here -->
+        </div>
+      </div>
+
+      <!-- 💡 Action Items / Ideas Column -->
+      <div class="win-window board-column col-action" id="col-action">
+        <div class="column-header">
+          <span>💡 Aksiyonlar & Fikirler (Action Items)</span>
+          <span class="column-count" id="count-action">0</span>
+        </div>
+        <div class="column-content" id="list-action">
+          <!-- Retro cards will be dynamically rendered here -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Win95 Start Menu Popup -->
+  <div id="start-menu" class="win-outset hidden">
+    <div class="start-menu-banner">PIXELSPRINT 95</div>
+    <div class="start-menu-items">
+      <div class="start-menu-item" id="sm-add-card">
+        <span>➕</span> Yeni Anonim Kart Ekle
+      </div>
+      <div class="start-menu-item" id="sm-export">
+        <span>💾</span> Retro Raporunu İndir (.txt)
+      </div>
+      <div class="start-menu-item" id="sm-sound">
+        <span>🔊</span> Ses Efektleri (Açık/Kapalı)
+      </div>
+      <div class="start-menu-item" id="sm-install" style="display: none;">
+        <span>📲</span> PixelSprint.exe Yükle (PWA)
+      </div>
+      <div class="start-menu-separator"></div>
+      <div class="start-menu-item" id="sm-about">
+        <span>❓</span> Hakkında
+      </div>
+      <div class="start-menu-item" id="sm-clear">
+        <span>🗑️</span> Panoyu Temizle
+      </div>
+    </div>
+  </div>
+
+  <!-- Win95 Taskbar at Bottom -->
+  <div id="taskbar">
+    <div class="taskbar-left">
+      <button class="win-btn start-btn" id="start-btn">
+        <span>💾</span> <strong>Başlat</strong>
+      </button>
+      <div class="taskbar-divider"></div>
+      <div class="win-outset taskbar-item pressed">
+        <span>📋</span> PixelSprint Board
+      </div>
+    </div>
+    <div class="taskbar-right win-inset">
+      <span id="sound-indicator" title="Ses Açık">🔊</span>
+      <span id="taskbar-clock">12:00:00</span>
+    </div>
+  </div>
+
+  <!-- MODAL: Add New Card -->
+  <div id="modal-add-card" class="modal-overlay hidden">
+    <div class="win-window modal-window">
+      <div class="win-titlebar">
+        <div class="win-titlebar-title">
+          <span>➕</span> Yeni Anonim Retro Kartı
+        </div>
+        <div class="win-titlebar-controls">
+          <button class="win-btn win-btn-sm btn-close-modal">X</button>
+        </div>
+      </div>
+      <form id="add-card-form" class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="card-category">Kategori / Sütun Seçin:</label>
+          <select id="card-category" class="form-control win-inset" required>
+            <option value="went_well">🟢 Neyi İyi Yaptık? (Went Well)</option>
+            <option value="improvement">🔴 Neyi Batırdık / Gelişmeli? (Needs Improvement)</option>
+            <option value="action">💡 Aksiyonlar & Fikirler (Action Items)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="card-text">Mesajınız (Tamamen Anonim):</label>
+          <textarea id="card-text" class="form-control win-inset" placeholder="Sprint ile ilgili düşüncelerini yaz..." required autofocus></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="win-btn btn-close-modal">İptal</button>
+          <button type="submit" class="win-btn"><strong>[💾 Kaydet ve Gönder]</strong></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Export Report -->
+  <div id="modal-export" class="modal-overlay hidden">
+    <div class="win-window modal-window">
+      <div class="win-titlebar">
+        <div class="win-titlebar-title">
+          <span>💾</span> Retro Özet Raporu
+        </div>
+        <div class="win-titlebar-controls">
+          <button class="win-btn win-btn-sm btn-close-modal">X</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p>Sprint Retrospektif özetini dosya olarak indirebilir veya kopyalayabilirsiniz:</p>
+        <textarea id="export-text-area" class="form-control win-inset" style="height: 180px; font-family: var(--font-mono);" readonly></textarea>
+        <div class="modal-footer">
+          <button type="button" class="win-btn" id="btn-copy-export">📋 Metni Kopyala</button>
+          <button type="button" class="win-btn" id="btn-download-txt"><strong>💾 .TXT İndir</strong></button>
+          <button type="button" class="win-btn btn-close-modal">Kapat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: About PixelSprint -->
+  <div id="modal-about" class="modal-overlay hidden">
+    <div class="win-window modal-window">
+      <div class="win-titlebar">
+        <div class="win-titlebar-title">
+          <span>❓</span> PixelSprint v1.0 Hakkında
+        </div>
+        <div class="win-titlebar-controls">
+          <button class="win-btn win-btn-sm btn-close-modal">X</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div style="font-size: 36px;">💾</div>
+          <div>
+            <h3>PixelSprint 95</h3>
+            <p>Retro Sprint Retrospective Board</p>
+          </div>
+        </div>
+        <div class="win-inset" style="padding: 10px; font-size: 12px; background: #fff;">
+          <p><strong>PixelSprint</strong>, yazılım ekipleri için 90'lar Windows 95 ve Terminal estetiğinde hazırlanmış anonim bir Sprint Sonu Retrospektif uygulamasıdır.</p>
+          <br>
+          <p>• <strong>%100 Anonim:</strong> Hiçbir kullanıcı adı veya ID kaydedilmez.</p>
+          <p>• <strong>Offline Destekli (PWA):</strong> İnternet bağlantısı olmadan da çalışır.</p>
+          <p>• <strong>Yerel Depolama:</strong> Verileriniz `localStorage` üzerinde saklanır.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="win-btn btn-close-modal">Tamam</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vite TypeScript Entry Point -->
+  <script type="module" src="/src/main.ts"></script>
+
+</body>
+</html>

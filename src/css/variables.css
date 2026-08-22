@@ -1,0 +1,76 @@
+/* ==========================================
+   PixelSprint - CSS Variables & Theme
+   ========================================== */
+
+:root {
+  /* Win95 Color Palette */
+  --win-teal: #008080;
+  --win-gray: #c0c0c0;
+  --win-gray-light: #dfdfdf;
+  --win-gray-dark: #808080;
+  --win-black: #000000;
+  --win-white: #ffffff;
+  --win-blue-start: #000080;
+  --win-blue-end: #1084d0;
+  
+  /* Retrospective Category Colors */
+  --cat-went-well-bg: #e6f4ea;
+  --cat-went-well-border: #2e7d32;
+  --cat-went-well-header: #006400;
+
+  --cat-improve-bg: #fce8e6;
+  --cat-improve-border: #c62828;
+  --cat-improve-header: #8b0000;
+
+  --cat-action-bg: #fffde7;
+  --cat-action-border: #f57f17;
+  --cat-action-header: #b8860b;
+
+  /* Fonts */
+  --font-retro: 'MS Sans Serif', Tahoma, Geneva, 'Courier New', monospace;
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-font-smoothing: none;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-retro);
+  background-color: var(--win-teal);
+  color: var(--win-black);
+  overflow: hidden;
+  font-size: 13px;
+}
+
+/* CRT Overlay Effect */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.05) 50%
+  );
+  background-size: 100% 4px;
+}
+
+/* Main Container */
+#app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  padding: 8px 8px 42px 8px;
+  gap: 8px;
+}

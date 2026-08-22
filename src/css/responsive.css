@@ -1,0 +1,59 @@
+/* ==========================================
+   PixelSprint - Responsive Mobile CSS
+   ========================================== */
+
+.mobile-tabs {
+  display: none;
+  gap: 4px;
+  margin-top: 4px;
+  width: 100%;
+}
+
+.mobile-tab-btn {
+  flex: 1;
+  text-align: center;
+  padding: 6px 2px;
+  font-size: 11px;
+}
+
+.mobile-tab-btn.active {
+  font-weight: bold;
+  background-color: var(--win-white);
+  border-color: var(--win-gray-dark) var(--win-white) var(--win-white) var(--win-gray-dark);
+}
+
+@media (max-width: 768px) {
+  #app-container {
+    padding: 4px 4px 42px 4px;
+    gap: 4px;
+  }
+
+  .mobile-tabs {
+    display: flex;
+  }
+
+  #board-container {
+    grid-template-columns: 1fr;
+  }
+
+  .board-column {
+    display: none;
+  }
+
+  .board-column.active-tab {
+    display: flex;
+  }
+
+  .terminal-search {
+    max-width: 100%;
+  }
+
+  .toolbar-body {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar-group {
+    justify-content: space-between;
+  }
+}
