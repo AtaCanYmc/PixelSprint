@@ -7,7 +7,7 @@
   background-color: var(--win-gray);
   border: 2px solid;
   border-color: var(--win-white) var(--win-gray-dark) var(--win-gray-dark) var(--win-white);
-  box-shadow: 1px 1px 0px var(--win-black);
+  box-shadow: 1px 1px 0 var(--win-black);
 }
 
 /* Win95 Inset Bevel Border */
@@ -15,7 +15,7 @@
   background-color: var(--win-white);
   border: 2px solid;
   border-color: var(--win-gray-dark) var(--win-white) var(--win-white) var(--win-gray-dark);
-  box-shadow: inset 1px 1px 0px var(--win-black);
+  box-shadow: inset 1px 1px 0 var(--win-black);
 }
 
 /* Win95 Window Component */
@@ -25,7 +25,7 @@
   background-color: var(--win-gray);
   border: 2px solid;
   border-color: var(--win-white) var(--win-gray-dark) var(--win-gray-dark) var(--win-white);
-  box-shadow: 2px 2px 0px var(--win-black);
+  box-shadow: 2px 2px 0 var(--win-black);
 }
 
 /* Window Titlebar */
@@ -59,9 +59,9 @@
   background-color: var(--win-gray);
   border: 2px solid;
   border-color: var(--win-white) var(--win-gray-dark) var(--win-gray-dark) var(--win-white);
-  box-shadow: 1px 1px 0px var(--win-black);
+  box-shadow: 1px 1px 0 var(--win-black);
   padding: 3px 8px;
-  font-family: var(--font-retro);
+  font-family: var(--font-retro), sans-serif;
   font-size: 12px;
   color: var(--win-black);
   cursor: pointer;
@@ -74,13 +74,13 @@
 
 .win-btn:active, .win-btn.pressed {
   border-color: var(--win-gray-dark) var(--win-white) var(--win-white) var(--win-gray-dark);
-  box-shadow: inset 1px 1px 0px var(--win-black);
+  box-shadow: inset 1px 1px 0 var(--win-black);
   padding: 4px 7px 2px 9px;
 }
 
 .win-btn:disabled {
   color: var(--win-gray-dark);
-  text-shadow: 1px 1px 0px var(--win-white);
+  text-shadow: 1px 1px 0 var(--win-white);
   cursor: not-allowed;
 }
 
@@ -137,7 +137,7 @@
 }
 
 .form-control {
-  font-family: var(--font-retro);
+  font-family: var(--font-retro), sans-serif;
   font-size: 13px;
   padding: 6px;
   outline: none;
@@ -214,7 +214,7 @@ textarea.form-control {
   gap: 6px;
   height: 28px;
   padding: 0 8px;
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
   font-size: 12px;
 }
 
@@ -300,7 +300,7 @@ textarea.form-control {
 }
 
 .session-code {
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
   background-color: #e0e0e0;
   padding: 2px 4px;
   border: 1px solid #b0b0b0;
@@ -308,7 +308,7 @@ textarea.form-control {
 }
 
 .session-badge {
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
   background-color: #e8f5e9;
   color: #2e7d32;
   border: 1px solid #a5d6a7;
@@ -320,4 +320,33 @@ textarea.form-control {
 .session-actions {
   display: flex;
   gap: 4px;
+}
+
+/* Network Status Indicator Badge */
+.network-badge {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 1px 6px;
+  border-radius: 2px;
+  cursor: help;
+}
+
+.network-badge.online {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.network-badge.offline {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+  animation: pulseOffline 1.5s infinite;
+}
+
+@keyframes pulseOffline {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
 }

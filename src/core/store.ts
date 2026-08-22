@@ -1,11 +1,12 @@
 /**
  * PixelSprint Core State Store (TypeScript)
- * Handles Retro Sessions & Per-Session Cards
+ * Handles Retro Sessions, Per-Session Cards, and Real-time Synchronization
  */
 
-import { RetroCard, RetroCategory, RetroSession, StateChangeListener } from '../types/index.js';
-import { STORAGE_KEYS, INITIAL_DEMO_CARDS } from '../utils/constants.js';
-import { generateAnonymousCodename, getCurrentTimeString } from '../utils/helpers.js';
+import { RetroCard, RetroCategory, RetroSession, StateChangeListener, RealtimeMessage } from '../types';
+import { STORAGE_KEYS, INITIAL_DEMO_CARDS } from '../utils/constants';
+import { generateAnonymousCodename, getCurrentTimeString } from '../utils/helpers';
+import { realtimeSync } from './sync';
 
 class RetroStore {
   private sessions: RetroSession[] = [];
@@ -15,10 +16,78 @@ class RetroStore {
 
   public init(): void {
     this.loadSessions();
+    this.setupRealtimeListeners();
     this.checkUrlHash();
 
     window.addEventListener('hashchange', () => {
       this.checkUrlHash();
+    });
+  }
+
+  private setupRealtimeListeners(): void {
+    realtimeSync.onMessage((msg: RealtimeMessage) => {
+      switch (msg.type) {
+        case 'ADD_CARD':
+          if (msg.payload && !this.cards.some(c => c.id === msg.payload.id)) {
+            this.cards.unshift(msg.payload as RetroCard);
+            this.saveCardsForActiveSession(false);
+          }
+          break;
+
+        case 'UPVOTE_CARD':
+          if (msg.payload?.id) {
+            const card = this.cards.find(c => c.id === msg.payload.id);
+            if (card) {
+              card.upvotes = (card.upvotes || 0) + 1;
+              this.saveCardsForActiveSession(false);
+            }
+          }
+          break;
+
+        case 'DOWNVOTE_CARD':
+          if (msg.payload?.id) {
+            const card = this.cards.find(c => c.id === msg.payload.id);
+            if (card) {
+              card.downvotes = (card.downvotes || 0) + 1;
+              this.saveCardsForActiveSession(false);
+            }
+          }
+          break;
+
+        case 'MOVE_CARD':
+          if (msg.payload?.id && msg.payload?.category) {
+            const card = this.cards.find(c => c.id === msg.payload.id);
+            if (card) {
+              card.category = msg.payload.category as RetroCategory;
+              this.saveCardsForActiveSession(false);
+            }
+          }
+          break;
+
+        case 'DELETE_CARD':
+          if (msg.payload?.id) {
+            this.cards = this.cards.filter(c => c.id !== msg.payload.id);
+            this.saveCardsForActiveSession(false);
+          }
+          break;
+
+        case 'CLEAR_CARDS':
+          this.cards = [];
+          this.saveCardsForActiveSession(false);
+          break;
+
+        case 'REQUEST_SYNC':
+          // Respond with current cards state
+          realtimeSync.broadcast('SYNC_STATE', this.cards);
+          break;
+
+        case 'SYNC_STATE':
+          if (Array.isArray(msg.payload)) {
+            this.cards = msg.payload as RetroCard[];
+            this.saveCardsForActiveSession(false);
+          }
+          break;
+      }
     });
   }
 
@@ -30,6 +99,7 @@ class RetroStore {
     } else {
       this.activeSessionId = null;
       this.cards = [];
+      realtimeSync.disconnect();
       this.notify();
     }
   }
@@ -43,7 +113,6 @@ class RetroStore {
         this.sessions = [];
       }
     } else {
-      // Create initial demo session if empty
       const demoSession: RetroSession = {
         id: 'retro-demo-sprint-1',
         title: 'Demo Sprint 42 Retrospektif',
@@ -81,7 +150,6 @@ class RetroStore {
   public setActiveSession(sessionId: string): void {
     let session = this.sessions.find(s => s.id === sessionId);
     if (!session) {
-      // Auto create session if joined via shared link with ID
       session = {
         id: sessionId,
         title: `Retro Pano (${sessionId})`,
@@ -95,6 +163,7 @@ class RetroStore {
 
     this.activeSessionId = sessionId;
     window.location.hash = `session=${sessionId}`;
+    realtimeSync.init(sessionId);
     this.loadCardsForActiveSession();
   }
 
@@ -102,6 +171,7 @@ class RetroStore {
     this.activeSessionId = null;
     window.location.hash = '';
     this.cards = [];
+    realtimeSync.disconnect();
     this.notify();
   }
 
@@ -144,11 +214,13 @@ class RetroStore {
     this.notify();
   }
 
-  private saveCardsForActiveSession(): void {
+  private saveCardsForActiveSession(shouldBroadcast: boolean = true): void {
     if (!this.activeSessionId) return;
     localStorage.setItem(STORAGE_KEYS.CARDS_PREFIX + this.activeSessionId, JSON.stringify(this.cards));
     this.updateActiveSessionCardCount();
-    this.notify();
+    if (shouldBroadcast) {
+      this.notify();
+    }
   }
 
   private updateActiveSessionCardCount(): void {
@@ -185,6 +257,7 @@ class RetroStore {
     };
     this.cards.unshift(newCard);
     this.saveCardsForActiveSession();
+    realtimeSync.broadcast('ADD_CARD', newCard);
     return newCard;
   }
 
@@ -193,6 +266,7 @@ class RetroStore {
     if (card) {
       card.upvotes = (card.upvotes || 0) + 1;
       this.saveCardsForActiveSession();
+      realtimeSync.broadcast('UPVOTE_CARD', { id });
     }
   }
 
@@ -201,6 +275,7 @@ class RetroStore {
     if (card) {
       card.downvotes = (card.downvotes || 0) + 1;
       this.saveCardsForActiveSession();
+      realtimeSync.broadcast('DOWNVOTE_CARD', { id });
     }
   }
 
@@ -209,17 +284,20 @@ class RetroStore {
     if (card) {
       card.category = targetCategory;
       this.saveCardsForActiveSession();
+      realtimeSync.broadcast('MOVE_CARD', { id, category: targetCategory });
     }
   }
 
   public deleteCard(id: string): void {
     this.cards = this.cards.filter(c => c.id !== id);
     this.saveCardsForActiveSession();
+    realtimeSync.broadcast('DELETE_CARD', { id });
   }
 
   public clearAll(): void {
     this.cards = [];
     this.saveCardsForActiveSession();
+    realtimeSync.broadcast('CLEAR_CARDS');
   }
 
   public getCards(): RetroCard[] {

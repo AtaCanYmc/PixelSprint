@@ -34,3 +34,21 @@ export interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
 }
+
+export type RealtimeEventType =
+  | 'ADD_CARD'
+  | 'UPVOTE_CARD'
+  | 'DOWNVOTE_CARD'
+  | 'MOVE_CARD'
+  | 'DELETE_CARD'
+  | 'CLEAR_CARDS'
+  | 'SYNC_STATE'
+  | 'REQUEST_SYNC';
+
+export interface RealtimeMessage {
+  type: RealtimeEventType;
+  sessionId: string;
+  senderId: string;
+  timestamp: number;
+  payload?: any;
+}

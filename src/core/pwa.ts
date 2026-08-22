@@ -1,25 +1,30 @@
 /**
- * PixelSprint Core PWA Manager (Vite PWA Integration)
+ * PixelSprint Core PWA & Network Monitor (Vite PWA Integration)
+ * Handles Service Worker registration, offline detection (ERR_RETRO_OFFLINE), and PWA installation
  */
 
 import { registerSW } from 'virtual:pwa-register';
-import { BeforeInstallPromptEvent } from '../types/index.js';
+import { BeforeInstallPromptEvent } from '../types';
+import { audioSynth } from './audio';
+import { realtimeSync } from './sync';
 
 class PWAInstaller {
   private deferredPrompt: BeforeInstallPromptEvent | null = null;
   private btnInstallToolbar: HTMLElement | null = null;
   private btnInstallStartMenu: HTMLElement | null = null;
+  private networkStatusBadge: HTMLElement | null = null;
 
   public init(): void {
     this.btnInstallToolbar = document.getElementById('btn-install-pwa');
     this.btnInstallStartMenu = document.getElementById('sm-install');
+    this.networkStatusBadge = document.getElementById('network-status-badge');
 
     this.registerServiceWorker();
     this.listenForInstallPrompt();
+    this.listenForNetworkStatus();
   }
 
   private registerServiceWorker(): void {
-    // Vite PWA automatic service worker registration
     registerSW({
       immediate: true,
       onNeedRefresh() {
@@ -29,6 +34,37 @@ class PWAInstaller {
         console.log('[Vite PWA] PixelSprint ready to work offline!');
       }
     });
+  }
+
+  private listenForNetworkStatus(): void {
+    const updateStatus = () => {
+      const isOnline = navigator.onLine;
+      if (this.networkStatusBadge) {
+        if (isOnline) {
+          this.networkStatusBadge.textContent = '🟢 ONLINE';
+          this.networkStatusBadge.className = 'network-badge online';
+          this.networkStatusBadge.title = 'Bağlantı aktif. Gerçek zamanlı senkronizasyon çalışıyor.';
+        } else {
+          this.networkStatusBadge.textContent = '⚠️ ERR_RETRO_OFFLINE';
+          this.networkStatusBadge.className = 'network-badge offline';
+          this.networkStatusBadge.title = 'İnternet bağlantısı kesildi! Kartlar çevrimdışı localStorage üzerinde saklanacak.';
+        }
+      }
+    };
+
+    window.addEventListener('online', () => {
+      updateStatus();
+      audioSynth.playSuccess();
+      // Re-trigger sync when coming back online
+      realtimeSync.broadcast('REQUEST_SYNC');
+    });
+
+    window.addEventListener('offline', () => {
+      updateStatus();
+      audioSynth.playDelete();
+    });
+
+    updateStatus();
   }
 
   private listenForInstallPrompt(): void {

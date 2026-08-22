@@ -36,7 +36,7 @@
         <div class="win-outset" style="padding: 12px; display: flex; flex-direction: column; gap: 8px;">
           <h3 style="display: flex; align-items: center; gap: 6px;">➕ <strong>Yeni Retro Oturumu Başlat</strong></h3>
           <form id="form-new-session" style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <input type="text" id="session-title-input" class="form-control win-inset" placeholder="Sprint Başlığı (örn. Sprint 45 Retrospektif)" required style="flex-grow: 1;">
+            <input type="text" id="session-title-input" class="form-control win-inset" placeholder="Sprint Başlığı (örn. Sprint 45 Retrospektif)" aria-label="Sprint Başlığı" required style="flex-grow: 1;">
             <button type="submit" class="win-btn"><strong>[🚀 Retro Oluştur & Katıl]</strong></button>
           </form>
         </div>
@@ -47,7 +47,7 @@
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <div class="terminal-search" style="flex-grow: 1; max-width: none;">
               <span>C:\PixelSprint&gt; join</span>
-              <input type="text" id="input-join-session" placeholder="Session ID yapıştır (örn. retro-demo-sprint-1)..." autocomplete="off">
+              <input type="text" id="input-join-session" placeholder="Session ID yapıştır (örn. retro-demo-sprint-1)..." aria-label="Session ID Katılım Kimliği" autocomplete="off">
             </div>
             <button type="button" class="win-btn" id="btn-join-session"><strong>[▶ Oturuma Git]</strong></button>
           </div>
@@ -100,7 +100,7 @@
 
           <div class="terminal-search">
             <span>C:\PixelSprint&gt;</span>
-            <input type="text" id="search-input" placeholder="Filtrele veya ara..." autocomplete="off">
+            <input type="text" id="search-input" placeholder="Filtrele veya ara..." aria-label="Filtrele veya ara" autocomplete="off">
           </div>
         </div>
 
@@ -197,6 +197,7 @@
       </div>
     </div>
     <div class="taskbar-right win-inset">
+      <span id="network-status-badge" class="network-badge online">🟢 ONLINE</span>
       <span id="sound-indicator" title="Ses Açık">🔊</span>
       <span id="taskbar-clock">12:00:00</span>
     </div>
@@ -250,15 +251,15 @@
 
         <div class="win-inset" style="padding: 16px; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
           <canvas id="qr-code-canvas" style="width: 220px; height: 220px; border: 2px solid #000;"></canvas>
-          <div style="font-family: var(--font-mono); font-size: 11px; color: #404040;" id="share-session-id-label">
+          <div style="font-family: var(--font-mono), monospace; font-size: 11px; color: #404040;" id="share-session-id-label">
             Session ID: --
           </div>
         </div>
 
         <div class="form-group" style="text-align: left;">
-          <label class="form-label">Doğrudan Katılım Linki:</label>
+          <label class="form-label" for="share-url-input">Doğrudan Katılım Linki:</label>
           <div style="display: flex; gap: 6px;">
-            <input type="text" id="share-url-input" class="form-control win-inset" readonly style="font-family: var(--font-mono); font-size: 11px;">
+            <input type="text" id="share-url-input" class="form-control win-inset" aria-label="Doğrudan Katılım Linki" readonly style="font-family: var(--font-mono), monospace; font-size: 11px;">
             <button type="button" class="win-btn" id="btn-copy-share-url">📋 Kopyala</button>
           </div>
         </div>
@@ -283,7 +284,7 @@
       </div>
       <div class="modal-body">
         <p>Sprint Retrospektif özetini metin, CSV veya Excel (XLSX) formatında indirebilirsiniz:</p>
-        <textarea id="export-text-area" class="form-control win-inset" style="height: 180px; font-family: var(--font-mono);" readonly></textarea>
+        <textarea id="export-text-area" class="form-control win-inset" aria-label="Retro Özet Rapor Metni" style="height: 180px; font-family: var(--font-mono), monospace;" readonly></textarea>
         <div class="modal-footer" style="flex-wrap: wrap; gap: 6px;">
           <button type="button" class="win-btn" id="btn-copy-export">📋 Kopyala</button>
           <button type="button" class="win-btn" id="btn-download-txt"><strong>💾 .TXT</strong></button>
