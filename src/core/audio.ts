@@ -9,12 +9,13 @@ class RetroAudioSynth {
   public enabled: boolean;
 
   constructor() {
-    this.enabled = localStorage.getItem(STORAGE_KEYS.SOUND) !== 'false';
+    this.enabled = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.SOUND) !== 'false' : true;
   }
 
   private init(): void {
     if (!this.audioCtx) {
-      const AudioCtxClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const AudioCtxClass =
+        window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (AudioCtxClass) {
         this.audioCtx = new AudioCtxClass();
       }

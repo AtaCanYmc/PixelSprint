@@ -55,3 +55,6 @@ export interface RealtimeMessage {
 
 export type Language = 'tr' | 'en' | 'fr';
 export type ThemeMode = 'light' | 'dark';
+
+export type AiAnalysisType = 'summary' | 'action_plan' | 'root_cause' | 'sentiment' | 'jira';
+export type AiRole = 'agile_coach' | 'scrum_master' | 'executive' | 'peer';

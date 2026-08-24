@@ -118,6 +118,35 @@ export interface Translations {
   badgeOnline: string;
   badgeOffline: string;
   badgeP2pSync: string;
+
+  // AI Prompt Generator Modal
+  btnAiPrompt: string;
+  modalAiTitle: string;
+  aiModalDesc: string;
+  aiAnalysisTypeLabel: string;
+  aiRoleLabel: string;
+  aiLangLabel: string;
+  aiCustomFocusLabel: string;
+  aiCustomFocusPlaceholder: string;
+  aiGeneratedPromptLabel: string;
+  btnCopyPrompt: string;
+  btnOpenChatGpt: string;
+  btnOpenClaude: string;
+  btnOpenGemini: string;
+  copyPromptSuccess: string;
+  startMenuAiPrompt: string;
+
+  // AI Presets & Roles
+  aiPresetSummary: string;
+  aiPresetActionPlan: string;
+  aiPresetRootCause: string;
+  aiPresetSentiment: string;
+  aiPresetJira: string;
+
+  aiRoleAgileCoach: string;
+  aiRoleScrumMaster: string;
+  aiRoleExecutive: string;
+  aiRolePeer: string;
 }
 
 export const locales: Record<Language, Translations> = {
@@ -223,7 +252,35 @@ export const locales: Record<Language, Translations> = {
 
     badgeOnline: '🛜 ONLINE',
     badgeOffline: '📡❌ ERR_RETRO_OFFLINE',
-    badgeP2pSync: '🟢 P2P SYNC'
+    badgeP2pSync: '🟢 P2P SYNC',
+
+    btnAiPrompt: 'AI Analiz Promptu',
+    modalAiTitle: '🤖 AI Retrospektif Prompt Oluşturucu',
+    aiModalDesc:
+      "Retro sonuçlarınızı ChatGPT, Claude veya Gemini'ye analiz ettirmek için özelleştirilmiş AI promptu oluşturun:",
+    aiAnalysisTypeLabel: 'Analiz Türü / Hedef:',
+    aiRoleLabel: 'AI Rolü / Perspektif:',
+    aiLangLabel: 'Dil / Language:',
+    aiCustomFocusLabel: 'Özel Odak Noktası (İsteğe Bağlı):',
+    aiCustomFocusPlaceholder: 'Örn: Özellikle sprint içi iletişim sorunlarına ve CI/CD süreçlerine odaklan...',
+    aiGeneratedPromptLabel: 'Hazırlanan AI Prompt Metni:',
+    btnCopyPrompt: '📋 Promptu Kopyala',
+    btnOpenChatGpt: "🚀 ChatGPT'de Aç",
+    btnOpenClaude: "🚀 Claude'da Aç",
+    btnOpenGemini: "🚀 Gemini'de Aç",
+    copyPromptSuccess: "AI promptu panoya kopyalandı! Şimdi yapıştırıp AI'a analiz ettirebilirsiniz.",
+    startMenuAiPrompt: 'AI Analiz Promptu Oluştur',
+
+    aiPresetSummary: '📊 Genel Özet ve Sentez',
+    aiPresetActionPlan: '🎯 Aksiyon Planı ve Önceliklendirme',
+    aiPresetRootCause: '🔍 Kök Neden & Problem Analizi',
+    aiPresetSentiment: '😊 Ekip Duygu Durumu / Moral Analizi',
+    aiPresetJira: '📝 Jira Task / Aksiyon Biletleri Formatı',
+
+    aiRoleAgileCoach: '🏆 Kıdemli Agile Coach',
+    aiRoleScrumMaster: '⏱️ Scrum Master',
+    aiRoleExecutive: '📊 Mühendislik Direktörü / Executive',
+    aiRolePeer: '🤝 Ekip Arkadaşı / Yazılımcı'
   },
 
   en: {
@@ -307,7 +364,7 @@ export const locales: Record<Language, Translations> = {
     pwaSubheading: 'Use PixelSprint fullscreen with one click!',
     iosTitle: '🍏 iOS (Safari) Users:',
     iosStep1: 'Tap the Share (⎋) button at the bottom of the screen.',
-    iosStep2: 'Select "Add to Home Screen" from the menu.',
+    iosStep2: 'Choose "Add to Home Screen" from the menu.',
     androidTitle: '🤖 Android (Chrome) Users:',
     androidStep1: 'Tap the Options (⋮) menu in the top right corner.',
     androidStep2: 'Tap "Install App" or "Add to Home Screen".',
@@ -327,7 +384,34 @@ export const locales: Record<Language, Translations> = {
 
     badgeOnline: '🛜 ONLINE',
     badgeOffline: '📡❌ ERR_RETRO_OFFLINE',
-    badgeP2pSync: '🟢 P2P SYNC'
+    badgeP2pSync: '🟢 P2P SYNC',
+
+    btnAiPrompt: 'AI Prompt',
+    modalAiTitle: '🤖 AI Retrospective Prompt Generator',
+    aiModalDesc: 'Generate a customized AI prompt to analyze your retro board results with ChatGPT, Claude, or Gemini:',
+    aiAnalysisTypeLabel: 'Analysis Type / Goal:',
+    aiRoleLabel: 'AI Role / Perspective:',
+    aiLangLabel: 'Language:',
+    aiCustomFocusLabel: 'Custom Focus (Optional):',
+    aiCustomFocusPlaceholder: 'e.g., Focus especially on team communication issues and CI/CD pipelines...',
+    aiGeneratedPromptLabel: 'Generated AI Prompt Text:',
+    btnCopyPrompt: '📋 Copy Prompt',
+    btnOpenChatGpt: '🚀 Open ChatGPT',
+    btnOpenClaude: '🚀 Open Claude',
+    btnOpenGemini: '🚀 Open Gemini',
+    copyPromptSuccess: 'AI prompt copied to clipboard! Paste it into your AI assistant for analysis.',
+    startMenuAiPrompt: 'Generate AI Analysis Prompt',
+
+    aiPresetSummary: '📊 General Summary & Synthesis',
+    aiPresetActionPlan: '🎯 Action Plan & Prioritization',
+    aiPresetRootCause: '🔍 Root Cause & Problem Analysis',
+    aiPresetSentiment: '😊 Team Sentiment & Spirit Analysis',
+    aiPresetJira: '📝 Jira Task Tickets Format',
+
+    aiRoleAgileCoach: '🏆 Senior Agile Coach',
+    aiRoleScrumMaster: '⏱️ Scrum Master',
+    aiRoleExecutive: '📊 Engineering Director / Executive',
+    aiRolePeer: '🤝 Teammate / Engineer'
   },
 
   fr: {
@@ -432,6 +516,33 @@ export const locales: Record<Language, Translations> = {
 
     badgeOnline: '🛜 EN LIGNE',
     badgeOffline: '📡❌ ERR_RETRO_HORS_LIGNE',
-    badgeP2pSync: '🟢 SYNC P2P'
+    badgeP2pSync: '🟢 SYNC P2P',
+
+    btnAiPrompt: 'Prompt AI',
+    modalAiTitle: '🤖 Générateur de Prompt Rétrospective AI',
+    aiModalDesc: 'Générez un prompt AI personnalisé pour analyser vos résultats rétro avec ChatGPT, Claude ou Gemini :',
+    aiAnalysisTypeLabel: "Type d'Analyse / Objectif :",
+    aiRoleLabel: 'Rôle AI / Perspective :',
+    aiLangLabel: 'Langue / Language :',
+    aiCustomFocusLabel: 'Focus Personnalisé (Optionnel) :',
+    aiCustomFocusPlaceholder: 'ex. Se concentrer particulièrement sur la communication et le CI/CD...',
+    aiGeneratedPromptLabel: 'Texte du Prompt AI Généré :',
+    btnCopyPrompt: '📋 Copier le Prompt',
+    btnOpenChatGpt: '🚀 Ouvrir ChatGPT',
+    btnOpenClaude: '🚀 Ouvrir Claude',
+    btnOpenGemini: '🚀 Ouvrir Gemini',
+    copyPromptSuccess: 'Prompt AI copié dans le presse-papiers !',
+    startMenuAiPrompt: "Générer Prompt d'Analyse AI",
+
+    aiPresetSummary: '📊 Synthèse et Résumé Général',
+    aiPresetActionPlan: "🎯 Plan d'Action & Priorisation",
+    aiPresetRootCause: '🔍 Analyse des Causes Racines',
+    aiPresetSentiment: "😊 Analyse du Moral de l'Équipe",
+    aiPresetJira: '📝 Format Tickets Jira',
+
+    aiRoleAgileCoach: '🏆 Coach Agile Senior',
+    aiRoleScrumMaster: '⏱️ Scrum Master',
+    aiRoleExecutive: '📊 Directeur Ingénierie',
+    aiRolePeer: '🤝 Coéquipier / Développeur'
   }
 };

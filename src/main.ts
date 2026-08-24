@@ -13,6 +13,7 @@ import { ModalComponent } from './components/modal';
 import { ExportComponent } from './components/export';
 import { TaskbarComponent } from './components/taskbar';
 import { ShareComponent } from './components/share';
+import { AiPromptComponent } from './components/aiPrompt';
 
 document.addEventListener('DOMContentLoaded', () => {
   i18n.init();
@@ -31,6 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const exportComp = new ExportComponent();
   exportComp.init();
+
+  const aiPromptComp = new AiPromptComponent();
+  aiPromptComp.init();
 
   const shareComp = new ShareComponent();
   shareComp.init();

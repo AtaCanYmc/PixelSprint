@@ -139,17 +139,20 @@ export class TaskbarComponent {
       this.smHome.innerHTML = `<span>🏠</span> <strong>${i18n.t('startMenuHome')}</strong>`;
     }
     const smAdd = document.getElementById('sm-add-card');
+    const smAi = document.getElementById('sm-ai-prompt');
     const smShare = document.getElementById('sm-share-qr');
     const smExport = document.getElementById('sm-export');
     const smInstall = document.getElementById('sm-install');
     const smAbout = document.getElementById('sm-about');
 
     if (smAdd) smAdd.innerHTML = `<span>➕</span> ${i18n.t('startMenuAddCard')}`;
+    if (smAi) smAi.innerHTML = `<span>🤖</span> ${i18n.t('startMenuAiPrompt')}`;
     if (smShare) smShare.innerHTML = `<span>📱</span> ${i18n.t('startMenuShareQr')}`;
     if (smExport) smExport.innerHTML = `<span>💾</span> ${i18n.t('startMenuExport')}`;
     if (smInstall) smInstall.innerHTML = `<span>📲</span> ${i18n.t('startMenuInstall')}`;
     if (smAbout) smAbout.innerHTML = `<span>❓</span> ${i18n.t('startMenuAbout')}`;
     if (this.smClear) this.smClear.innerHTML = `<span>🗑️</span> ${i18n.t('startMenuClear')}`;
+
     this.updateThemeUI();
 
     // Highlight active language button in Start Menu

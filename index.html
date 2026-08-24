@@ -116,6 +116,7 @@
             <div class="toolbar-group">
               <button class="win-btn" id="btn-share-link"><span>📱</span> <strong>Paylaş (QR)</strong></button>
               <button class="win-btn" id="btn-open-add-modal"><span>➕</span> Yeni Kart</button>
+              <button class="win-btn" id="btn-open-ai-prompt"><span>🤖</span> AI Analiz Promptu</button>
               <button class="win-btn" id="btn-open-export"><span>💾</span> Rapor İndir</button>
               <button class="win-btn" id="btn-clear-board"><span>🗑️</span> Temizle</button>
               <button class="win-btn" id="btn-install-pwa" style="display: none">
@@ -188,8 +189,10 @@
         <div class="start-menu-item" id="sm-home"><span>🏠</span> <strong>Ana Sayfaya Dön (Dashboard)</strong></div>
         <div class="start-menu-separator"></div>
         <div class="start-menu-item" id="sm-add-card"><span>➕</span> Yeni Anonim Kart Ekle</div>
+        <div class="start-menu-item" id="sm-ai-prompt"><span>🤖</span> AI Analiz Promptu Oluştur</div>
         <div class="start-menu-item" id="sm-share-qr"><span>📱</span> Retro Oturumunu Paylaş (QR Kod)</div>
         <div class="start-menu-item" id="sm-export"><span>💾</span> Retro Raporunu İndir (.txt)</div>
+
         <div class="start-menu-item" id="sm-sound"><span>🔊</span> Ses Efektleri (Açık/Kapalı)</div>
         <div class="start-menu-item" id="sm-theme"><span>🌙</span> Koyu Tema / Light Mode</div>
         <div class="start-menu-item" id="sm-install" style="display: none">
@@ -359,6 +362,94 @@
             <button type="button" class="win-btn" id="btn-download-docx"><strong>📄 .DOCX</strong></button>
             <button type="button" class="win-btn" id="btn-download-pdf"><strong>📕 .PDF</strong></button>
             <button type="button" class="win-btn btn-close-modal" id="btn-close-export">Kapat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: AI Prompt Generator -->
+    <div id="modal-ai-prompt" class="modal-overlay hidden">
+      <div class="win-window modal-window" style="max-width: 600px">
+        <div class="win-titlebar">
+          <div class="win-titlebar-title">
+            <span>🤖</span> <span id="txt-modal-ai-title">AI Retrospektif Prompt Oluşturucu</span>
+          </div>
+          <div class="win-titlebar-controls">
+            <button class="win-btn win-btn-sm btn-close-modal">X</button>
+          </div>
+        </div>
+        <div class="modal-body" style="gap: 10px">
+          <p id="txt-ai-modal-desc">
+            Retro sonuçlarınızı ChatGPT, Claude veya Gemini'ye analiz ettirmek için özelleştirilmiş AI promptu
+            oluşturun:
+          </p>
+
+          <!-- Controls Section -->
+          <div class="win-outset" style="padding: 10px; display: flex; flex-direction: column; gap: 8px">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <div class="form-group" style="flex: 1; min-width: 180px">
+                <label class="form-label" for="select-ai-type" id="txt-label-ai-type">Analiz Türü / Hedef:</label>
+                <select id="select-ai-type" class="form-control win-inset">
+                  <option value="summary" id="opt-ai-summary">📊 Genel Özet ve Sentez</option>
+                  <option value="action_plan" id="opt-ai-action-plan">🎯 Aksiyon Planı ve Önceliklendirme</option>
+                  <option value="root_cause" id="opt-ai-root-cause">🔍 Kök Neden & Problem Analizi</option>
+                  <option value="sentiment" id="opt-ai-sentiment">😊 Ekip Duygu Durumu / Moral Analizi</option>
+                  <option value="jira" id="opt-ai-jira">📝 Jira Task / Aksiyon Biletleri Formatı</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="flex: 1; min-width: 160px">
+                <label class="form-label" for="select-ai-role" id="txt-label-ai-role">AI Rolü / Perspektif:</label>
+                <select id="select-ai-role" class="form-control win-inset">
+                  <option value="agile_coach" id="opt-role-coach">🏆 Kıdemli Agile Coach</option>
+                  <option value="scrum_master" id="opt-role-scrum">⏱️ Scrum Master</option>
+                  <option value="executive" id="opt-role-exec">📊 Mühendislik Direktörü / Executive</option>
+                  <option value="peer" id="opt-role-peer">🤝 Ekip Arkadaşı / Yazılımcı</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="width: 120px">
+                <label class="form-label" for="select-ai-lang" id="txt-label-ai-lang">Language:</label>
+                <select id="select-ai-lang" class="form-control win-inset">
+                  <option value="tr">🇹🇷 Türkçe</option>
+                  <option value="en">🇬🇧 English</option>
+                  <option value="fr">🇫🇷 Français</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-ai-focus" id="txt-label-ai-focus"
+                >Özel Odak Noktası (İsteğe Bağlı):</label
+              >
+              <input
+                type="text"
+                id="input-ai-focus"
+                class="form-control win-inset"
+                placeholder="Örn: Özellikle sprint içi iletişim sorunlarına ve CI/CD süreçlerine odaklan..."
+              />
+            </div>
+          </div>
+
+          <!-- Generated Prompt Display -->
+          <div class="form-group">
+            <label class="form-label" for="ai-prompt-text-area" id="txt-label-ai-generated"
+              >Hazırlanan AI Prompt Metni:</label
+            >
+            <textarea
+              id="ai-prompt-text-area"
+              class="form-control win-inset"
+              aria-label="AI Prompt Metni"
+              style="height: 180px; font-family: var(--font-mono), monospace; font-size: 11px; white-space: pre-wrap"
+            ></textarea>
+          </div>
+
+          <div class="modal-footer" style="flex-wrap: wrap; gap: 6px">
+            <button type="button" class="win-btn" id="btn-copy-prompt">📋 Promptu Kopyala</button>
+            <button type="button" class="win-btn" id="btn-open-chatgpt">🚀 ChatGPT'de Aç</button>
+            <button type="button" class="win-btn" id="btn-open-claude">🚀 Claude'da Aç</button>
+            <button type="button" class="win-btn" id="btn-open-gemini">🚀 Gemini'de Aç</button>
+            <button type="button" class="win-btn btn-close-modal" id="btn-close-ai">Kapat</button>
           </div>
         </div>
       </div>

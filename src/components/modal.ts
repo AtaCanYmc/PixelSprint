@@ -84,11 +84,13 @@ export class ModalComponent {
 
   private updateLocalizedText(): void {
     const btnOpenAdd = document.getElementById('btn-open-add-modal');
+    const btnOpenAi = document.getElementById('btn-open-ai-prompt');
     const btnExport = document.getElementById('btn-open-export');
     const btnClear = document.getElementById('btn-clear-board');
     const btnInstall = document.getElementById('btn-install-pwa');
 
     if (btnOpenAdd) btnOpenAdd.innerHTML = `<span>➕</span> ${i18n.t('btnAddCard')}`;
+    if (btnOpenAi) btnOpenAi.innerHTML = `<span>🤖</span> ${i18n.t('btnAiPrompt')}`;
     if (btnExport) btnExport.innerHTML = `<span>💾</span> ${i18n.t('btnExportReport')}`;
     if (btnClear) btnClear.innerHTML = `<span>🗑️</span> ${i18n.t('btnClearBoard')}`;
     if (btnInstall) btnInstall.innerHTML = `<span>📱</span> ${i18n.t('btnInstallPwa')}`;
