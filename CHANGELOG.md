@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/AtaCanYmc/PixelSprint/compare/v1.1.0...v1.2.0) (2026-08-24)
+
+
+### Features
+
+* add AI Prompt Generator component for retrospective analysis with localization support ([5b9043d](https://github.com/AtaCanYmc/PixelSprint/commit/5b9043dce76d2f12e0cce4d18b42b80115d69937))
+* implement mobile PWA installation guide modal and enhance dashboard responsiveness ([8d5b167](https://github.com/AtaCanYmc/PixelSprint/commit/8d5b1674379be093800031e62a6f6fcca978b0d9))
+
+
+### Bug Fixes
+
+* update repository URL in README for accurate cloning instructions ([d1fe0b3](https://github.com/AtaCanYmc/PixelSprint/commit/d1fe0b32f01b092a181e1b956e8d30de4c14af99))
+
 ## [1.1.0](https://github.com/AtaCanYmc/PixelSprint/compare/v1.0.0...v1.1.0) (2026-08-22)
 
 
