@@ -70,6 +70,22 @@ export class TaskbarComponent {
       this.smTheme.addEventListener('click', handleThemeToggle);
     }
 
+    // Button Labels Toggle Listeners
+    const handleLabelsToggle = () => {
+      audioSynth.playClick();
+      store.toggleButtonLabels();
+      if (this.startMenu) this.startMenu.classList.add('hidden');
+    };
+
+    document.querySelectorAll('.btn-labels-toggle').forEach((btn) => {
+      btn.addEventListener('click', handleLabelsToggle);
+    });
+
+    const smLabels = document.getElementById('sm-labels');
+    if (smLabels) {
+      smLabels.addEventListener('click', handleLabelsToggle);
+    }
+
     // Language Buttons in Start Menu
     const langBtns = document.querySelectorAll('.start-menu-lang-buttons .lang-btn');
     langBtns.forEach((btn) => {
@@ -156,6 +172,13 @@ export class TaskbarComponent {
     if (smInstall) smInstall.innerHTML = `<span>📲</span> ${i18n.t('startMenuInstall')}`;
     if (smAbout) smAbout.innerHTML = `<span>❓</span> ${i18n.t('startMenuAbout')}`;
     if (this.smClear) this.smClear.innerHTML = `<span>🗑️</span> ${i18n.t('startMenuClear')}`;
+
+    const smLabels = document.getElementById('sm-labels');
+    if (smLabels) smLabels.innerHTML = `<span>🏷️</span> ${i18n.t('startMenuLabels')}`;
+
+    document.querySelectorAll('.btn-labels-toggle').forEach((btn) => {
+      (btn as HTMLElement).title = i18n.t('labelsToggleTitle');
+    });
 
     this.updateThemeUI();
 

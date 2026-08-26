@@ -43,6 +43,7 @@ export class AiPromptComponent {
 
   public init(): void {
     i18n.subscribe(() => this.updateLocalizedText());
+    store.subscribe(() => this.updateLocalizedText());
 
     if (this.btnOpenAiPrompt) {
       this.btnOpenAiPrompt.addEventListener('click', () => this.showAiModal());
@@ -92,8 +93,11 @@ export class AiPromptComponent {
   }
 
   private updateLocalizedText(): void {
+    const showLabels = store.isShowButtonLabels();
+
     if (this.btnOpenAiPrompt) {
-      this.btnOpenAiPrompt.innerHTML = `<span>🤖</span> ${i18n.t('btnAiPrompt')}`;
+      this.btnOpenAiPrompt.innerHTML = showLabels ? `<span>🤖</span> <strong>${i18n.t('btnAiPrompt')}</strong>` : '🤖';
+      this.btnOpenAiPrompt.title = i18n.t('btnAiPrompt');
     }
 
     const txtModalAiTitle = document.getElementById('txt-modal-ai-title');
@@ -116,10 +120,22 @@ export class AiPromptComponent {
       this.inputCustomFocus.placeholder = i18n.t('aiCustomFocusPlaceholder');
     }
 
-    if (this.btnCopyPrompt) this.btnCopyPrompt.textContent = i18n.t('btnCopyPrompt');
-    if (this.btnOpenChatGpt) this.btnOpenChatGpt.textContent = i18n.t('btnOpenChatGpt');
-    if (this.btnOpenClaude) this.btnOpenClaude.textContent = i18n.t('btnOpenClaude');
-    if (this.btnOpenGemini) this.btnOpenGemini.textContent = i18n.t('btnOpenGemini');
+    if (this.btnCopyPrompt) {
+      this.btnCopyPrompt.innerHTML = showLabels ? `<span>📋</span> <strong>${i18n.t('btnCopyPrompt')}</strong>` : '📋';
+      this.btnCopyPrompt.title = i18n.t('btnCopyPrompt');
+    }
+    if (this.btnOpenChatGpt) {
+      this.btnOpenChatGpt.innerHTML = '🚀 ChatGPT';
+      this.btnOpenChatGpt.title = i18n.t('btnOpenChatGpt');
+    }
+    if (this.btnOpenClaude) {
+      this.btnOpenClaude.innerHTML = '🚀 Claude';
+      this.btnOpenClaude.title = i18n.t('btnOpenClaude');
+    }
+    if (this.btnOpenGemini) {
+      this.btnOpenGemini.innerHTML = '🚀 Gemini';
+      this.btnOpenGemini.title = i18n.t('btnOpenGemini');
+    }
 
     // Update preset option texts
     const optSummary = document.getElementById('opt-ai-summary');

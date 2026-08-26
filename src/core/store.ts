@@ -18,11 +18,13 @@ class RetroStore {
   private userVotes: Record<string, UserVoteState> = {};
   private cardsRevealedMap: Record<string, boolean> = {};
   private hostedSessionIds: string[] = [];
+  private showButtonLabels: boolean = false;
   private listeners: StateChangeListener[] = [];
 
   public init(): void {
     this.loadHostedSessions();
     this.loadCardsRevealed();
+    this.loadShowButtonLabels();
     this.loadSessions();
     this.loadUserVotes();
     this.setupRealtimeListeners();
@@ -31,6 +33,22 @@ class RetroStore {
     window.addEventListener('hashchange', () => {
       this.checkUrlHash();
     });
+  }
+
+  private loadShowButtonLabels(): void {
+    const saved = localStorage.getItem('pixelsprint_show_button_labels');
+    this.showButtonLabels = saved === 'true';
+  }
+
+  public isShowButtonLabels(): boolean {
+    return this.showButtonLabels;
+  }
+
+  public toggleButtonLabels(): boolean {
+    this.showButtonLabels = !this.showButtonLabels;
+    localStorage.setItem('pixelsprint_show_button_labels', String(this.showButtonLabels));
+    this.notify();
+    return this.showButtonLabels;
   }
 
   private loadCardsRevealed(): void {

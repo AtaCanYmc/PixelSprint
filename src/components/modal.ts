@@ -25,6 +25,7 @@ export class ModalComponent {
 
   public init(): void {
     i18n.subscribe(() => this.updateLocalizedText());
+    store.subscribe(() => this.updateLocalizedText());
 
     document.querySelectorAll('.btn-close-modal').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -83,17 +84,39 @@ export class ModalComponent {
   }
 
   private updateLocalizedText(): void {
+    const btnShareLink = document.getElementById('btn-share-link');
     const btnOpenAdd = document.getElementById('btn-open-add-modal');
     const btnOpenAi = document.getElementById('btn-open-ai-prompt');
     const btnExport = document.getElementById('btn-open-export');
     const btnClear = document.getElementById('btn-clear-board');
     const btnInstall = document.getElementById('btn-install-pwa');
 
-    if (btnOpenAdd) btnOpenAdd.innerHTML = `<span>➕</span> ${i18n.t('btnAddCard')}`;
-    if (btnOpenAi) btnOpenAi.innerHTML = `<span>🤖</span> ${i18n.t('btnAiPrompt')}`;
-    if (btnExport) btnExport.innerHTML = `<span>💾</span> ${i18n.t('btnExportReport')}`;
-    if (btnClear) btnClear.innerHTML = `<span>🗑️</span> ${i18n.t('btnClearBoard')}`;
-    if (btnInstall) btnInstall.innerHTML = `<span>📱</span> ${i18n.t('btnInstallPwa')}`;
+    const showLabels = store.isShowButtonLabels();
+
+    if (btnShareLink) {
+      btnShareLink.innerHTML = showLabels ? `<span>📱</span> <strong>${i18n.t('btnShareQr')}</strong>` : '📱';
+      btnShareLink.title = i18n.t('btnShareQr');
+    }
+    if (btnOpenAdd) {
+      btnOpenAdd.innerHTML = showLabels ? `<span>➕</span> <strong>${i18n.t('btnAddCard')}</strong>` : '➕';
+      btnOpenAdd.title = i18n.t('btnAddCard');
+    }
+    if (btnOpenAi) {
+      btnOpenAi.innerHTML = showLabels ? `<span>🤖</span> <strong>${i18n.t('btnAiPrompt')}</strong>` : '🤖';
+      btnOpenAi.title = i18n.t('btnAiPrompt');
+    }
+    if (btnExport) {
+      btnExport.innerHTML = showLabels ? `<span>💾</span> <strong>${i18n.t('btnExportReport')}</strong>` : '💾';
+      btnExport.title = i18n.t('btnExportReport');
+    }
+    if (btnClear) {
+      btnClear.innerHTML = showLabels ? `<span>🗑️</span> <strong>${i18n.t('btnClearBoard')}</strong>` : '🗑️';
+      btnClear.title = i18n.t('btnClearBoard');
+    }
+    if (btnInstall) {
+      btnInstall.innerHTML = showLabels ? `<span>📱</span> <strong>${i18n.t('btnInstallPwa')}</strong>` : '📱';
+      btnInstall.title = i18n.t('btnInstallPwa');
+    }
 
     // Add Card Modal i18n
     const txtAddTitle = document.getElementById('txt-modal-add-title');

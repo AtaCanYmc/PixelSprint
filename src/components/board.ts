@@ -129,18 +129,27 @@ export class BoardComponent {
 
     const btnToggleReveal = document.getElementById('btn-toggle-reveal');
     if (btnToggleReveal) {
+      const showLabels = store.isShowButtonLabels();
       if (isHost) {
-        btnToggleReveal.innerHTML = isRevealed
-          ? `<span>🙈</span> <strong>${escapeHtml(i18n.t('btnToggleMask'))}</strong>`
-          : `<span>👁️</span> <strong>${escapeHtml(i18n.t('btnToggleReveal'))}</strong>`;
+        btnToggleReveal.innerHTML = showLabels
+          ? isRevealed
+            ? `<span>🙈</span> <strong>${escapeHtml(i18n.t('btnToggleMask'))}</strong>`
+            : `<span>👁️</span> <strong>${escapeHtml(i18n.t('btnToggleReveal'))}</strong>`
+          : isRevealed
+            ? '🙈'
+            : '👁️';
+        btnToggleReveal.title = isRevealed ? i18n.t('btnToggleMask') : i18n.t('btnToggleReveal');
         btnToggleReveal.style.opacity = '1';
-        btnToggleReveal.title = '';
       } else {
-        btnToggleReveal.innerHTML = isRevealed
-          ? `<span>👁️</span> <strong>${escapeHtml(i18n.t('badgeRevealedPhase'))}</strong>`
-          : `<span>🙈</span> <strong>${escapeHtml(i18n.t('badgeMaskedPhase'))}</strong>`;
+        btnToggleReveal.innerHTML = showLabels
+          ? isRevealed
+            ? `<span>👁️</span> <strong>${escapeHtml(i18n.t('badgeRevealedPhase'))}</strong>`
+            : `<span>🙈</span> <strong>${escapeHtml(i18n.t('badgeMaskedPhase'))}</strong>`
+          : isRevealed
+            ? '👁️'
+            : '🙈';
+        btnToggleReveal.title = `${isRevealed ? i18n.t('badgeRevealedPhase') : i18n.t('badgeMaskedPhase')} (${i18n.t('hostOnlyTooltip')})`;
         btnToggleReveal.style.opacity = '0.85';
-        btnToggleReveal.title = i18n.t('hostOnlyTooltip');
       }
     }
 

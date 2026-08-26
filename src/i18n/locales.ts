@@ -114,6 +114,8 @@ export interface Translations {
   startMenuInstall: string;
   startMenuAbout: string;
   startMenuClear: string;
+  startMenuLabels: string;
+  labelsToggleTitle: string;
 
   // Network Badges
   badgeOnline: string;
@@ -198,9 +200,9 @@ export const locales: Record<Language, Translations> = {
     soundToggleTitle: 'Ses Efektlerini Aç/Kapat',
     aboutTitle: 'Hakkında',
 
-    colWentWellTitle: '🟢 Neyi İyi Yaptık? (Went Well)',
-    colImprovementTitle: '🔴 Neyi Batırdık / Gelişmeli? (Needs Improvement)',
-    colActionTitle: '💡 Aksiyonlar & Fikirler (Action Items)',
+    colWentWellTitle: '🟢',
+    colImprovementTitle: '🔴',
+    colActionTitle: '💡',
 
     emptyColumnMsg: '[Henüz bu kategoride bir anonim kart yok. İlk kartı ekleyen sen ol!]',
     cardAuthorAnonymous: 'Anonim Retro Sakini',
@@ -266,6 +268,8 @@ export const locales: Record<Language, Translations> = {
     startMenuInstall: 'PixelSprint.exe Yükle (PWA)',
     startMenuAbout: 'Hakkında',
     startMenuClear: 'Panoyu Temizle',
+    startMenuLabels: 'Buton Metinleri (Açık/Kapalı)',
+    labelsToggleTitle: 'Buton Metinlerini Göster/Gizle',
 
     badgeOnline: '🛜 ONLINE',
     badgeOffline: '📡❌ ERR_RETRO_OFFLINE',
@@ -346,9 +350,9 @@ export const locales: Record<Language, Translations> = {
     soundToggleTitle: 'Toggle Sound Effects',
     aboutTitle: 'About',
 
-    colWentWellTitle: '🟢 What Went Well? (Went Well)',
-    colImprovementTitle: '🔴 What Needs Improvement? (Bugs & Fixes)',
-    colActionTitle: '💡 Action Items & Ideas (Action Items)',
+    colWentWellTitle: '🟢',
+    colImprovementTitle: '🔴',
+    colActionTitle: '💡',
 
     emptyColumnMsg: '[No anonymous cards in this column yet. Be the first to add one!]',
     cardAuthorAnonymous: 'Anonymous Retro Resident',
@@ -413,6 +417,8 @@ export const locales: Record<Language, Translations> = {
     startMenuInstall: 'Install PixelSprint.exe (PWA)',
     startMenuAbout: 'About',
     startMenuClear: 'Clear Board',
+    startMenuLabels: 'Button Labels (On/Off)',
+    labelsToggleTitle: 'Toggle Button Text Labels',
 
     badgeOnline: '🛜 ONLINE',
     badgeOffline: '📡❌ ERR_RETRO_OFFLINE',
@@ -492,9 +498,9 @@ export const locales: Record<Language, Translations> = {
     soundToggleTitle: 'Activer/Désactiver les Effets Sonores',
     aboutTitle: 'À propos',
 
-    colWentWellTitle: "🟢 Ce Qui S'est Bien Passé ? (Went Well)",
-    colImprovementTitle: '🔴 Ce Qui Doit Être Amélioré ? (Bugs & Fixes)',
-    colActionTitle: '💡 Actions & Idées (Action Items)',
+    colWentWellTitle: '🟢',
+    colImprovementTitle: '🔴',
+    colActionTitle: '💡',
 
     emptyColumnMsg: '[Aucune carte anonyme dans cette colonne. Soyez le premier à en ajouter une !]',
     cardAuthorAnonymous: 'Résident Rétro Anonyme',
@@ -560,6 +566,8 @@ export const locales: Record<Language, Translations> = {
     startMenuInstall: 'Installer PixelSprint.exe (PWA)',
     startMenuAbout: 'À propos',
     startMenuClear: 'Effacer Tableau',
+    startMenuLabels: 'Étiquettes de Bouton (Activé/Désactivé)',
+    labelsToggleTitle: 'Afficher/Masquer les Étiquettes de Bouton',
 
     badgeOnline: '🛜 EN LIGNE',
     badgeOffline: '📡❌ ERR_RETRO_HORS_LIGNE',

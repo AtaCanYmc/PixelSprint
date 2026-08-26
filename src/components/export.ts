@@ -40,6 +40,7 @@ export class ExportComponent {
 
   public init(): void {
     i18n.subscribe(() => this.updateLocalizedText());
+    store.subscribe(() => this.updateLocalizedText());
 
     if (this.btnOpenExport) {
       this.btnOpenExport.addEventListener('click', () => this.showExportModal());
@@ -80,6 +81,15 @@ export class ExportComponent {
   }
 
   private updateLocalizedText(): void {
+    const showLabels = store.isShowButtonLabels();
+
+    if (this.btnOpenExport) {
+      this.btnOpenExport.innerHTML = showLabels
+        ? `<span>💾</span> <strong>${i18n.t('btnExportReport')}</strong>`
+        : '💾';
+      this.btnOpenExport.title = i18n.t('btnExportReport');
+    }
+
     if (this.btnCopyExport) this.btnCopyExport.textContent = i18n.t('btnCopy');
     if (this.btnDownloadTxt) this.btnDownloadTxt.innerHTML = `<strong>${i18n.t('btnDownloadTxt')}</strong>`;
     if (this.btnDownloadCsv) this.btnDownloadCsv.innerHTML = `<strong>${i18n.t('btnDownloadCsv')}</strong>`;

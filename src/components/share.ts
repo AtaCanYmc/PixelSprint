@@ -31,6 +31,7 @@ export class ShareComponent {
 
   public init(): void {
     i18n.subscribe(() => this.updateLocalizedText());
+    store.subscribe(() => this.updateLocalizedText());
 
     if (this.btnOpenShare) {
       this.btnOpenShare.addEventListener('click', () => this.showShareModal());
@@ -54,11 +55,15 @@ export class ShareComponent {
   }
 
   private updateLocalizedText(): void {
+    const showLabels = store.isShowButtonLabels();
+
     if (this.btnOpenShare) {
-      this.btnOpenShare.innerHTML = `<span>📱</span> <strong>${i18n.t('btnShareQr')}</strong>`;
+      this.btnOpenShare.innerHTML = showLabels ? `<span>📱</span> <strong>${i18n.t('btnShareQr')}</strong>` : '📱';
+      this.btnOpenShare.title = i18n.t('btnShareQr');
     }
     if (this.btnCopyShareUrl) {
-      this.btnCopyShareUrl.textContent = i18n.t('btnCopy');
+      this.btnCopyShareUrl.innerHTML = showLabels ? `<span>📋</span> <strong>${i18n.t('btnCopy')}</strong>` : '📋';
+      this.btnCopyShareUrl.title = i18n.t('btnCopy');
     }
   }
 
