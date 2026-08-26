@@ -414,7 +414,7 @@ export const locales: Record<Language, Translations> = {
     btnDownloadXlsx: '.XLSX',
     btnDownloadDocx: '.DOCX',
     btnDownloadPdf: '.PDF',
-    btnSendEmail: '📧 Email',
+    btnSendEmail: 'Email',
     btnClose: 'Close',
 
     copySuccess: 'Retro summary report copied to clipboard!',
