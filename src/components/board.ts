@@ -86,12 +86,20 @@ export class BoardComponent {
       audioSynth.playDownvote();
       store.downvoteCard(id);
     } else if (action === 'move') {
+      if (!store.isCurrentSessionHost()) {
+        alert(i18n.t('hostOnlyActionAlert'));
+        return;
+      }
       const targetCat = btn.dataset['target'] as RetroCategory | undefined;
       if (targetCat) {
         audioSynth.playClick();
         store.moveCard(id, targetCat);
       }
     } else if (action === 'delete') {
+      if (!store.isCurrentSessionHost()) {
+        alert(i18n.t('hostOnlyActionAlert'));
+        return;
+      }
       if (confirm(i18n.t('deleteCardConfirm'))) {
         audioSynth.playDelete();
         store.deleteCard(id);
@@ -104,6 +112,7 @@ export class BoardComponent {
 
     const filterText = this.searchInput ? this.searchInput.value.toLowerCase().trim() : '';
     const cards = store.getCards();
+    const isHost = store.isCurrentSessionHost();
 
     interface ColumnGroup {
       el: HTMLElement | null;
@@ -153,6 +162,22 @@ export class BoardComponent {
           const upActive = userVote === 'up' ? 'active-upvote pressed' : '';
           const downActive = userVote === 'down' ? 'active-downvote pressed' : '';
 
+          const moveButtonsHtml = isHost
+            ? `
+                ${card.category !== 'went_well' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="went_well" title="${escapeHtml(i18n.t('moveCardTitle'))}">🟢</button>` : ''}
+                ${card.category !== 'improvement' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="improvement" title="${escapeHtml(i18n.t('moveCardTitle'))}">🔴</button>` : ''}
+                ${card.category !== 'action' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="action" title="${escapeHtml(i18n.t('moveCardTitle'))}">💡</button>` : ''}
+              `
+            : '';
+
+          const deleteButtonHtml = isHost
+            ? `
+                <button class="win-btn win-btn-sm" data-action="delete" data-id="${card.id}" title="Sil">
+                  ❌
+                </button>
+              `
+            : '';
+
           return `
           <div class="win-outset retro-card ${card.category}" data-id="${card.id}">
             <div class="card-header">
@@ -175,15 +200,10 @@ export class BoardComponent {
                   </button>
                 </div>
 
-                <!-- Move Quick Buttons -->
-                ${card.category !== 'went_well' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="went_well" title="${escapeHtml(i18n.t('moveCardTitle'))}">🟢</button>` : ''}
-                ${card.category !== 'improvement' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="improvement" title="${escapeHtml(i18n.t('moveCardTitle'))}">🔴</button>` : ''}
-                ${card.category !== 'action' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="action" title="${escapeHtml(i18n.t('moveCardTitle'))}">💡</button>` : ''}
+                ${moveButtonsHtml}
               </div>
 
-              <button class="win-btn win-btn-sm" data-action="delete" data-id="${card.id}" title="Sil">
-                ❌
-              </button>
+              ${deleteButtonHtml}
             </div>
           </div>
         `;

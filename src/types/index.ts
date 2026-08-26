@@ -21,7 +21,10 @@ export interface RetroSession {
   createdAt: string;
   updatedAt: string;
   cardCount?: number;
+  isHost?: boolean;
 }
+
+export type UserRole = 'host' | 'guest';
 
 export interface CategoryConfig {
   key: RetroCategory;

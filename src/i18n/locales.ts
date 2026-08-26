@@ -147,6 +147,14 @@ export interface Translations {
   aiRoleScrumMaster: string;
   aiRoleExecutive: string;
   aiRolePeer: string;
+
+  // Session Manager & Roles
+  badgeHost: string;
+  badgeGuest: string;
+  roleHostTitle: string;
+  roleGuestTitle: string;
+  hostOnlyActionAlert: string;
+  hostOnlyTooltip: string;
 }
 
 export const locales: Record<Language, Translations> = {
@@ -280,7 +288,15 @@ export const locales: Record<Language, Translations> = {
     aiRoleAgileCoach: '🏆 Kıdemli Agile Coach',
     aiRoleScrumMaster: '⏱️ Scrum Master',
     aiRoleExecutive: '📊 Mühendislik Direktörü / Executive',
-    aiRolePeer: '🤝 Ekip Arkadaşı / Yazılımcı'
+    aiRolePeer: '🤝 Ekip Arkadaşı / Yazılımcı',
+
+    badgeHost: '👑 HOST',
+    badgeGuest: '👤 KATILIMCI',
+    roleHostTitle: '👑 Oturum Yöneticisi',
+    roleGuestTitle: '👤 Katılımcı',
+    hostOnlyActionAlert:
+      'Bu işlem (kart taşıma, silme, panoyu temizle) sadece Oturum Yöneticisi tarafından yapılabilir.',
+    hostOnlyTooltip: 'Sadece Oturum Yöneticisi tarafından yapılabilir'
   },
 
   en: {
@@ -411,7 +427,15 @@ export const locales: Record<Language, Translations> = {
     aiRoleAgileCoach: '🏆 Senior Agile Coach',
     aiRoleScrumMaster: '⏱️ Scrum Master',
     aiRoleExecutive: '📊 Engineering Director / Executive',
-    aiRolePeer: '🤝 Teammate / Engineer'
+    aiRolePeer: '🤝 Teammate / Engineer',
+
+    badgeHost: '👑 HOST',
+    badgeGuest: '👤 GUEST',
+    roleHostTitle: '👑 Session Manager',
+    roleGuestTitle: '👤 Participant',
+    hostOnlyActionAlert:
+      'This action (moving/deleting cards, clearing board) can only be performed by the Session Manager.',
+    hostOnlyTooltip: 'Session Manager only'
   },
 
   fr: {
@@ -435,7 +459,7 @@ export const locales: Record<Language, Translations> = {
     btnOpen: '▶ Ouvrir',
     btnDelete: '❌',
     emptySessions: '[Aucune session Rétro enregistrée. Créez-en une nouvelle ci-dessus !]',
-    deleteSessionConfirm: 'Voulez-vous vraiment supprimer cette session Rétro ?',
+    deleteSessionConfirm: 'Voulez-vous gerçekten supprimer cette session Rétro ?',
 
     btnShareQr: 'Partager (QR)',
     btnAddCard: 'Nouvelle Carte',
@@ -543,6 +567,13 @@ export const locales: Record<Language, Translations> = {
     aiRoleAgileCoach: '🏆 Coach Agile Senior',
     aiRoleScrumMaster: '⏱️ Scrum Master',
     aiRoleExecutive: '📊 Directeur Ingénierie',
-    aiRolePeer: '🤝 Coéquipier / Développeur'
+    aiRolePeer: '🤝 Coéquipier / Développeur',
+
+    badgeHost: '👑 HÔTE',
+    badgeGuest: '👤 INVITÉ',
+    roleHostTitle: '👑 Gestionnaire de Session',
+    roleGuestTitle: '👤 Participant',
+    hostOnlyActionAlert: 'Cette action ne peut être effectuée que par le gestionnaire de session.',
+    hostOnlyTooltip: 'Gestionnaire uniquement'
   }
 };

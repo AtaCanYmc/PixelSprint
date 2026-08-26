@@ -136,10 +136,24 @@ export class DashboardComponent {
     }
 
     const tableRowsHtml = sessions
-      .map(
-        (s) => `
+      .map((s) => {
+        const isHost = store.isHost(s.id);
+        const roleBadgeHtml = isHost
+          ? `<span class="session-badge" style="background: #e3f2fd; color: #0d47a1; border-color: #90caf9;">${escapeHtml(i18n.t('badgeHost'))}</span>`
+          : `<span class="session-badge" style="background: #f5f5f5; color: #616161; border-color: #e0e0e0;">${escapeHtml(i18n.t('badgeGuest'))}</span>`;
+
+        const deleteBtnHtml = isHost
+          ? `<button class="win-btn win-btn-sm" data-session-action="delete" data-id="${s.id}" title="${escapeHtml(i18n.t('btnDelete'))}">❌</button>`
+          : '';
+
+        return `
       <tr>
-        <td><strong>🚀 ${escapeHtml(s.title)}</strong></td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <strong>🚀 ${escapeHtml(s.title)}</strong>
+            ${roleBadgeHtml}
+          </div>
+        </td>
         <td><code class="session-code">${escapeHtml(s.id)}</code></td>
         <td><span class="session-badge">${s.cardCount || 0}</span></td>
         <td>${escapeHtml(s.createdAt)}</td>
@@ -148,22 +162,32 @@ export class DashboardComponent {
             <button class="win-btn win-btn-sm" data-session-action="open" data-id="${s.id}">
               ${escapeHtml(i18n.t('btnOpen'))}
             </button>
-            <button class="win-btn win-btn-sm" data-session-action="delete" data-id="${s.id}">
-              ❌
-            </button>
+            ${deleteBtnHtml}
           </div>
         </td>
       </tr>
-    `
-      )
+    `;
+      })
       .join('');
 
     const mobileCardsHtml = sessions
-      .map(
-        (s) => `
+      .map((s) => {
+        const isHost = store.isHost(s.id);
+        const roleBadgeHtml = isHost
+          ? `<span class="session-badge" style="background: #e3f2fd; color: #0d47a1; border-color: #90caf9;">${escapeHtml(i18n.t('badgeHost'))}</span>`
+          : `<span class="session-badge" style="background: #f5f5f5; color: #616161; border-color: #e0e0e0;">${escapeHtml(i18n.t('badgeGuest'))}</span>`;
+
+        const deleteBtnHtml = isHost
+          ? `<button class="win-btn win-btn-sm btn-mobile-delete" data-session-action="delete" data-id="${s.id}">❌</button>`
+          : '';
+
+        return `
       <div class="win-outset session-mobile-card">
         <div class="session-mobile-header">
-          <strong class="session-mobile-title">🚀 ${escapeHtml(s.title)}</strong>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <strong class="session-mobile-title">🚀 ${escapeHtml(s.title)}</strong>
+            ${roleBadgeHtml}
+          </div>
           <span class="session-badge">${s.cardCount || 0}</span>
         </div>
         <div class="session-mobile-meta">
@@ -174,13 +198,11 @@ export class DashboardComponent {
           <button class="win-btn win-btn-sm btn-mobile-open" data-session-action="open" data-id="${s.id}">
             ${escapeHtml(i18n.t('btnOpen'))}
           </button>
-          <button class="win-btn win-btn-sm btn-mobile-delete" data-session-action="delete" data-id="${s.id}">
-            ❌
-          </button>
+          ${deleteBtnHtml}
         </div>
       </div>
-    `
-      )
+    `;
+      })
       .join('');
 
     this.sessionListContainer.innerHTML = `

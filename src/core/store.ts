@@ -16,9 +16,11 @@ class RetroStore {
   private activeSessionId: string | null = null;
   private cards: RetroCard[] = [];
   private userVotes: Record<string, UserVoteState> = {};
+  private hostedSessionIds: string[] = [];
   private listeners: StateChangeListener[] = [];
 
   public init(): void {
+    this.loadHostedSessions();
     this.loadSessions();
     this.loadUserVotes();
     this.setupRealtimeListeners();
@@ -27,6 +29,34 @@ class RetroStore {
     window.addEventListener('hashchange', () => {
       this.checkUrlHash();
     });
+  }
+
+  private loadHostedSessions(): void {
+    const saved = localStorage.getItem('pixelsprint_hosted_sessions');
+    if (saved) {
+      try {
+        this.hostedSessionIds = JSON.parse(saved) as string[];
+      } catch (e) {
+        this.hostedSessionIds = [];
+      }
+    } else {
+      this.hostedSessionIds = ['retro-demo-sprint-1'];
+      this.saveHostedSessions();
+    }
+  }
+
+  private saveHostedSessions(): void {
+    localStorage.setItem('pixelsprint_hosted_sessions', JSON.stringify(this.hostedSessionIds));
+  }
+
+  public isHost(sessionId?: string): boolean {
+    const targetId = sessionId || this.activeSessionId;
+    if (!targetId) return false;
+    return this.hostedSessionIds.includes(targetId);
+  }
+
+  public isCurrentSessionHost(): boolean {
+    return this.isHost(this.activeSessionId || undefined);
   }
 
   private loadUserVotes(): void {
@@ -168,6 +198,11 @@ class RetroStore {
       cardCount: 0
     };
 
+    if (!this.hostedSessionIds.includes(id)) {
+      this.hostedSessionIds.unshift(id);
+      this.saveHostedSessions();
+    }
+
     this.sessions.unshift(newSession);
     this.saveSessions();
     this.setActiveSession(id);
@@ -203,7 +238,10 @@ class RetroStore {
   }
 
   public deleteSession(sessionId: string): void {
+    if (!this.isHost(sessionId)) return;
     this.sessions = this.sessions.filter((s) => s.id !== sessionId);
+    this.hostedSessionIds = this.hostedSessionIds.filter((id) => id !== sessionId);
+    this.saveHostedSessions();
     localStorage.removeItem(STORAGE_KEYS.CARDS_PREFIX + sessionId);
     this.saveSessions();
 
@@ -339,6 +377,7 @@ class RetroStore {
   }
 
   public moveCard(id: string, targetCategory: RetroCategory): void {
+    if (!this.isCurrentSessionHost()) return;
     const card = this.cards.find((c) => c.id === id);
     if (card) {
       card.category = targetCategory;
@@ -348,6 +387,7 @@ class RetroStore {
   }
 
   public deleteCard(id: string): void {
+    if (!this.isCurrentSessionHost()) return;
     this.cards = this.cards.filter((c) => c.id !== id);
     delete this.userVotes[id];
     this.saveUserVotes();
@@ -356,6 +396,7 @@ class RetroStore {
   }
 
   public clearAll(): void {
+    if (!this.isCurrentSessionHost()) return;
     this.cards = [];
     this.userVotes = {};
     this.saveUserVotes();

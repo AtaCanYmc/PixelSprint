@@ -42,12 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const taskbarComp = new TaskbarComponent();
   taskbarComp.init();
 
-  // Sync title bar with active session
+  // Sync title bar with active session & role badge
   store.subscribe(() => {
     const activeSession = store.getActiveSession();
     const titleEl = document.getElementById('board-session-title');
     if (activeSession && titleEl) {
-      titleEl.textContent = `PixelSprint - [${activeSession.title}] (ID: ${activeSession.id})`;
+      const isHost = store.isCurrentSessionHost();
+      const roleBadge = isHost ? i18n.t('roleHostTitle') : i18n.t('roleGuestTitle');
+      titleEl.textContent = `PixelSprint - [${activeSession.title}] (${roleBadge})`;
     }
   });
 

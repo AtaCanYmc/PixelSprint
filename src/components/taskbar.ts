@@ -103,6 +103,10 @@ export class TaskbarComponent {
 
     const handleClear = (): void => {
       if (this.startMenu) this.startMenu.classList.add('hidden');
+      if (!store.isCurrentSessionHost()) {
+        alert(i18n.t('hostOnlyActionAlert'));
+        return;
+      }
       if (confirm(i18n.t('clearAllConfirm'))) {
         audioSynth.playDelete();
         store.clearAll();
