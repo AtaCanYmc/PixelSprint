@@ -103,7 +103,6 @@ export class ModalComponent {
     const optAction = document.getElementById('opt-action');
     const txtMessageLabel = document.getElementById('txt-label-message');
     const cardTextarea = document.getElementById('card-text') as HTMLTextAreaElement | null;
-    const btnCancelAdd = document.getElementById('btn-cancel-add');
     const btnSaveCard = document.getElementById('btn-save-card');
 
     if (txtAddTitle) txtAddTitle.textContent = i18n.t('modalAddTitle');
@@ -113,28 +112,23 @@ export class ModalComponent {
     if (optAction) optAction.textContent = i18n.t('colActionTitle');
     if (txtMessageLabel) txtMessageLabel.textContent = i18n.t('messageLabel');
     if (cardTextarea) cardTextarea.placeholder = i18n.t('messagePlaceholder');
-    if (btnCancelAdd) btnCancelAdd.textContent = i18n.t('btnCancel');
     if (btnSaveCard) btnSaveCard.innerHTML = `<strong>${i18n.t('btnSaveAndSend')}</strong>`;
 
     // Share QR Modal i18n
     const txtShareTitle = document.getElementById('txt-modal-share-title');
     const txtShareDesc = document.getElementById('txt-share-desc');
     const txtDirectLink = document.getElementById('txt-label-direct-link');
-    const btnCloseShare = document.getElementById('btn-close-share');
 
     if (txtShareTitle) txtShareTitle.textContent = i18n.t('modalShareTitle');
     if (txtShareDesc) txtShareDesc.textContent = i18n.t('shareDesc');
     if (txtDirectLink) txtDirectLink.textContent = i18n.t('directLinkLabel');
-    if (btnCloseShare) btnCloseShare.textContent = i18n.t('btnClose');
 
     // Export Report Modal i18n
     const txtExportTitle = document.getElementById('txt-modal-export-title');
     const txtExportDesc = document.getElementById('txt-export-desc');
-    const btnCloseExport = document.getElementById('btn-close-export');
 
     if (txtExportTitle) txtExportTitle.textContent = i18n.t('modalExportTitle');
     if (txtExportDesc) txtExportDesc.textContent = i18n.t('exportDesc');
-    if (btnCloseExport) btnCloseExport.textContent = i18n.t('btnClose');
 
     // About Modal i18n
     const txtAboutTitle = document.getElementById('txt-modal-about-title');
@@ -143,7 +137,6 @@ export class ModalComponent {
     const txtAboutDesc2 = document.getElementById('txt-about-desc2');
     const txtAboutDesc3 = document.getElementById('txt-about-desc3');
     const txtAboutDesc4 = document.getElementById('txt-about-desc4');
-    const btnCloseAbout = document.getElementById('btn-close-about');
 
     if (txtAboutTitle) txtAboutTitle.textContent = i18n.t('modalAboutTitle');
     if (txtAboutSubhead) txtAboutSubhead.textContent = i18n.t('aboutSubhead');
@@ -151,7 +144,6 @@ export class ModalComponent {
     if (txtAboutDesc2) txtAboutDesc2.textContent = `• ${i18n.t('aboutDesc2')}`;
     if (txtAboutDesc3) txtAboutDesc3.textContent = `• ${i18n.t('aboutDesc3')}`;
     if (txtAboutDesc4) txtAboutDesc4.textContent = `• ${i18n.t('aboutDesc4')}`;
-    if (btnCloseAbout) btnCloseAbout.textContent = i18n.t('btnClose');
 
     // PWA Guide Modal i18n
     const txtModalPwaTitle = document.getElementById('txt-modal-pwa-title');
@@ -164,7 +156,6 @@ export class ModalComponent {
     const txtAndroidStep1 = document.getElementById('txt-android-step1');
     const txtAndroidStep2 = document.getElementById('txt-android-step2');
     const txtBtnInstallNow = document.getElementById('txt-btn-install-now');
-    const btnClosePwaGuide = document.getElementById('btn-close-pwa-guide');
 
     if (txtModalPwaTitle) txtModalPwaTitle.textContent = i18n.t('modalPwaTitle');
     if (txtPwaHeading) txtPwaHeading.textContent = i18n.t('pwaHeading');
@@ -176,7 +167,6 @@ export class ModalComponent {
     if (txtAndroidStep1) txtAndroidStep1.textContent = i18n.t('androidStep1');
     if (txtAndroidStep2) txtAndroidStep2.textContent = i18n.t('androidStep2');
     if (txtBtnInstallNow) txtBtnInstallNow.textContent = i18n.t('btnInstallNow');
-    if (btnClosePwaGuide) btnClosePwaGuide.innerHTML = `<strong>${i18n.t('btnGotIt')}</strong>`;
   }
 
   public openModal(modalEl: HTMLElement | null): void {

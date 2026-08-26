@@ -103,7 +103,6 @@ export class AiPromptComponent {
     const txtLabelAiLang = document.getElementById('txt-label-ai-lang');
     const txtLabelAiFocus = document.getElementById('txt-label-ai-focus');
     const txtLabelAiGenerated = document.getElementById('txt-label-ai-generated');
-    const btnCloseAi = document.getElementById('btn-close-ai');
 
     if (txtModalAiTitle) txtModalAiTitle.textContent = i18n.t('modalAiTitle');
     if (txtAiModalDesc) txtAiModalDesc.textContent = i18n.t('aiModalDesc');
@@ -121,7 +120,6 @@ export class AiPromptComponent {
     if (this.btnOpenChatGpt) this.btnOpenChatGpt.textContent = i18n.t('btnOpenChatGpt');
     if (this.btnOpenClaude) this.btnOpenClaude.textContent = i18n.t('btnOpenClaude');
     if (this.btnOpenGemini) this.btnOpenGemini.textContent = i18n.t('btnOpenGemini');
-    if (btnCloseAi) btnCloseAi.textContent = i18n.t('btnClose');
 
     // Update preset option texts
     const optSummary = document.getElementById('opt-ai-summary');
