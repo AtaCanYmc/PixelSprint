@@ -22,6 +22,7 @@ export interface RetroSession {
   updatedAt: string;
   cardCount?: number;
   isHost?: boolean;
+  cardsRevealed?: boolean;
 }
 
 export type UserRole = 'host' | 'guest';
@@ -45,6 +46,7 @@ export type RealtimeEventType =
   | 'MOVE_CARD'
   | 'DELETE_CARD'
   | 'CLEAR_CARDS'
+  | 'TOGGLE_REVEAL_CARDS'
   | 'SYNC_STATE'
   | 'REQUEST_SYNC';
 

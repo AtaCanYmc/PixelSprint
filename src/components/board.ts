@@ -65,6 +65,18 @@ export class BoardComponent {
       });
     });
 
+    const btnToggleReveal = document.getElementById('btn-toggle-reveal');
+    if (btnToggleReveal) {
+      btnToggleReveal.addEventListener('click', () => {
+        if (!store.isCurrentSessionHost()) {
+          alert(i18n.t('hostOnlyActionAlert'));
+          return;
+        }
+        audioSynth.playClick();
+        store.toggleCardsRevealed();
+      });
+    }
+
     this.render();
   }
 
@@ -113,6 +125,24 @@ export class BoardComponent {
     const filterText = this.searchInput ? this.searchInput.value.toLowerCase().trim() : '';
     const cards = store.getCards();
     const isHost = store.isCurrentSessionHost();
+    const isRevealed = store.isCardsRevealed();
+
+    const btnToggleReveal = document.getElementById('btn-toggle-reveal');
+    if (btnToggleReveal) {
+      if (isHost) {
+        btnToggleReveal.innerHTML = isRevealed
+          ? `<span>🙈</span> <strong>${escapeHtml(i18n.t('btnToggleMask'))}</strong>`
+          : `<span>👁️</span> <strong>${escapeHtml(i18n.t('btnToggleReveal'))}</strong>`;
+        btnToggleReveal.style.opacity = '1';
+        btnToggleReveal.title = '';
+      } else {
+        btnToggleReveal.innerHTML = isRevealed
+          ? `<span>👁️</span> <strong>${escapeHtml(i18n.t('badgeRevealedPhase'))}</strong>`
+          : `<span>🙈</span> <strong>${escapeHtml(i18n.t('badgeMaskedPhase'))}</strong>`;
+        btnToggleReveal.style.opacity = '0.85';
+        btnToggleReveal.title = i18n.t('hostOnlyTooltip');
+      }
+    }
 
     interface ColumnGroup {
       el: HTMLElement | null;
@@ -162,6 +192,10 @@ export class BoardComponent {
           const upActive = userVote === 'up' ? 'active-upvote pressed' : '';
           const downActive = userVote === 'down' ? 'active-downvote pressed' : '';
 
+          const cardContentHtml = isRevealed
+            ? escapeHtml(card.text).replace(/\n/g, '<br>')
+            : `<span class="card-text-masked" title="${escapeHtml(i18n.t('badgeMaskedPhase'))}">████████████████</span>`;
+
           const moveButtonsHtml = isHost
             ? `
                 ${card.category !== 'went_well' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="went_well" title="${escapeHtml(i18n.t('moveCardTitle'))}">🟢</button>` : ''}
@@ -185,9 +219,10 @@ export class BoardComponent {
               <span class="card-time">⏱️ ${escapeHtml(card.timestamp)}</span>
             </div>
             <div class="card-body">
-              ${escapeHtml(card.text).replace(/\n/g, '<br>')}
+              ${cardContentHtml}
             </div>
             <div class="card-footer">
+
               <div class="card-actions">
                 <!-- Reddit Style Vote Group -->
                 <div class="vote-group">

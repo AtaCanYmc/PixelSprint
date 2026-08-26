@@ -456,3 +456,23 @@ textarea.form-control {
     opacity: 1;
   }
 }
+
+/* Card Redacted / Masked State */
+.card-text-masked {
+  display: inline-block;
+  background-color: var(--win-black);
+  color: var(--win-black);
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: 2px;
+  padding: 1px 6px;
+  font-family: var(--font-mono), monospace;
+  letter-spacing: 2px;
+  filter: blur(5px);
+  opacity: 0.85;
+}
+
+[data-theme='dark'] .card-text-masked {
+  background-color: #000000;
+  color: #000000;
+}

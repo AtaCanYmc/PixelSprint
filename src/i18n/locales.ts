@@ -155,6 +155,12 @@ export interface Translations {
   roleGuestTitle: string;
   hostOnlyActionAlert: string;
   hostOnlyTooltip: string;
+
+  // Masking & Reveal Cards Phase
+  btnToggleReveal: string;
+  btnToggleMask: string;
+  badgeMaskedPhase: string;
+  badgeRevealedPhase: string;
 }
 
 export const locales: Record<Language, Translations> = {
@@ -296,7 +302,12 @@ export const locales: Record<Language, Translations> = {
     roleGuestTitle: '👤 Katılımcı',
     hostOnlyActionAlert:
       'Bu işlem (kart taşıma, silme, panoyu temizle) sadece Oturum Yöneticisi tarafından yapılabilir.',
-    hostOnlyTooltip: 'Sadece Oturum Yöneticisi tarafından yapılabilir'
+    hostOnlyTooltip: 'Sadece Oturum Yöneticisi tarafından yapılabilir',
+
+    btnToggleReveal: '👁️ Kartları Göster',
+    btnToggleMask: '🙈 Kartları Gizle (Maskele)',
+    badgeMaskedPhase: '🙈 Kartlar Gizli (Sessiz Yazım Evresi)',
+    badgeRevealedPhase: '👁️ Kartlar Görünür'
   },
 
   en: {
@@ -435,7 +446,12 @@ export const locales: Record<Language, Translations> = {
     roleGuestTitle: '👤 Participant',
     hostOnlyActionAlert:
       'This action (moving/deleting cards, clearing board) can only be performed by the Session Manager.',
-    hostOnlyTooltip: 'Session Manager only'
+    hostOnlyTooltip: 'Session Manager only',
+
+    btnToggleReveal: '👁️ Reveal Cards',
+    btnToggleMask: '🙈 Mask Cards',
+    badgeMaskedPhase: '🙈 Cards Masked (Draft Phase)',
+    badgeRevealedPhase: '👁️ Cards Revealed'
   },
 
   fr: {
@@ -574,6 +590,11 @@ export const locales: Record<Language, Translations> = {
     roleHostTitle: '👑 Gestionnaire de Session',
     roleGuestTitle: '👤 Participant',
     hostOnlyActionAlert: 'Cette action ne peut être effectuée que par le gestionnaire de session.',
-    hostOnlyTooltip: 'Gestionnaire uniquement'
+    hostOnlyTooltip: 'Gestionnaire uniquement',
+
+    btnToggleReveal: '👁️ Révéler les Cartes',
+    btnToggleMask: '🙈 Masquer les Cartes',
+    badgeMaskedPhase: '🙈 Cartes Masquées',
+    badgeRevealedPhase: '👁️ Cartes Visibles'
   }
 };

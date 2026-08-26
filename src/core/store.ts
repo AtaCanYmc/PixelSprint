@@ -16,11 +16,13 @@ class RetroStore {
   private activeSessionId: string | null = null;
   private cards: RetroCard[] = [];
   private userVotes: Record<string, UserVoteState> = {};
+  private cardsRevealedMap: Record<string, boolean> = {};
   private hostedSessionIds: string[] = [];
   private listeners: StateChangeListener[] = [];
 
   public init(): void {
     this.loadHostedSessions();
+    this.loadCardsRevealed();
     this.loadSessions();
     this.loadUserVotes();
     this.setupRealtimeListeners();
@@ -29,6 +31,40 @@ class RetroStore {
     window.addEventListener('hashchange', () => {
       this.checkUrlHash();
     });
+  }
+
+  private loadCardsRevealed(): void {
+    const saved = localStorage.getItem('pixelsprint_cards_revealed');
+    if (saved) {
+      try {
+        this.cardsRevealedMap = JSON.parse(saved) as Record<string, boolean>;
+      } catch (e) {
+        this.cardsRevealedMap = {};
+      }
+    } else {
+      this.cardsRevealedMap = {};
+    }
+  }
+
+  private saveCardsRevealed(): void {
+    localStorage.setItem('pixelsprint_cards_revealed', JSON.stringify(this.cardsRevealedMap));
+  }
+
+  public isCardsRevealed(sessionId?: string): boolean {
+    const id = sessionId || this.activeSessionId;
+    if (!id) return false;
+    return this.cardsRevealedMap[id] ?? false;
+  }
+
+  public toggleCardsRevealed(): boolean {
+    if (!this.isCurrentSessionHost() || !this.activeSessionId) return this.isCardsRevealed();
+    const current = this.isCardsRevealed();
+    const nextState = !current;
+    this.cardsRevealedMap[this.activeSessionId] = nextState;
+    this.saveCardsRevealed();
+    realtimeSync.broadcast('TOGGLE_REVEAL_CARDS', { revealed: nextState });
+    this.notify();
+    return nextState;
   }
 
   private loadHostedSessions(): void {
@@ -134,13 +170,30 @@ class RetroStore {
           audioSynth.playDelete();
           break;
 
+        case 'TOGGLE_REVEAL_CARDS':
+          if (msg.payload?.revealed !== undefined && this.activeSessionId) {
+            this.cardsRevealedMap[this.activeSessionId] = !!msg.payload.revealed;
+            this.saveCardsRevealed();
+            audioSynth.playClick();
+            this.notify();
+          }
+          break;
+
         case 'REQUEST_SYNC':
-          realtimeSync.broadcast('SYNC_STATE', this.cards);
+          realtimeSync.broadcast('SYNC_STATE', { cards: this.cards, revealed: this.isCardsRevealed() });
           break;
 
         case 'SYNC_STATE':
-          if (Array.isArray(msg.payload)) {
-            this.cards = msg.payload as RetroCard[];
+          if (msg.payload) {
+            if (Array.isArray(msg.payload)) {
+              this.cards = msg.payload as RetroCard[];
+            } else if (msg.payload.cards && Array.isArray(msg.payload.cards)) {
+              this.cards = msg.payload.cards as RetroCard[];
+              if (msg.payload.revealed !== undefined && this.activeSessionId) {
+                this.cardsRevealedMap[this.activeSessionId] = !!msg.payload.revealed;
+                this.saveCardsRevealed();
+              }
+            }
             this.saveCardsForActiveSession();
           }
           break;
