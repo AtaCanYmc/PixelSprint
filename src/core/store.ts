@@ -3,11 +3,20 @@
  * Handles Retro Sessions, Per-Session Cards, Per-Device Vote Locking, and Real-time Synchronization
  */
 
-import { RetroCard, RetroCategory, RetroSession, StateChangeListener, RealtimeMessage } from '../types';
+import {
+  RetroCard,
+  RetroCategory,
+  RetroSession,
+  StateChangeListener,
+  RealtimeMessage,
+  RetroTimerState
+} from '../types';
 import { STORAGE_KEYS, INITIAL_DEMO_CARDS } from '../utils/constants';
 import { generateAnonymousCodename, getCurrentTimeString } from '../utils/helpers';
 import { audioSynth } from './audio';
 import { realtimeSync } from './sync';
+
+import { i18n } from '../i18n';
 
 export type UserVoteState = 'up' | 'down' | null;
 
@@ -17,6 +26,8 @@ class RetroStore {
   private cards: RetroCard[] = [];
   private userVotes: Record<string, UserVoteState> = {};
   private cardsRevealedMap: Record<string, boolean> = {};
+  private timerMap: Record<string, RetroTimerState> = {};
+  private timerTicker: number | null = null;
   private hostedSessionIds: string[] = [];
   private showButtonLabels: boolean = false;
   private listeners: StateChangeListener[] = [];
@@ -24,6 +35,7 @@ class RetroStore {
   public init(): void {
     this.loadHostedSessions();
     this.loadCardsRevealed();
+    this.loadTimerState();
     this.loadShowButtonLabels();
     this.loadSessions();
     this.loadUserVotes();
@@ -33,6 +45,144 @@ class RetroStore {
     window.addEventListener('hashchange', () => {
       this.checkUrlHash();
     });
+  }
+
+  private loadTimerState(): void {
+    const saved = localStorage.getItem('pixelsprint_timer_state');
+    if (saved) {
+      try {
+        this.timerMap = JSON.parse(saved) as Record<string, RetroTimerState>;
+      } catch (e) {
+        this.timerMap = {};
+      }
+    }
+  }
+
+  private saveTimerState(): void {
+    localStorage.setItem('pixelsprint_timer_state', JSON.stringify(this.timerMap));
+  }
+
+  public getTimerState(sessionId?: string): RetroTimerState | null {
+    const sid = sessionId || this.activeSessionId;
+    if (!sid) return null;
+    return this.timerMap[sid] || null;
+  }
+
+  public isTimerExpired(sessionId?: string): boolean {
+    const state = this.getTimerState(sessionId);
+    return state ? state.isExpired : false;
+  }
+
+  public setTimer(minutes: number): void {
+    if (!this.activeSessionId || !this.isCurrentSessionHost()) return;
+    const seconds = Math.max(1, minutes * 60);
+    const timerState: RetroTimerState = {
+      durationSeconds: seconds,
+      remainingSeconds: seconds,
+      isRunning: true,
+      isExpired: false,
+      startedAt: Date.now()
+    };
+    this.timerMap[this.activeSessionId] = timerState;
+    this.saveTimerState();
+    this.startTicker();
+    realtimeSync.broadcast('UPDATE_TIMER', { timerState });
+    this.notify();
+  }
+
+  public pauseTimer(): void {
+    if (!this.activeSessionId || !this.isCurrentSessionHost()) return;
+    const timerState = this.getTimerState();
+    if (timerState && timerState.isRunning) {
+      timerState.isRunning = false;
+      this.timerMap[this.activeSessionId] = timerState;
+      this.saveTimerState();
+      this.stopTicker();
+      realtimeSync.broadcast('UPDATE_TIMER', { timerState });
+      this.notify();
+    }
+  }
+
+  public resumeTimer(): void {
+    if (!this.activeSessionId || !this.isCurrentSessionHost()) return;
+    const timerState = this.getTimerState();
+    if (timerState && !timerState.isRunning && !timerState.isExpired && timerState.remainingSeconds > 0) {
+      timerState.isRunning = true;
+      this.timerMap[this.activeSessionId] = timerState;
+      this.saveTimerState();
+      this.startTicker();
+      realtimeSync.broadcast('UPDATE_TIMER', { timerState });
+      this.notify();
+    }
+  }
+
+  public extendTimer(minutesToAdd: number): void {
+    if (!this.activeSessionId || !this.isCurrentSessionHost()) return;
+    const addSec = minutesToAdd * 60;
+    const timerState = this.getTimerState();
+    if (timerState) {
+      timerState.durationSeconds += addSec;
+      timerState.remainingSeconds += addSec;
+      timerState.isExpired = false;
+      timerState.isRunning = true;
+      this.timerMap[this.activeSessionId] = timerState;
+      this.saveTimerState();
+      this.startTicker();
+      realtimeSync.broadcast('UPDATE_TIMER', { timerState });
+      this.notify();
+    } else {
+      this.setTimer(minutesToAdd);
+    }
+  }
+
+  public resetTimer(): void {
+    if (!this.activeSessionId || !this.isCurrentSessionHost()) return;
+    if (this.activeSessionId && this.timerMap[this.activeSessionId]) {
+      delete this.timerMap[this.activeSessionId];
+      this.saveTimerState();
+      this.stopTicker();
+      realtimeSync.broadcast('UPDATE_TIMER', { timerState: null });
+      this.notify();
+    }
+  }
+
+  private startTicker(): void {
+    this.stopTicker();
+    this.timerTicker = window.setInterval(() => {
+      if (!this.activeSessionId) {
+        this.stopTicker();
+        return;
+      }
+      const state = this.getTimerState();
+      if (!state || !state.isRunning) {
+        this.stopTicker();
+        return;
+      }
+
+      if (state.remainingSeconds > 1) {
+        state.remainingSeconds -= 1;
+        this.timerMap[this.activeSessionId] = state;
+        this.saveTimerState();
+        this.notify();
+      } else {
+        state.remainingSeconds = 0;
+        state.isRunning = false;
+        state.isExpired = true;
+        this.timerMap[this.activeSessionId] = state;
+        this.saveTimerState();
+        this.stopTicker();
+        audioSynth.playSuccess();
+        realtimeSync.broadcast('UPDATE_TIMER', { timerState: state });
+        this.notify();
+      }
+    }, 1000);
+  }
+
+  private stopTicker(): void {
+    if (this.timerTicker !== null) {
+      clearInterval(this.timerTicker);
+      this.timerTicker = null;
+    }
   }
 
   private loadShowButtonLabels(): void {
@@ -197,8 +347,24 @@ class RetroStore {
           }
           break;
 
+        case 'UPDATE_TIMER':
+          if (this.activeSessionId) {
+            if (msg.payload?.timerState) {
+              this.timerMap[this.activeSessionId] = msg.payload.timerState;
+            } else {
+              delete this.timerMap[this.activeSessionId];
+            }
+            this.saveTimerState();
+            this.notify();
+          }
+          break;
+
         case 'REQUEST_SYNC':
-          realtimeSync.broadcast('SYNC_STATE', { cards: this.cards, revealed: this.isCardsRevealed() });
+          realtimeSync.broadcast('SYNC_STATE', {
+            cards: this.cards,
+            revealed: this.isCardsRevealed(),
+            timerState: this.getTimerState()
+          });
           break;
 
         case 'SYNC_STATE':
@@ -210,6 +376,14 @@ class RetroStore {
               if (msg.payload.revealed !== undefined && this.activeSessionId) {
                 this.cardsRevealedMap[this.activeSessionId] = !!msg.payload.revealed;
                 this.saveCardsRevealed();
+              }
+              if (msg.payload.timerState !== undefined && this.activeSessionId) {
+                if (msg.payload.timerState) {
+                  this.timerMap[this.activeSessionId] = msg.payload.timerState;
+                } else {
+                  delete this.timerMap[this.activeSessionId];
+                }
+                this.saveTimerState();
               }
             }
             this.saveCardsForActiveSession();
@@ -380,6 +554,12 @@ class RetroStore {
 
   public addCard(category: RetroCategory, text: string): RetroCard | null {
     if (!this.activeSessionId) return null;
+
+    if (this.isTimerExpired() && !this.isCurrentSessionHost()) {
+      alert(i18n.t('timerExpiredAlert'));
+      return null;
+    }
+
     const newCard: RetroCard = {
       id: 'card-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
       category: category,

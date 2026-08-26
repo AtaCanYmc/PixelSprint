@@ -39,6 +39,14 @@ export interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
 }
 
+export interface RetroTimerState {
+  durationSeconds: number;
+  remainingSeconds: number;
+  isRunning: boolean;
+  isExpired: boolean;
+  startedAt?: number;
+}
+
 export type RealtimeEventType =
   | 'ADD_CARD'
   | 'UPVOTE_CARD'
@@ -47,6 +55,7 @@ export type RealtimeEventType =
   | 'DELETE_CARD'
   | 'CLEAR_CARDS'
   | 'TOGGLE_REVEAL_CARDS'
+  | 'UPDATE_TIMER'
   | 'SYNC_STATE'
   | 'REQUEST_SYNC';
 

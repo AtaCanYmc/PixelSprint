@@ -206,6 +206,10 @@ export class ModalComponent {
   }
 
   public openAddCardModal(): void {
+    if (store.isTimerExpired() && !store.isCurrentSessionHost()) {
+      alert(i18n.t('timerExpiredAlert'));
+      return;
+    }
     this.openModal(this.modalAddCard);
     const textarea = document.getElementById('card-text') as HTMLTextAreaElement | null;
     if (textarea) textarea.focus();

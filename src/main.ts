@@ -14,6 +14,7 @@ import { ExportComponent } from './components/export';
 import { TaskbarComponent } from './components/taskbar';
 import { ShareComponent } from './components/share';
 import { AiPromptComponent } from './components/aiPrompt';
+import { TimerComponent } from './components/timer';
 
 document.addEventListener('DOMContentLoaded', () => {
   i18n.init();
@@ -38,6 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const shareComp = new ShareComponent();
   shareComp.init();
+
+  const timerComp = new TimerComponent();
+  timerComp.init();
 
   const taskbarComp = new TaskbarComponent();
   taskbarComp.init();

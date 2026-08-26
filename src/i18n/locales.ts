@@ -159,6 +159,25 @@ export interface Translations {
   hostOnlyActionAlert: string;
   hostOnlyTooltip: string;
 
+  // Timer Keys
+  timerTitle: string;
+  timerDesc: string;
+  timerPreset3m: string;
+  timerPreset5m: string;
+  timerPreset10m: string;
+  timerPreset15m: string;
+  btnTimerStart: string;
+  btnTimerPause: string;
+  btnTimerResume: string;
+  btnTimerExtend2m: string;
+  btnTimerExtend5m: string;
+  btnTimerReset: string;
+  timerStatusRunning: string;
+  timerStatusPaused: string;
+  timerStatusExpired: string;
+  timerStatusUnset: string;
+  timerExpiredAlert: string;
+
   // Masking & Reveal Cards Phase
   btnToggleReveal: string;
   btnToggleMask: string;
@@ -189,13 +208,13 @@ export const locales: Record<Language, Translations> = {
     btnDelete: '❌',
     emptySessions: '[Henüz kaydedilmiş bir Retro Oturumu yok. Yukarıdan yeni bir tane oluşturun!]',
     deleteSessionConfirm: 'Bu Retro Oturumunu silmek istediğinize emin misiniz?',
+    btnShareQr: 'Paylaş',
 
-    btnShareQr: 'Paylaş (QR)',
     btnAddCard: 'Yeni Kart',
     btnExportReport: 'Rapor İndir',
     btnClearBoard: 'Temizle',
     btnInstallPwa: 'Uygulamayı Yükle',
-    btnBackHome: 'Ana Sayfaya Dön (Dashboard)',
+    btnBackHome: 'Ana Sayfaya Dön',
     searchPlaceholder: 'Filtrele veya ara...',
     soundToggleTitle: 'Ses Efektlerini Aç/Kapat',
     aboutTitle: 'Hakkında',
@@ -206,8 +225,8 @@ export const locales: Record<Language, Translations> = {
 
     emptyColumnMsg: '[Henüz bu kategoride bir anonim kart yok. İlk kartı ekleyen sen ol!]',
     cardAuthorAnonymous: 'Anonim Retro Sakini',
-    upvoteTooltip: 'Beğen (Upvote)',
-    downvoteTooltip: 'Beğenme (Downvote)',
+    upvoteTooltip: 'Beğen',
+    downvoteTooltip: 'Beğenme',
     moveCardTitle: 'Kategori Değiştir',
     deleteCardConfirm: 'Bu retro kartını silmek istediğinize emin misiniz?',
     clearAllConfirm: 'Tüm retro kartlarını silmek istediğinize emin misiniz? Bu işlem geri alınamaz!',
@@ -232,7 +251,7 @@ export const locales: Record<Language, Translations> = {
 
     copySuccess: 'Retro özet raporu panoya kopyalandı!',
 
-    modalShareTitle: 'Retro Oturumunu Paylaş (QR Kod)',
+    modalShareTitle: 'Retro Oturumunu Paylaş',
     shareDesc:
       'Ekip arkadaşlarınız telefon kameraları ile aşağıdaki QR kodu okutarak bu Retro panosuna anında katılabilir:',
     directLinkLabel: 'Doğrudan Katılım Linki:',
@@ -259,16 +278,16 @@ export const locales: Record<Language, Translations> = {
     btnGotIt: '[👍 Anladım]',
 
     startBtnText: 'Başlat',
-    startMenuHome: 'Ana Sayfaya Dön (Dashboard)',
+    startMenuHome: 'Ana Sayfaya Dön',
     startMenuAddCard: 'Yeni Anonim Kart Ekle',
-    startMenuShareQr: 'Retro Oturumunu Paylaş (QR Kod)',
-    startMenuExport: 'Retro Raporunu İndir (.txt)',
-    startMenuSound: 'Ses Efektleri (Açık/Kapalı)',
-    startMenuTheme: 'Koyu Tema / Light Mode',
-    startMenuInstall: 'PixelSprint.exe Yükle (PWA)',
+    startMenuShareQr: 'Retro Oturumunu Paylaş',
+    startMenuExport: 'Retro Raporunu İndir',
+    startMenuSound: 'Ses Efektleri',
+    startMenuTheme: 'Koyu / Açık Tema',
+    startMenuInstall: 'PixelSprint.exe Yükle',
     startMenuAbout: 'Hakkında',
     startMenuClear: 'Panoyu Temizle',
-    startMenuLabels: 'Buton Metinleri (Açık/Kapalı)',
+    startMenuLabels: 'Buton Metinleri',
     labelsToggleTitle: 'Buton Metinlerini Göster/Gizle',
 
     badgeOnline: '🛜 ONLINE',
@@ -311,10 +330,28 @@ export const locales: Record<Language, Translations> = {
       'Bu işlem (kart taşıma, silme, panoyu temizle) sadece Oturum Yöneticisi tarafından yapılabilir.',
     hostOnlyTooltip: 'Sadece Oturum Yöneticisi tarafından yapılabilir',
 
-    btnToggleReveal: '👁️ Kartları Göster',
-    btnToggleMask: '🙈 Kartları Gizle (Maskele)',
-    badgeMaskedPhase: '🙈 Kartlar Gizli (Sessiz Yazım Evresi)',
-    badgeRevealedPhase: '👁️ Kartlar Görünür'
+    timerTitle: '⏱️ Retro Zamanlayıcısı',
+    timerDesc: 'Oturum süresini ayarlayın. Süre tamamlandığında katılımcıların kart girişi otomatik kilitlenir.',
+    timerPreset3m: '3 Dakika',
+    timerPreset5m: '5 Dakika',
+    timerPreset10m: '10 Dakika',
+    timerPreset15m: '15 Dakika',
+    btnTimerStart: '▶ Başlat',
+    btnTimerPause: '⏸️ Duraklat',
+    btnTimerResume: '▶ Devam Et',
+    btnTimerExtend2m: '➕ +2 Dk Uzat',
+    btnTimerExtend5m: '➕ +5 Dk Uzat',
+    btnTimerReset: '🔄 Sıfırla',
+    timerStatusRunning: '⏱️ Çalışıyor',
+    timerStatusPaused: '⏸️ Duraklatıldı',
+    timerStatusExpired: '🔒 Süre Doldu',
+    timerStatusUnset: '⏱️ Ayarlanmadı',
+    timerExpiredAlert: '⏱️ Retro süresi doldu! Katılımcılar yeni kart ekleyemez. Oturum yöneticisi süreyi uzatabilir.',
+
+    btnToggleReveal: 'Kartları Göster',
+    btnToggleMask: 'Kartları Gizle',
+    badgeMaskedPhase: 'Kartlar Gizli',
+    badgeRevealedPhase: 'Kartlar Görünür'
   },
 
   en: {
@@ -340,12 +377,12 @@ export const locales: Record<Language, Translations> = {
     emptySessions: '[No saved Retro sessions found. Create a new one above!]',
     deleteSessionConfirm: 'Are you sure you want to delete this Retro session?',
 
-    btnShareQr: 'Share (QR)',
+    btnShareQr: 'Share',
     btnAddCard: 'New Card',
     btnExportReport: 'Export Report',
     btnClearBoard: 'Clear Board',
     btnInstallPwa: 'Install App',
-    btnBackHome: 'Return to Home (Dashboard)',
+    btnBackHome: 'Return to Home',
     searchPlaceholder: 'Filter or search...',
     soundToggleTitle: 'Toggle Sound Effects',
     aboutTitle: 'About',
@@ -382,7 +419,7 @@ export const locales: Record<Language, Translations> = {
 
     copySuccess: 'Retro summary report copied to clipboard!',
 
-    modalShareTitle: 'Share Retro Session (QR Code)',
+    modalShareTitle: 'Share Retro Session',
     shareDesc: 'Team members can scan this QR code with their phone camera to instantly join this Retro board:',
     directLinkLabel: 'Direct Join Link:',
     copyLinkSuccess: 'Retro join link copied to clipboard! 🔗',
@@ -408,16 +445,16 @@ export const locales: Record<Language, Translations> = {
     btnGotIt: '[👍 Got It]',
 
     startBtnText: 'Start',
-    startMenuHome: 'Return to Home (Dashboard)',
+    startMenuHome: 'Return to Home',
     startMenuAddCard: 'Add New Anonymous Card',
-    startMenuShareQr: 'Share Retro Session (QR Code)',
-    startMenuExport: 'Export Retro Report (.txt)',
-    startMenuSound: 'Sound Effects (On/Off)',
+    startMenuShareQr: 'Share Retro Session',
+    startMenuExport: 'Export Retro Report',
+    startMenuSound: 'Sound Effects',
     startMenuTheme: 'Dark / Light Mode',
-    startMenuInstall: 'Install PixelSprint.exe (PWA)',
+    startMenuInstall: 'Install PixelSprint.exe',
     startMenuAbout: 'About',
     startMenuClear: 'Clear Board',
-    startMenuLabels: 'Button Labels (On/Off)',
+    startMenuLabels: 'Button Labels',
     labelsToggleTitle: 'Toggle Button Text Labels',
 
     badgeOnline: '🛜 ONLINE',
@@ -459,22 +496,40 @@ export const locales: Record<Language, Translations> = {
       'This action (moving/deleting cards, clearing board) can only be performed by the Session Manager.',
     hostOnlyTooltip: 'Session Manager only',
 
+    timerTitle: '⏱️ Retro Timer',
+    timerDesc: 'Set session duration. When the timer expires, participant card entry is automatically locked.',
+    timerPreset3m: '3 Minutes',
+    timerPreset5m: '5 Minutes',
+    timerPreset10m: '10 Minutes',
+    timerPreset15m: '15 Minutes',
+    btnTimerStart: '▶ Start',
+    btnTimerPause: '⏸️ Pause',
+    btnTimerResume: '▶ Resume',
+    btnTimerExtend2m: '➕ +2 Min',
+    btnTimerExtend5m: '➕ +5 Min',
+    btnTimerReset: '🔄 Reset',
+    timerStatusRunning: '⏱️ Running',
+    timerStatusPaused: '⏸️ Paused',
+    timerStatusExpired: '🔒 Time Up',
+    timerStatusUnset: '⏱️ Not Set',
+    timerExpiredAlert: '⏱️ Retro time is up! Participants cannot add new cards. Session host can extend time.',
+
     btnToggleReveal: '👁️ Reveal Cards',
     btnToggleMask: '🙈 Mask Cards',
-    badgeMaskedPhase: '🙈 Cards Masked (Draft Phase)',
+    badgeMaskedPhase: '🙈 Cards Masked',
     badgeRevealedPhase: '👁️ Cards Revealed'
   },
 
   fr: {
     appTitle: 'PixelSprint v1.0 - Rétrospective Sprint Rétro',
-    dashboardTitle: 'PixelSprint v1.0 - Gestionnaire de Session (Tableau de Bord)',
+    dashboardTitle: 'PixelSprint v1.0 - Gestionnaire de Session',
     boardTitle: 'PixelSprint - Tableau Rétro',
 
     startNewSession: 'Démarrer une Nouvelle Session Rétro',
-    sprintTitlePlaceholder: 'Titre du Sprint (ex. Rétrospective Sprint 45)',
+    sprintTitlePlaceholder: 'Titre du Sprint',
     createAndJoinSessionBtn: '[🚀 Créer & Rejoindre Rétro]',
     joinByIdTitle: 'Rejoindre par ID de Session',
-    joinByIdPlaceholder: "Coller l'ID de Session (ex. retro-demo-sprint-1)...",
+    joinByIdPlaceholder: "Coller l'ID de Session...",
     goToSessionBtn: '[▶ Accéder à la Session]',
     mySessionsTitle: 'Vos Sessions Rétro Enregistrées',
 
@@ -486,14 +541,14 @@ export const locales: Record<Language, Translations> = {
     btnOpen: '▶ Ouvrir',
     btnDelete: '❌',
     emptySessions: '[Aucune session Rétro enregistrée. Créez-en une nouvelle ci-dessus !]',
-    deleteSessionConfirm: 'Voulez-vous gerçekten supprimer cette session Rétro ?',
+    deleteSessionConfirm: 'Voulez-vous supprimer cette session Rétro ?',
 
-    btnShareQr: 'Partager (QR)',
+    btnShareQr: 'Partager',
     btnAddCard: 'Nouvelle Carte',
     btnExportReport: 'Exporter Rapport',
     btnClearBoard: 'Effacer Tableau',
     btnInstallPwa: "Installer l'App",
-    btnBackHome: "Retour à l'Accueil (Tableau de Bord)",
+    btnBackHome: "Retour à l'Accueil",
     searchPlaceholder: 'Filtrer ou rechercher...',
     soundToggleTitle: 'Activer/Désactiver les Effets Sonores',
     aboutTitle: 'À propos',
@@ -504,8 +559,8 @@ export const locales: Record<Language, Translations> = {
 
     emptyColumnMsg: '[Aucune carte anonyme dans cette colonne. Soyez le premier à en ajouter une !]',
     cardAuthorAnonymous: 'Résident Rétro Anonyme',
-    upvoteTooltip: 'Voter pour (Upvote)',
-    downvoteTooltip: 'Voter contre (Downvote)',
+    upvoteTooltip: 'Voter pour',
+    downvoteTooltip: 'Voter contre',
     moveCardTitle: 'Changer de Catégorie',
     deleteCardConfirm: 'Voulez-vous vraiment supprimer cette carte rétro ?',
     clearAllConfirm: 'Voulez-vous vraiment supprimer toutes les cartes rétro ? Cette action est irréversible !',
@@ -517,24 +572,23 @@ export const locales: Record<Language, Translations> = {
     btnCancel: 'Annuler',
     btnSaveAndSend: '[💾 Enregistrer & Envoyer]',
 
-    modalExportTitle: 'Rapport Synthétique Rétro',
-    exportDesc: 'Téléchargez le résumé de votre Rétrospective au format Texte, CSV ou Excel (XLSX) :',
+    modalExportTitle: 'Rapport de Synthèse Rétro',
+    exportDesc: 'Téléchargez votre résumé de rétrospective au format Texte, CSV ou Excel (XLSX) :',
     btnCopy: '📋 Copier',
     btnDownloadTxt: '.TXT',
     btnDownloadCsv: '.CSV',
     btnDownloadXlsx: '.XLSX',
     btnDownloadDocx: '.DOCX',
     btnDownloadPdf: '.PDF',
-    btnSendEmail: '📧 E-mail',
+    btnSendEmail: '📧 E-Mail',
     btnClose: 'Fermer',
 
-    copySuccess: 'Rapport résumé copié dans le presse-papiers !',
+    copySuccess: 'Rapport de synthèse rétro copié dans le presse-papiers !',
 
-    modalShareTitle: 'Partager Session Rétro (Code QR)',
-    shareDesc:
-      "Les membres de l'équipe peuvent scanner ce code QR avec l'appareil photo de leur téléphone pour rejoindre ce tableau Rétro :",
-    directLinkLabel: "Lien d'Accès Direct :",
-    copyLinkSuccess: "Lien d'accès copié dans le presse-papiers ! 🔗",
+    modalShareTitle: 'Partager Session Rétro',
+    shareDesc: "Les membres de l'équipe peuvent scanner ce code QR pour rejoindre instantanément ce tableau Rétro :",
+    directLinkLabel: 'Lien d Accès Direct :',
+    copyLinkSuccess: 'Lien de participation rétro copié dans le presse-papiers ! 🔗',
 
     modalAboutTitle: 'À propos de PixelSprint v1.0',
     aboutSubhead: 'Tableau de Rétrospective Sprint Rétro',
@@ -557,16 +611,16 @@ export const locales: Record<Language, Translations> = {
     btnGotIt: '[👍 Compris]',
 
     startBtnText: 'Démarrer',
-    startMenuHome: "Retour à l'Accueil (Tableau de Bord)",
+    startMenuHome: "Retour à l'Accueil",
     startMenuAddCard: 'Ajouter une Carte Anonyme',
-    startMenuShareQr: 'Partager Session Rétro (Code QR)',
-    startMenuExport: 'Exporter Rapport Rétro (.txt)',
-    startMenuSound: 'Effets Sonores (Activé/Désactivé)',
+    startMenuShareQr: 'Partager Session Rétro',
+    startMenuExport: 'Exporter Rapport Rétro',
+    startMenuSound: 'Effets Sonores',
     startMenuTheme: 'Thème Sombre / Clair',
-    startMenuInstall: 'Installer PixelSprint.exe (PWA)',
+    startMenuInstall: 'Installer PixelSprint.exe',
     startMenuAbout: 'À propos',
     startMenuClear: 'Effacer Tableau',
-    startMenuLabels: 'Étiquettes de Bouton (Activé/Désactivé)',
+    startMenuLabels: 'Étiquettes de Bouton',
     labelsToggleTitle: 'Afficher/Masquer les Étiquettes de Bouton',
 
     badgeOnline: '🛜 EN LIGNE',
@@ -580,7 +634,7 @@ export const locales: Record<Language, Translations> = {
     aiRoleLabel: 'Rôle AI / Perspective :',
     aiLangLabel: 'Langue / Language :',
     aiCustomFocusLabel: 'Focus Personnalisé (Optionnel) :',
-    aiCustomFocusPlaceholder: 'ex. Se concentrer particulièrement sur la communication et le CI/CD...',
+    aiCustomFocusPlaceholder: 'ex. Se concentrer particulièrement sur la communication...',
     aiGeneratedPromptLabel: 'Texte du Prompt AI Généré :',
     btnCopyPrompt: '📋 Copier le Prompt',
     btnOpenChatGpt: '🚀 Ouvrir ChatGPT',
@@ -606,6 +660,24 @@ export const locales: Record<Language, Translations> = {
     roleGuestTitle: '👤 Participant',
     hostOnlyActionAlert: 'Cette action ne peut être effectuée que par le gestionnaire de session.',
     hostOnlyTooltip: 'Gestionnaire uniquement',
+
+    timerTitle: '⏱️ Minuteur Rétro',
+    timerDesc: 'Définissez la durée de la session.',
+    timerPreset3m: '3 Minutes',
+    timerPreset5m: '5 Minutes',
+    timerPreset10m: '10 Minutes',
+    timerPreset15m: '15 Minutes',
+    btnTimerStart: '▶ Démarrer',
+    btnTimerPause: '⏸️ Pause',
+    btnTimerResume: '▶ Reprendre',
+    btnTimerExtend2m: '➕ +2 Min',
+    btnTimerExtend5m: '➕ +5 Min',
+    btnTimerReset: '🔄 Réinitialiser',
+    timerStatusRunning: '⏱️ En Cours',
+    timerStatusPaused: '⏸️ En Pause',
+    timerStatusExpired: '🔒 Temps Écoulé',
+    timerStatusUnset: '⏱️ Non Défini',
+    timerExpiredAlert: '⏱️ Le temps rétro est écoulé !',
 
     btnToggleReveal: '👁️ Révéler les Cartes',
     btnToggleMask: '🙈 Masquer les Cartes',

@@ -122,6 +122,9 @@
 
           <div class="toolbar-body">
             <div class="toolbar-group">
+              <button class="win-btn" id="btn-open-timer" title="Retro Zamanlayıcısı (Timer)">
+                ⏱️ <span id="timer-display-text">--:--</span>
+              </button>
               <button class="win-btn" id="btn-share-link" title="Paylaş (QR)">📱</button>
               <button class="win-btn" id="btn-open-add-modal" title="Yeni Kart">➕</button>
               <button class="win-btn" id="btn-toggle-reveal" title="Kartları Göster / Gizle">👁️</button>
@@ -193,19 +196,18 @@
     <div id="start-menu" class="win-outset hidden">
       <div class="start-menu-banner">PIXELSPRINT 95</div>
       <div class="start-menu-items">
-        <div class="start-menu-item" id="sm-home"><span>🏠</span> <strong>Ana Sayfaya Dön (Dashboard)</strong></div>
+        <div class="start-menu-item" id="sm-home"><span>🏠</span> <strong>Ana Sayfaya Dön</strong></div>
         <div class="start-menu-separator"></div>
         <div class="start-menu-item" id="sm-add-card"><span>➕</span> Yeni Anonim Kart Ekle</div>
         <div class="start-menu-item" id="sm-ai-prompt"><span>🤖</span> AI Analiz Promptu Oluştur</div>
-        <div class="start-menu-item" id="sm-share-qr"><span>📱</span> Retro Oturumunu Paylaş (QR Kod)</div>
-        <div class="start-menu-item" id="sm-export"><span>💾</span> Retro Raporunu İndir (.txt)</div>
+        <div class="start-menu-item" id="sm-share-qr"><span>📱</span> Retro Oturumunu Paylaş</div>
+        <div class="start-menu-item" id="sm-export"><span>💾</span> Retro Raporunu İndir</div>
 
-        <div class="start-menu-item" id="sm-sound"><span>🔊</span> Ses Efektleri (Açık/Kapalı)</div>
-        <div class="start-menu-item" id="sm-theme"><span>🌙</span> Koyu Tema / Light Mode</div>
-        <div class="start-menu-item" id="sm-labels"><span>🏷️</span> Buton Metinleri (Açık/Kapalı)</div>
-        <div class="start-menu-item" id="sm-install" style="display: none">
-          <span>📲</span> PixelSprint.exe Yükle (PWA)
-        </div>
+        <div class="start-menu-item" id="sm-sound"><span>🔊</span> Ses Efektleri</div>
+        <div class="start-menu-item" id="sm-theme"><span>🌙</span> Koyu / Açık Tema</div>
+        <div class="start-menu-item" id="sm-labels"><span>🏷️</span> Buton Metinleri</div>
+        <div class="start-menu-item" id="sm-install" style="display: none"><span>📲</span> PixelSprint.exe Yükle</div>
+
         <div class="start-menu-separator"></div>
         <div class="start-menu-item-lang">
           <div class="start-menu-lang-header"><span>🌐</span> <span id="sm-lang-label">Dil / Language:</span></div>
@@ -235,6 +237,75 @@
       </div>
     </div>
 
+    <!-- MODAL: Retro Timer Setup -->
+    <div id="modal-timer" class="modal-overlay hidden">
+      <div class="win-window modal-window" style="max-width: 420px">
+        <div class="win-titlebar">
+          <div class="win-titlebar-title">
+            <span>⏱️</span>
+            <span id="txt-modal-timer-title">Retro Zamanlayıcısı</span>
+          </div>
+          <div class="win-titlebar-controls">
+            <button type="button" class="win-btn win-btn-sm btn-close-modal">X</button>
+          </div>
+        </div>
+        <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px">
+          <p id="txt-timer-desc" style="font-size: 11px; color: var(--win-gray-dark)">
+            Oturum süresini ayarlayın. Süre tamamlandığında katılımcıların kart girişi otomatik kilitlenir.
+          </p>
+
+          <div
+            class="win-outset"
+            style="
+              padding: 12px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+              background: var(--win-bg);
+            "
+          >
+            <div
+              id="timer-modal-clock"
+              style="
+                font-family: var(--font-mono), monospace;
+                font-size: 32px;
+                font-weight: bold;
+                color: var(--win-navy);
+              "
+            >
+              --:--
+            </div>
+            <div
+              id="timer-modal-status"
+              class="win-inset"
+              style="padding: 4px 10px; font-size: 11px; font-weight: bold"
+            >
+              ⏱️ Ayarlanmadı
+            </div>
+          </div>
+
+          <div id="timer-host-controls" style="display: flex; flex-direction: column; gap: 10px">
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center">
+              <button type="button" class="win-btn btn-timer-preset" data-min="3">3 Dk</button>
+              <button type="button" class="win-btn btn-timer-preset" data-min="5">5 Dk</button>
+              <button type="button" class="win-btn btn-timer-preset" data-min="10">10 Dk</button>
+              <button type="button" class="win-btn btn-timer-preset" data-min="15">15 Dk</button>
+            </div>
+
+            <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap">
+              <button type="button" class="win-btn" id="btn-timer-pause">⏸️ Duraklat</button>
+              <button type="button" class="win-btn" id="btn-timer-resume">▶ Devam Et</button>
+              <button type="button" class="win-btn" id="btn-timer-extend-2m">➕ +2 Dk Uzat</button>
+              <button type="button" class="win-btn" id="btn-timer-extend-5m">➕ +5 Dk Uzat</button>
+              <button type="button" class="win-btn" id="btn-timer-reset">🔄 Sıfırla</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- MODAL: Add New Card -->
     <div id="modal-add-card" class="modal-overlay hidden">
       <div class="win-window modal-window">
@@ -242,6 +313,7 @@
           <div class="win-titlebar-title">
             <span>➕</span> <span id="txt-modal-add-title">Yeni Anonim Retro Kartı</span>
           </div>
+
           <div class="win-titlebar-controls">
             <button class="win-btn win-btn-sm btn-close-modal">X</button>
           </div>
