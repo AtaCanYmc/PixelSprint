@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.3.0](https://github.com/AtaCanYmc/PixelSprint/compare/v1.2.0...v1.3.0) (2026-08-26)
+
+
+### Features
+
+* add button labels toggle functionality for improved UI accessibility ([fa76c60](https://github.com/AtaCanYmc/PixelSprint/commit/fa76c60cff5c77db457f47d00365980b7a88eb7f))
+* add card reveal/mask functionality for session host with UI updates ([d2ca113](https://github.com/AtaCanYmc/PixelSprint/commit/d2ca1134ec1774c691626d7537706cbb241dab7b))
+* add email report functionality with localization support ([b5c4800](https://github.com/AtaCanYmc/PixelSprint/commit/b5c4800866ad8da89f17d3c6289317df98a7b8e0))
+* implement retro timer functionality with UI controls and localization support ([8b1a495](https://github.com/AtaCanYmc/PixelSprint/commit/8b1a495039d3033d0b395e4f871a7ed6862d262f))
+* improve XML export formatting and streamline email report generation ([62b111e](https://github.com/AtaCanYmc/PixelSprint/commit/62b111eac597dde7fdc243558d966636ec8e68ce))
+* remove emoji from button labels for consistency in localization ([53b9472](https://github.com/AtaCanYmc/PixelSprint/commit/53b94729fb7ef919d7455cc09c79664a9bfce72c))
+* remove emoji from email button label for localization consistency ([f5eff15](https://github.com/AtaCanYmc/PixelSprint/commit/f5eff150c69a487bbc2ced35ceced539263f4865))
+* remove unused close button elements from modals for cleaner UI ([9fcd113](https://github.com/AtaCanYmc/PixelSprint/commit/9fcd11311acd9fdd89647a4c8dc4daf1c5a88b96))
+* restrict card and session management actions to session host only ([b0cd926](https://github.com/AtaCanYmc/PixelSprint/commit/b0cd926062a8d832bd7ef37ec9e76b467cd322c2))
+
 ## [1.2.0](https://github.com/AtaCanYmc/PixelSprint/compare/v1.1.0...v1.2.0) (2026-08-24)
 
 
