@@ -240,13 +240,13 @@ export const locales: Record<Language, Translations> = {
 
     modalExportTitle: 'Retro Özet Raporu',
     exportDesc: 'Sprint Retrospektif özetini metin, CSV veya Excel (XLSX) formatında indirebilirsiniz:',
-    btnCopy: '📋 Kopyala',
+    btnCopy: 'Kopyala',
     btnDownloadTxt: '.TXT',
     btnDownloadCsv: '.CSV',
     btnDownloadXlsx: '.XLSX',
     btnDownloadDocx: '.DOCX',
     btnDownloadPdf: '.PDF',
-    btnSendEmail: '📧 E-Posta',
+    btnSendEmail: 'E-Posta',
     btnClose: 'Kapat',
 
     copySuccess: 'Retro özet raporu panoya kopyalandı!',
@@ -304,10 +304,10 @@ export const locales: Record<Language, Translations> = {
     aiCustomFocusLabel: 'Özel Odak Noktası (İsteğe Bağlı):',
     aiCustomFocusPlaceholder: 'Örn: Özellikle sprint içi iletişim sorunlarına ve CI/CD süreçlerine odaklan...',
     aiGeneratedPromptLabel: 'Hazırlanan AI Prompt Metni:',
-    btnCopyPrompt: '📋 Promptu Kopyala',
-    btnOpenChatGpt: "🚀 ChatGPT'de Aç",
-    btnOpenClaude: "🚀 Claude'da Aç",
-    btnOpenGemini: "🚀 Gemini'de Aç",
+    btnCopyPrompt: 'Promptu Kopyala',
+    btnOpenChatGpt: "ChatGPT'de Aç",
+    btnOpenClaude: "Claude'da Aç",
+    btnOpenGemini: "Gemini'de Aç",
     copyPromptSuccess: "AI promptu panoya kopyalandı! Şimdi yapıştırıp AI'a analiz ettirebilirsiniz.",
     startMenuAiPrompt: 'AI Analiz Promptu Oluştur',
 
@@ -408,7 +408,7 @@ export const locales: Record<Language, Translations> = {
 
     modalExportTitle: 'Retro Summary Report',
     exportDesc: 'Download your Sprint Retrospective summary as Text, CSV, or Excel (XLSX):',
-    btnCopy: '📋 Copy',
+    btnCopy: 'Copy',
     btnDownloadTxt: '.TXT',
     btnDownloadCsv: '.CSV',
     btnDownloadXlsx: '.XLSX',
@@ -470,10 +470,10 @@ export const locales: Record<Language, Translations> = {
     aiCustomFocusLabel: 'Custom Focus (Optional):',
     aiCustomFocusPlaceholder: 'e.g., Focus especially on team communication issues and CI/CD pipelines...',
     aiGeneratedPromptLabel: 'Generated AI Prompt Text:',
-    btnCopyPrompt: '📋 Copy Prompt',
-    btnOpenChatGpt: '🚀 Open ChatGPT',
-    btnOpenClaude: '🚀 Open Claude',
-    btnOpenGemini: '🚀 Open Gemini',
+    btnCopyPrompt: 'Copy Prompt',
+    btnOpenChatGpt: 'Open ChatGPT',
+    btnOpenClaude: 'Open Claude',
+    btnOpenGemini: 'Open Gemini',
     copyPromptSuccess: 'AI prompt copied to clipboard! Paste it into your AI assistant for analysis.',
     startMenuAiPrompt: 'Generate AI Analysis Prompt',
 
@@ -514,10 +514,10 @@ export const locales: Record<Language, Translations> = {
     timerStatusUnset: '⏱️ Not Set',
     timerExpiredAlert: '⏱️ Retro time is up! Participants cannot add new cards. Session host can extend time.',
 
-    btnToggleReveal: '👁️ Reveal Cards',
-    btnToggleMask: '🙈 Mask Cards',
-    badgeMaskedPhase: '🙈 Cards Masked',
-    badgeRevealedPhase: '👁️ Cards Revealed'
+    btnToggleReveal: 'Reveal Cards',
+    btnToggleMask: 'Mask Cards',
+    badgeMaskedPhase: 'Cards Masked',
+    badgeRevealedPhase: 'Cards Revealed'
   },
 
   fr: {
@@ -580,7 +580,7 @@ export const locales: Record<Language, Translations> = {
     btnDownloadXlsx: '.XLSX',
     btnDownloadDocx: '.DOCX',
     btnDownloadPdf: '.PDF',
-    btnSendEmail: '📧 E-Mail',
+    btnSendEmail: 'E-Mail',
     btnClose: 'Fermer',
 
     copySuccess: 'Rapport de synthèse rétro copié dans le presse-papiers !',
@@ -636,10 +636,10 @@ export const locales: Record<Language, Translations> = {
     aiCustomFocusLabel: 'Focus Personnalisé (Optionnel) :',
     aiCustomFocusPlaceholder: 'ex. Se concentrer particulièrement sur la communication...',
     aiGeneratedPromptLabel: 'Texte du Prompt AI Généré :',
-    btnCopyPrompt: '📋 Copier le Prompt',
-    btnOpenChatGpt: '🚀 Ouvrir ChatGPT',
-    btnOpenClaude: '🚀 Ouvrir Claude',
-    btnOpenGemini: '🚀 Ouvrir Gemini',
+    btnCopyPrompt: 'Copier le Prompt',
+    btnOpenChatGpt: 'Ouvrir ChatGPT',
+    btnOpenClaude: 'Ouvrir Claude',
+    btnOpenGemini: 'Ouvrir Gemini',
     copyPromptSuccess: 'Prompt AI copié dans le presse-papiers !',
     startMenuAiPrompt: "Générer Prompt d'Analyse AI",
 
@@ -679,9 +679,9 @@ export const locales: Record<Language, Translations> = {
     timerStatusUnset: '⏱️ Non Défini',
     timerExpiredAlert: '⏱️ Le temps rétro est écoulé !',
 
-    btnToggleReveal: '👁️ Révéler les Cartes',
-    btnToggleMask: '🙈 Masquer les Cartes',
-    badgeMaskedPhase: '🙈 Cartes Masquées',
-    badgeRevealedPhase: '👁️ Cartes Visibles'
+    btnToggleReveal: 'Révéler les Cartes',
+    btnToggleMask: 'Masquer les Cartes',
+    badgeMaskedPhase: 'Cartes Masquées',
+    badgeRevealedPhase: 'Cartes Visibles'
   }
 };
