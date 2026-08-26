@@ -191,6 +191,7 @@ export class ExportComponent {
       action: i18n.t('colActionTitle')
     };
 
+    // noinspection HtmlUnknownAttribute
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<?mso-application progid="Excel.Sheet"?>\n`;
     xml += `<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"\n`;
@@ -399,9 +400,8 @@ export class ExportComponent {
     const reportText = this.exportTextArea ? this.exportTextArea.value : this.generateReportText();
 
     const subject = `PixelSprint Retro Report - ${sessionTitle}`;
-    const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(reportText)}`;
 
-    window.location.href = mailtoUrl;
+    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(reportText)}`;
   }
 
   private getDateStr(): string {
