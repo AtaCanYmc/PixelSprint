@@ -20,6 +20,7 @@ export class ExportComponent {
   private btnDownloadXlsx: HTMLElement | null;
   private btnDownloadDocx: HTMLElement | null;
   private btnDownloadPdf: HTMLElement | null;
+  private btnSendEmail: HTMLElement | null;
   private startMenu: HTMLElement | null;
 
   constructor() {
@@ -33,6 +34,7 @@ export class ExportComponent {
     this.btnDownloadXlsx = document.getElementById('btn-download-xlsx');
     this.btnDownloadDocx = document.getElementById('btn-download-docx');
     this.btnDownloadPdf = document.getElementById('btn-download-pdf');
+    this.btnSendEmail = document.getElementById('btn-send-email');
     this.startMenu = document.getElementById('start-menu');
   }
 
@@ -70,6 +72,10 @@ export class ExportComponent {
       this.btnDownloadPdf.addEventListener('click', () => this.downloadPdfReport());
     }
 
+    if (this.btnSendEmail) {
+      this.btnSendEmail.addEventListener('click', () => this.sendEmailReport());
+    }
+
     this.updateLocalizedText();
   }
 
@@ -80,6 +86,7 @@ export class ExportComponent {
     if (this.btnDownloadXlsx) this.btnDownloadXlsx.innerHTML = `<strong>${i18n.t('btnDownloadXlsx')}</strong>`;
     if (this.btnDownloadDocx) this.btnDownloadDocx.innerHTML = `<strong>${i18n.t('btnDownloadDocx')}</strong>`;
     if (this.btnDownloadPdf) this.btnDownloadPdf.innerHTML = `<strong>${i18n.t('btnDownloadPdf')}</strong>`;
+    if (this.btnSendEmail) this.btnSendEmail.innerHTML = `<strong>${i18n.t('btnSendEmail')}</strong>`;
   }
 
   public generateReportText(): string {
@@ -373,6 +380,18 @@ export class ExportComponent {
     setTimeout(() => {
       printWindow.print();
     }, 300);
+  }
+
+  public sendEmailReport(): void {
+    audioSynth.playClick();
+    const activeSession = store.getActiveSession();
+    const sessionTitle = activeSession ? activeSession.title : 'Sprint Retrospective';
+    const reportText = this.exportTextArea ? this.exportTextArea.value : this.generateReportText();
+
+    const subject = `PixelSprint Retro Report - ${sessionTitle}`;
+    const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(reportText)}`;
+
+    window.location.href = mailtoUrl;
   }
 
   private getDateStr(): string {

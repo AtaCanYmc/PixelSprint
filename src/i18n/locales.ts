@@ -72,6 +72,7 @@ export interface Translations {
   btnDownloadXlsx: string;
   btnDownloadDocx: string;
   btnDownloadPdf: string;
+  btnSendEmail: string;
   btnClose: string;
   copySuccess: string;
 
@@ -224,7 +225,9 @@ export const locales: Record<Language, Translations> = {
     btnDownloadXlsx: '.XLSX',
     btnDownloadDocx: '.DOCX',
     btnDownloadPdf: '.PDF',
+    btnSendEmail: '📧 E-Posta',
     btnClose: 'Kapat',
+
     copySuccess: 'Retro özet raporu panoya kopyalandı!',
 
     modalShareTitle: 'Retro Oturumunu Paylaş (QR Kod)',
@@ -370,7 +373,9 @@ export const locales: Record<Language, Translations> = {
     btnDownloadXlsx: '.XLSX',
     btnDownloadDocx: '.DOCX',
     btnDownloadPdf: '.PDF',
+    btnSendEmail: '📧 Email',
     btnClose: 'Close',
+
     copySuccess: 'Retro summary report copied to clipboard!',
 
     modalShareTitle: 'Share Retro Session (QR Code)',
@@ -514,7 +519,9 @@ export const locales: Record<Language, Translations> = {
     btnDownloadXlsx: '.XLSX',
     btnDownloadDocx: '.DOCX',
     btnDownloadPdf: '.PDF',
+    btnSendEmail: '📧 E-mail',
     btnClose: 'Fermer',
+
     copySuccess: 'Rapport résumé copié dans le presse-papiers !',
 
     modalShareTitle: 'Partager Session Rétro (Code QR)',
