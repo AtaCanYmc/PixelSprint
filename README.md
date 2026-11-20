@@ -1,143 +1,147 @@
 ![PixelSprint Logo](.github/screenshots/logo.jpeg)
 
-# 💾 PixelSprint
+# PixelSprint
 
-> **100% Anonymous, Mobile-Friendly, Installable (PWA) Sprint Retrospective Board with a 90s Windows 95 & Terminal Aesthetic.**
+Anonymous sprint retrospective board for the browser. Windows 95 styling, installable as a PWA, synchronized across tabs and devices over WebRTC.
 
+[![CI](https://github.com/AtaCanYmc/PixelSprint/actions/workflows/ci.yml/badge.svg)](https://github.com/AtaCanYmc/PixelSprint/actions/workflows/ci.yml)
+[![Deploy](https://github.com/AtaCanYmc/PixelSprint/actions/workflows/deploy.yml/badge.svg)](https://github.com/AtaCanYmc/PixelSprint/actions/workflows/deploy.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)](https://vitejs.dev/)
-[![PWA Ready](https://img.shields.io/badge/PWA-Installable-008080?logo=pwa)](https://web.dev/progressive-web-apps/)
-[![Realtime Sync](https://img.shields.io/badge/Realtime-Multi--Tab%20%26%20Device-green?logo=lightning)](https://github.com/AtaCanYmc/PixelSprint)
 
----
+## Table of Contents
 
-## 💻 About PixelSprint
+- [Overview](#overview)
+- [Screenshots](#screenshots)
+- [Quick Start](#quick-start)
+- [Scripts](#scripts)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Project Layout](#project-layout)
+- [Documentation](#documentation)
+- [FAQ](#faq)
+- [Contributing](#contributing)
+- [License](#license)
 
-**PixelSprint** is a nostalgic, full-featured retrospective application designed for software development teams conducting Sprint End Retrospectives (Retro). It combines the iconic 90s Windows 95 desktop experience and classic matrix-style green-on-black terminal aesthetics with modern web engineering standards (Vite, TypeScript, Progressive Web App, Workbox).
+## Overview
 
-- **100% Anonymity**: No registration, login, or tracking. Every note automatically receives a randomized retro agent codename (`FloppyDisk-95#404`, `Agent-404#101`, etc.).
-- **Real-Time Synchronization**: Instant cross-tab, multi-window, and multi-device real-time sync engine (`BroadcastChannel` & WebSocket adapter) so team members see notes, votes, and category changes live!
-- **Offline Mode (`ERR_RETRO_OFFLINE`)**: Runs fully offline with automated Service Worker caching and nostalgic Win95 taskbar offline indicator. Local edits re-sync automatically when connection is restored.
-- **Client-Side Storage (`localStorage`)**: All data remains strictly inside the user's browser storage.
+PixelSprint runs entirely in the browser. There is no backend and no account system. Cards, sessions, votes and timer state live in `localStorage`. Participants in the same session exchange events through `BroadcastChannel` for local tabs and PeerJS WebRTC data channels for other devices.
 
----
+Each card gets a random codename such as `FloppyDisk-95#404`. Author identity is never recorded.
 
-## 📸 App Screenshots & Previews
+## Screenshots
 
-|           **Win95 Session Launcher (Dashboard)**            |                **Retro Board & Voting System**                 |
-| :---------------------------------------------------------: | :------------------------------------------------------------: |
-| ![PixelSprint Home Page](.github/screenshots/home-page.png) | ![PixelSprint Retro Board](.github/screenshots/retro-page.png) |
+|                Session dashboard                |                    Retro board                     |
+| :---------------------------------------------: | :------------------------------------------------: |
+| ![Dashboard](.github/screenshots/home-page.png) | ![Retro board](.github/screenshots/retro-page.png) |
 
-### 💾 Multi-Format Retro Report Export Modal (.TXT, .CSV, .XLSX)
+![Export modal](.github/screenshots/download-document-modal.png)
 
-![PixelSprint Export Modal](.github/screenshots/download-document-modal.png)
+## Quick Start
 
----
-
-## ⭐ Key Features
-
-### 1. ⚡ Real-Time Multi-Device Synchronization
-
-- Native **`BroadcastChannel` API** engine for instant zero-latency sync across all browser tabs and windows.
-- Pluggable WebSocket / P2P adapter support for multi-device server synchronization.
-
-### 2. 🗔 Authentic Windows 95 UI / UX
-
-- Win95 desktop teal background (`#008080`), classic blue titlebars, bevel outset/inset 3D borders.
-- Live **Win95 Taskbar** with a functional **Start Menu**, live system clock, and nostalgic **`[⚠️ ERR_RETRO_OFFLINE]`** status badge.
-- Built-in retro Web Audio API sound synthesizer with a sound toggle (`🔊`).
-
-### 3. 🚀 Retro Session Manager & Session ID
-
-- **Dashboard Launcher**: Create new retrospective sessions with custom titles (e.g. _Sprint 45 Retrospective_) or view past saved sessions.
-- **Session ID & URL Routing**: Every retro session generates a unique Session ID (e.g. `#session=retro-demo-sprint-1`) for instant navigation and bookmarking.
-
-### 4. 📱 QR Code Mobile Participant Sharing
-
-- Click **`Paylaş (QR)`** in the toolbar or Start Menu to generate an instant interactive **QR Code**.
-- Meeting participants can scan the QR Code using their smartphone cameras to immediately join the retro session and submit anonymous notes from their phones.
-
-### 5. ⬆️⬇️ Reddit-Style Upvote & Downvote System
-
-- Reddit-style karma score on retro notes with `▲ Upvote` (+1) and `▼ Downvote` (-1) buttons.
-- Color-coded live score badges (green for positive score, red for negative score).
-
-### 6. 🟢🔴💡 Retrospective Categories
-
-- **🟢 Went Well**: What went well during the sprint?
-- **🔴 Needs Improvement**: Bugs, bottlenecks, and areas for improvement.
-- **💡 Action Items**: Actionable tasks and new ideas.
-
-### 7. 💾 Multi-Format Exporting (.TXT, .CSV, .XLSX)
-
-- Export retro summaries as formatted **.TXT** text files, **.CSV** (Excel-compatible UTF-8 BOM), or native **.XLSX** (Excel XML Spreadsheet) files.
-
----
-
-## 📁 Project Directory Structure
-
-```
-PixelSprint/
-├── vite.config.ts            # Vite & VitePWA Configuration
-├── index.html                # Main HTML Entry Point
-├── tsconfig.json             # TypeScript Configuration
-├── package.json              # Dependencies and NPM Scripts
-├── LICENSE                   # Apache License 2.0
-├── SECURITY.md               # Security Policy
-├── CODE_OF_CONDUCT.md        # Contributor Covenant Code of Conduct
-├── CONTRIBUTING.md           # Contribution Guidelines & Conventional Commits
-│
-├── .github/
-│   ├── dependabot.yml        # Dependabot Configuration
-│   └── workflows/
-│       ├── deploy.yml        # GitHub Pages Automated Deployment Workflow
-│       ├── ci.yml            # Continuous Integration PR Check
-│       └── release-please.yml# Automated Versioning & Release Workflow
-│
-├── public/                   # Static Assets (Favicon, PWA Icons)
-│   ├── favicon.png
-│   └── icons/
-│
-└── src/                      # TypeScript & CSS Source Code
-    ├── main.ts               # Application Entry Point
-    ├── css/                  # Modular CSS Styles (win95, retro-board, responsive)
-    ├── types/                # TypeScript Interfaces & Definitions
-    ├── core/                 # Store, Sync Engine (BroadcastChannel), Audio Synth, and PWA Installer
-    ├── components/           # Dashboard, Board, Modal, Export, Share, and Taskbar
-    └── utils/                # Constants and Helper Functions
-```
-
----
-
-## 🛠️ Installation & Local Development
-
-### 1. Clone Repository & Install Dependencies:
+Requires Node.js 20 or later. CI runs on Node 20.
 
 ```bash
 git clone https://github.com/AtaCanYmc/PixelSprint.git
 cd PixelSprint
-npm install
-```
-
-### 2. Run Local Development Server (HMR):
-
-```bash
+npm ci
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser.
+Vite prints the local URL, `http://localhost:5173` by default. Open it in two tabs to see live sync.
 
-### 3. Build Production Bundle:
+No environment variables are required.
 
-```bash
-npm run build
+## Scripts
+
+| Command               | Action                                                                                |
+| :-------------------- | :------------------------------------------------------------------------------------ |
+| `npm run dev`         | Start the Vite dev server with HMR.                                                   |
+| `npm run build`       | Type-check with `tsc`, then emit the production bundle and service worker to `dist/`. |
+| `npm run preview`     | Serve `dist/` locally to test the PWA build.                                          |
+| `npm run check-types` | Run `tsc --noEmit`.                                                                   |
+| `npm run format`      | Run Prettier across the repository.                                                   |
+
+A Husky `pre-commit` hook runs `lint-staged`, which formats staged files with Prettier.
+
+## Features
+
+| Area         | Behavior                                                                                                                                 |
+| :----------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| Columns      | Went Well, Needs Improvement, Action Items.                                                                                              |
+| Voting       | One upvote or downvote per device per card.                                                                                              |
+| Session host | The device that creates a session can move, delete and clear cards, mask or reveal cards, and run the timer.                             |
+| Card masking | Host can hide card text from everyone during the silent writing phase.                                                                   |
+| Timer        | Host sets 3, 5, 10 or 15 minutes, can pause, resume, extend by 2 or 5 minutes, or reset. When it expires, participants cannot add cards. |
+| Sharing      | QR code and direct link built from `#session=<id>`.                                                                                      |
+| Export       | `.txt`, `.csv` with UTF-8 BOM, `.xlsx` as SpreadsheetML, `.docx`, `.pdf` via print, clipboard copy, and email through `mailto:`.         |
+| AI prompt    | Builds a prompt from the board for ChatGPT, Claude or Gemini. Nothing is sent automatically.                                             |
+| UI           | Light and dark themes, emoji-only or labeled buttons, Web Audio sound effects.                                                           |
+| Languages    | Turkish, English, French.                                                                                                                |
+| Offline      | Workbox service worker precaches the app shell.                                                                                          |
+
+Details are in [docs/features.md](docs/features.md).
+
+## Architecture
+
+```mermaid
+flowchart LR
+    UI["Components<br/>src/components"] -->|actions| Store["RetroStore<br/>src/core/store.ts"]
+    Store -->|subscribe| UI
+    Store <--> LS[("localStorage")]
+    Store <-->|RealtimeMessage| Sync["RealtimeSyncEngine<br/>src/core/sync.ts"]
+    Sync <--> BC["BroadcastChannel<br/>same browser"]
+    Sync <--> P2P["PeerJS WebRTC<br/>other devices"]
 ```
 
-The optimized PWA production assets will be generated in `dist/`.
+See [docs/architecture.md](docs/architecture.md) and [docs/sync-protocol.md](docs/sync-protocol.md).
 
----
+## Project Layout
 
-## 📜 License
+```text
+PixelSprint/
+├── index.html              # App shell, modals, Start Menu markup
+├── vite.config.ts          # Vite and vite-plugin-pwa config
+├── public/                 # Icons and web manifest
+├── docs/                   # Developer documentation
+└── src/
+    ├── main.ts             # Bootstraps core services and components
+    ├── components/         # UI controllers: board, dashboard, modal, export, share, timer, aiPrompt, taskbar
+    ├── core/               # store, sync, theme, audio, pwa
+    ├── i18n/               # Translator and TR/EN/FR locale tables
+    ├── types/              # Shared TypeScript interfaces
+    ├── utils/              # Constants and helpers
+    └── css/                # Win95, board, responsive and theme variables
+```
 
-Distributed under the **[Apache License 2.0](LICENSE)**.
+## Documentation
+
+| Document                                       | Content                                           |
+| :--------------------------------------------- | :------------------------------------------------ |
+| [docs/architecture.md](docs/architecture.md)   | Module responsibilities and data flow.            |
+| [docs/sync-protocol.md](docs/sync-protocol.md) | Realtime transports and event types.              |
+| [docs/features.md](docs/features.md)           | Host permissions, timer, masking, export formats. |
+| [docs/i18n.md](docs/i18n.md)                   | Adding or changing translations.                  |
+| [docs/storage.md](docs/storage.md)             | `localStorage` keys and data shapes.              |
+| [docs/deployment.md](docs/deployment.md)       | GitHub Pages pipeline and release flow.           |
+
+## FAQ
+
+**Does any data leave the browser?**
+Card events travel peer to peer over WebRTC. PeerJS uses its public broker at `0.peerjs.com` to exchange connection offers, so the broker sees peer IDs derived from the session ID. Card content does not pass through it.
+
+**Is the host role secure?**
+No. Host status is a list of session IDs stored in the creating browser. It prevents accidental edits, not a determined participant. See [SECURITY.md](SECURITY.md).
+
+**Why does a new device show an empty board?**
+A joining device sends `REQUEST_SYNC` and receives state from a peer that is already online. If nobody else in the session is connected, there is nothing to sync from.
+
+**Can I use my own signaling or relay server?**
+The sync engine reads an optional WebSocket URL from the `pixelsprint_ws_server_url` key in `localStorage`. There is no bundled server.
+
+## Contributing
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md). Commits follow Conventional Commits, and releases are cut by release-please.
+
+## License
+
+[Apache License 2.0](LICENSE).
