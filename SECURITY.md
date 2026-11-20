@@ -7,7 +7,7 @@
 | Latest release |    Yes    |
 | Older releases |    No     |
 
-Current release: `1.3.0` <!-- x-release-please-version -->
+Current release: `1.4.0` <!-- x-release-please-version -->
 
 ## Reporting a Vulnerability
 

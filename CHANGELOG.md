@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/AtaCanYmc/PixelSprint/compare/v1.3.0...v1.4.0) (2026-11-20)
+
+
+### Features
+
+* **ui:** modernize web platform primitives, OKLCH tokens, and docs ([383c049](https://github.com/AtaCanYmc/PixelSprint/commit/383c04933041262cdf4d01be0bd71afd792adc4c))
+
+
+### Bug Fixes
+
+* **security:** sanitize export outputs, validate P2P payloads, and patch dependencies ([23ca413](https://github.com/AtaCanYmc/PixelSprint/commit/23ca413d51be9aedfc5872eeb071473e2fd8cddd))
+
 ## [1.3.0](https://github.com/AtaCanYmc/PixelSprint/compare/v1.2.0...v1.3.0) (2026-08-26)
 
 ### Features
