@@ -2,8 +2,11 @@
 
 # PixelSprint
 
+> Current Release: `v1.3.0` <!-- x-release-please-version -->
+
 Anonymous sprint retrospective board for the browser. Windows 95 styling, installable as a PWA, synchronized across tabs and devices over WebRTC.
 
+[![Version](https://img.shields.io/badge/version-v1.3.0-blue.svg)](https://github.com/AtaCanYmc/PixelSprint/releases) <!-- x-release-please-version -->
 [![CI](https://github.com/AtaCanYmc/PixelSprint/actions/workflows/ci.yml/badge.svg)](https://github.com/AtaCanYmc/PixelSprint/actions/workflows/ci.yml)
 [![Deploy](https://github.com/AtaCanYmc/PixelSprint/actions/workflows/deploy.yml/badge.svg)](https://github.com/AtaCanYmc/PixelSprint/actions/workflows/deploy.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)

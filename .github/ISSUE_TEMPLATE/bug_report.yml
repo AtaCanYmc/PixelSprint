@@ -36,7 +36,7 @@ body:
     id: version
     attributes:
       label: Version or commit
-      placeholder: v1.3.0
+      placeholder: v1.3.0 # x-release-please-version
   - type: textarea
     id: logs
     attributes:

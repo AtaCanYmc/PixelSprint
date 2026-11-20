@@ -1,8 +1,17 @@
 {
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "include-component-in-tag": false,
   "packages": {
     ".": {
       "release-type": "node",
-      "changelog-path": "CHANGELOG.md"
+      "package-name": "pixelsprint",
+      "changelog-path": "CHANGELOG.md",
+      "extra-files": [
+        { "type": "generic", "path": "README.md" },
+        { "type": "generic", "path": "SECURITY.md" },
+        { "type": "generic", "path": ".github/ISSUE_TEMPLATE/bug_report.yml" },
+        { "type": "generic", "path": "index.html" }
+      ]
     }
   }
 }

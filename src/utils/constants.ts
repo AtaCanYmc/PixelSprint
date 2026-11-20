@@ -12,9 +12,18 @@ export const STORAGE_KEYS = {
 } as const;
 
 export const RETRO_CODENAMES: readonly string[] = [
-  'FloppyDisk-95', 'Agent-404', 'Kernel-Panic', 'Byte-Runner',
-  'NullPointer', 'StackOverflow', 'Git-Push', 'Terminal-Ghost',
-  'Matrix-Dev', 'Cyber-Pioneer', 'Cmd-User', 'Cache-Miss'
+  'FloppyDisk-95',
+  'Agent-404',
+  'Kernel-Panic',
+  'Byte-Runner',
+  'NullPointer',
+  'StackOverflow',
+  'Git-Push',
+  'Terminal-Ghost',
+  'Matrix-Dev',
+  'Cyber-Pioneer',
+  'Cmd-User',
+  'Cache-Miss'
 ];
 
 export const CATEGORIES: readonly CategoryConfig[] = [
@@ -27,7 +36,7 @@ export const INITIAL_DEMO_CARDS: readonly RetroCard[] = [
   {
     id: 'card-demo-1',
     category: 'went_well',
-    text: 'Sprint hedeflerimizin %90\'ını zamanında canlıya aldık. Ekip iletişimi harikaydı! 🚀',
+    text: "Sprint hedeflerimizin %90'ını zamanında canlıya aldık. Ekip iletişimi harikaydı! 🚀",
     upvotes: 4,
     downvotes: 0,
     timestamp: '14:20:00',

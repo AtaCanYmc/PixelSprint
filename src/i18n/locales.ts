@@ -3,6 +3,7 @@
  */
 
 import { Language } from '../types';
+import { version } from '../../package.json';
 
 export interface Translations {
   // App & Titles
@@ -187,8 +188,8 @@ export interface Translations {
 
 export const locales: Record<Language, Translations> = {
   tr: {
-    appTitle: 'PixelSprint v1.0 - Retro Sprint Retrospective',
-    dashboardTitle: 'PixelSprint v1.0 - Retro Oturum Yöneticisi (Dashboard)',
+    appTitle: `PixelSprint v${version} - Retro Sprint Retrospective`,
+    dashboardTitle: `PixelSprint v${version} - Retro Oturum Yöneticisi`,
     boardTitle: 'PixelSprint - Retro Board',
 
     startNewSession: 'Yeni Retro Oturumu Başlat',
@@ -257,7 +258,7 @@ export const locales: Record<Language, Translations> = {
     directLinkLabel: 'Doğrudan Katılım Linki:',
     copyLinkSuccess: 'Retro katılım bağlantısı panoya kopyalandı! 🔗',
 
-    modalAboutTitle: 'PixelSprint v1.0 Hakkında',
+    modalAboutTitle: `PixelSprint v${version} Hakkında`,
     aboutSubhead: 'Retro Sprint Retrospective Board',
     aboutDesc1:
       "PixelSprint, yazılım ekipleri için 90'lar Windows 95 ve Terminal estetiğinde hazırlanmış anonim bir Sprint Sonu Retrospektif uygulamasıdır.",
@@ -355,8 +356,8 @@ export const locales: Record<Language, Translations> = {
   },
 
   en: {
-    appTitle: 'PixelSprint v1.0 - Retro Sprint Retrospective',
-    dashboardTitle: 'PixelSprint v1.0 - Retro Session Manager (Dashboard)',
+    appTitle: `PixelSprint v${version} - Retro Sprint Retrospective`,
+    dashboardTitle: `PixelSprint v${version} - Retro Session Manager`,
     boardTitle: 'PixelSprint - Retro Board',
 
     startNewSession: 'Start New Retro Session',
@@ -424,7 +425,7 @@ export const locales: Record<Language, Translations> = {
     directLinkLabel: 'Direct Join Link:',
     copyLinkSuccess: 'Retro join link copied to clipboard! 🔗',
 
-    modalAboutTitle: 'About PixelSprint v1.0',
+    modalAboutTitle: `About PixelSprint v${version}`,
     aboutSubhead: 'Retro Sprint Retrospective Board',
     aboutDesc1:
       'PixelSprint is an anonymous Sprint Retrospective app built with a 90s Windows 95 and Terminal aesthetic for agile software teams.',
@@ -521,8 +522,8 @@ export const locales: Record<Language, Translations> = {
   },
 
   fr: {
-    appTitle: 'PixelSprint v1.0 - Rétrospective Sprint Rétro',
-    dashboardTitle: 'PixelSprint v1.0 - Gestionnaire de Session',
+    appTitle: `PixelSprint v${version} - Rétrospective Sprint Rétro`,
+    dashboardTitle: `PixelSprint v${version} - Gestionnaire de Session`,
     boardTitle: 'PixelSprint - Tableau Rétro',
 
     startNewSession: 'Démarrer une Nouvelle Session Rétro',
@@ -590,7 +591,7 @@ export const locales: Record<Language, Translations> = {
     directLinkLabel: 'Lien d Accès Direct :',
     copyLinkSuccess: 'Lien de participation rétro copié dans le presse-papiers ! 🔗',
 
-    modalAboutTitle: 'À propos de PixelSprint v1.0',
+    modalAboutTitle: `À propos de PixelSprint v${version}`,
     aboutSubhead: 'Tableau de Rétrospective Sprint Rétro',
     aboutDesc1:
       'PixelSprint est une application de Rétrospective anonyme conçue avec une esthétique Windows 95 et Terminal des années 90 pour les équipes agiles.',
