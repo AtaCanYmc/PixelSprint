@@ -20,6 +20,60 @@ import { i18n } from '../i18n';
 
 export type UserVoteState = 'up' | 'down' | null;
 
+const VALID_CATEGORIES: readonly RetroCategory[] = ['went_well', 'improvement', 'action'];
+const MAX_CARDS_PER_SESSION = 500;
+const MAX_CARD_TEXT_LEN = 2000;
+const MAX_AUTHOR_LEN = 64;
+const MAX_ID_LEN = 80;
+
+function sanitizeIncomingCard(raw: unknown): RetroCard | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const obj = raw as Record<string, unknown>;
+  if (typeof obj['id'] !== 'string' || !obj['id'] || obj['id'].length > MAX_ID_LEN) return null;
+  const cat = obj['category'] as RetroCategory;
+  if (!VALID_CATEGORIES.includes(cat)) return null;
+  if (typeof obj['text'] !== 'string') return null;
+  const author = typeof obj['author'] === 'string' && obj['author'] ? obj['author'].slice(0, MAX_AUTHOR_LEN) : 'Anon';
+  const timestamp =
+    typeof obj['timestamp'] === 'string' && obj['timestamp'] ? obj['timestamp'].slice(0, 32) : getCurrentTimeString();
+  const upvotes =
+    typeof obj['upvotes'] === 'number' && Number.isFinite(obj['upvotes'])
+      ? Math.max(0, Math.min(10000, Math.floor(obj['upvotes'])))
+      : 0;
+  const downvotes =
+    typeof obj['downvotes'] === 'number' && Number.isFinite(obj['downvotes'])
+      ? Math.max(0, Math.min(10000, Math.floor(obj['downvotes'])))
+      : 0;
+  return {
+    id: obj['id'],
+    category: cat,
+    text: obj['text'].slice(0, MAX_CARD_TEXT_LEN),
+    upvotes,
+    downvotes,
+    timestamp,
+    author
+  };
+}
+
+function sanitizeIncomingTimer(raw: unknown): RetroTimerState | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const obj = raw as Record<string, unknown>;
+  const dur =
+    typeof obj['durationSeconds'] === 'number' && Number.isFinite(obj['durationSeconds'])
+      ? Math.max(1, Math.min(86400, Math.floor(obj['durationSeconds'])))
+      : 300;
+  const rem =
+    typeof obj['remainingSeconds'] === 'number' && Number.isFinite(obj['remainingSeconds'])
+      ? Math.max(0, Math.min(86400, Math.floor(obj['remainingSeconds'])))
+      : 0;
+  return {
+    durationSeconds: dur,
+    remainingSeconds: rem,
+    isRunning: Boolean(obj['isRunning']),
+    isExpired: Boolean(obj['isExpired'])
+  };
+}
+
 class RetroStore {
   private sessions: RetroSession[] = [];
   private activeSessionId: string | null = null;
@@ -287,21 +341,31 @@ class RetroStore {
   private setupRealtimeListeners(): void {
     realtimeSync.onMessage((msg: RealtimeMessage) => {
       switch (msg.type) {
-        case 'ADD_CARD':
-          if (msg.payload && !this.cards.some((c) => c.id === msg.payload.id)) {
-            this.cards.unshift(msg.payload as RetroCard);
+        case 'ADD_CARD': {
+          const validCard = sanitizeIncomingCard(msg.payload);
+          if (
+            validCard &&
+            this.cards.length < MAX_CARDS_PER_SESSION &&
+            !this.cards.some((c) => c.id === validCard.id)
+          ) {
+            this.cards.unshift(validCard);
             this.saveCardsForActiveSession();
             audioSynth.playSuccess();
           }
           break;
+        }
 
         case 'UPVOTE_CARD':
         case 'DOWNVOTE_CARD':
-          if (msg.payload?.id) {
+          if (typeof msg.payload?.id === 'string') {
             const card = this.cards.find((c) => c.id === msg.payload.id);
             if (card) {
-              if (msg.payload.upvotes !== undefined) card.upvotes = msg.payload.upvotes;
-              if (msg.payload.downvotes !== undefined) card.downvotes = msg.payload.downvotes;
+              if (typeof msg.payload.upvotes === 'number' && Number.isFinite(msg.payload.upvotes)) {
+                card.upvotes = Math.max(0, Math.min(10000, Math.floor(msg.payload.upvotes)));
+              }
+              if (typeof msg.payload.downvotes === 'number' && Number.isFinite(msg.payload.downvotes)) {
+                card.downvotes = Math.max(0, Math.min(10000, Math.floor(msg.payload.downvotes)));
+              }
               this.saveCardsForActiveSession();
               if (msg.type === 'UPVOTE_CARD') audioSynth.playUpvote();
               else audioSynth.playDownvote();
@@ -310,7 +374,7 @@ class RetroStore {
           break;
 
         case 'MOVE_CARD':
-          if (msg.payload?.id && msg.payload?.category) {
+          if (typeof msg.payload?.id === 'string' && VALID_CATEGORIES.includes(msg.payload?.category)) {
             const card = this.cards.find((c) => c.id === msg.payload.id);
             if (card) {
               card.category = msg.payload.category as RetroCategory;
@@ -321,7 +385,7 @@ class RetroStore {
           break;
 
         case 'DELETE_CARD':
-          if (msg.payload?.id) {
+          if (typeof msg.payload?.id === 'string') {
             this.cards = this.cards.filter((c) => c.id !== msg.payload.id);
             delete this.userVotes[msg.payload.id];
             this.saveUserVotes();
@@ -349,8 +413,9 @@ class RetroStore {
 
         case 'UPDATE_TIMER':
           if (this.activeSessionId) {
-            if (msg.payload?.timerState) {
-              this.timerMap[this.activeSessionId] = msg.payload.timerState;
+            const validTimer = sanitizeIncomingTimer(msg.payload?.timerState);
+            if (validTimer) {
+              this.timerMap[this.activeSessionId] = validTimer;
             } else {
               delete this.timerMap[this.activeSessionId];
             }
@@ -369,24 +434,34 @@ class RetroStore {
 
         case 'SYNC_STATE':
           if (msg.payload) {
-            if (Array.isArray(msg.payload)) {
-              this.cards = msg.payload as RetroCard[];
-            } else if (msg.payload.cards && Array.isArray(msg.payload.cards)) {
-              this.cards = msg.payload.cards as RetroCard[];
-              if (msg.payload.revealed !== undefined && this.activeSessionId) {
-                this.cardsRevealedMap[this.activeSessionId] = !!msg.payload.revealed;
-                this.saveCardsRevealed();
-              }
-              if (msg.payload.timerState !== undefined && this.activeSessionId) {
-                if (msg.payload.timerState) {
-                  this.timerMap[this.activeSessionId] = msg.payload.timerState;
-                } else {
-                  delete this.timerMap[this.activeSessionId];
+            const rawList = Array.isArray(msg.payload)
+              ? msg.payload
+              : Array.isArray(msg.payload.cards)
+                ? msg.payload.cards
+                : null;
+            if (rawList) {
+              this.cards = rawList
+                .slice(0, MAX_CARDS_PER_SESSION)
+                .map((item: unknown) => sanitizeIncomingCard(item))
+                .filter((c: RetroCard | null): c is RetroCard => c !== null);
+
+              if (!Array.isArray(msg.payload)) {
+                if (msg.payload.revealed !== undefined && this.activeSessionId) {
+                  this.cardsRevealedMap[this.activeSessionId] = !!msg.payload.revealed;
+                  this.saveCardsRevealed();
                 }
-                this.saveTimerState();
+                if (msg.payload.timerState !== undefined && this.activeSessionId) {
+                  const validTimer = sanitizeIncomingTimer(msg.payload.timerState);
+                  if (validTimer) {
+                    this.timerMap[this.activeSessionId] = validTimer;
+                  } else {
+                    delete this.timerMap[this.activeSessionId];
+                  }
+                  this.saveTimerState();
+                }
               }
+              this.saveCardsForActiveSession();
             }
-            this.saveCardsForActiveSession();
           }
           break;
       }
@@ -454,7 +529,12 @@ class RetroStore {
     return newSession;
   }
 
-  public setActiveSession(sessionId: string): void {
+  public setActiveSession(rawSessionId: string): void {
+    const sessionId = rawSessionId
+      .trim()
+      .replace(/[^a-zA-Z0-9_-]/g, '')
+      .slice(0, MAX_ID_LEN);
+    if (!sessionId) return;
     let session = this.sessions.find((s) => s.id === sessionId);
     if (!session) {
       session = {

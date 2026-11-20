@@ -72,21 +72,21 @@ export class AiPromptComponent {
     if (this.btnOpenChatGpt) {
       this.btnOpenChatGpt.addEventListener('click', () => {
         audioSynth.playClick();
-        window.open('https://chatgpt.com', '_blank');
+        window.open('https://chatgpt.com', '_blank', 'noopener,noreferrer');
       });
     }
 
     if (this.btnOpenClaude) {
       this.btnOpenClaude.addEventListener('click', () => {
         audioSynth.playClick();
-        window.open('https://claude.ai', '_blank');
+        window.open('https://claude.ai', '_blank', 'noopener,noreferrer');
       });
     }
 
     if (this.btnOpenGemini) {
       this.btnOpenGemini.addEventListener('click', () => {
         audioSynth.playClick();
-        window.open('https://gemini.google.com', '_blank');
+        window.open('https://gemini.google.com', '_blank', 'noopener,noreferrer');
       });
     }
 

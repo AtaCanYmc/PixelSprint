@@ -8,6 +8,7 @@ import { version } from '../../package.json';
 import { audioSynth } from '../core/audio';
 import { i18n } from '../i18n';
 import { CATEGORIES } from '../utils/constants';
+import { escapeHtml } from '../utils/helpers';
 import { RetroCategory } from '../types';
 import { showDialogModal } from './modal';
 
@@ -171,13 +172,20 @@ export class ExportComponent {
     let csv = '\uFEFF';
     csv += `"Kategori";"Yazar";"Mesaj";"Skor";"Upvote";"Downvote";"Saat"\n`;
 
+    const sanitizeCsvCell = (val: string): string => {
+      const clean = val.replace(/"/g, '""').replace(/[\r\n]+/g, ' ');
+      return /^[=+\-@\t\r]/.test(clean) ? `'${clean}` : clean;
+    };
+
     cards.forEach((card) => {
-      const catTitle = categoryMap[card.category] || card.category;
-      const cleanText = card.text.replace(/"/g, '""').replace(/\n/g, ' ');
+      const catTitle = sanitizeCsvCell(categoryMap[card.category] || card.category);
+      const cleanAuthor = sanitizeCsvCell(card.author);
+      const cleanText = sanitizeCsvCell(card.text);
+      const cleanTime = sanitizeCsvCell(card.timestamp);
       const up = card.upvotes || 0;
       const down = card.downvotes || 0;
       const score = up - down;
-      csv += `"${catTitle}";"${card.author}";"${cleanText}";"${score}";"${up}";"${down}";"${card.timestamp}"\n`;
+      csv += `"${catTitle}";"${cleanAuthor}";"${cleanText}";"${score}";"${up}";"${down}";"${cleanTime}"\n`;
     });
 
     this.triggerDownload(csv, `PixelSprint_Retro_${this.getDateStr()}.csv`, 'text/csv;charset=utf-8;');
@@ -226,8 +234,10 @@ export class ExportComponent {
 
     cards.forEach((card) => {
       const catTitle = categoryMap[card.category] || card.category;
-      const escapeXml = (str: string) =>
-        str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      const escapeXml = (str: string) => {
+        const safe = /^[=+\-@\t\r]/.test(str) ? `'${str}` : str;
+        return safe.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      };
       const up = card.upvotes || 0;
       const down = card.downvotes || 0;
       const score = up - down;
@@ -257,7 +267,7 @@ export class ExportComponent {
     audioSynth.playClick();
     const cards = store.getCards();
     const activeSession = store.getActiveSession();
-    const sessionTitle = activeSession ? activeSession.title : 'Sprint Retrospective';
+    const sessionTitle = escapeHtml(activeSession ? activeSession.title : 'Sprint Retrospective');
 
     const categoryMap: Record<RetroCategory, string> = {
       went_well: i18n.t('colWentWellTitle'),
@@ -265,7 +275,7 @@ export class ExportComponent {
       action: i18n.t('colActionTitle')
     };
 
-    let docHtml = `<html lang="${i18n.getLanguage()}">`;
+    let docHtml = `<html lang="${escapeHtml(i18n.getLanguage())}">`;
     docHtml += `<head><meta charset='utf-8'><title>${sessionTitle}</title>`;
     docHtml += `<style>
       body { font-family: 'Calibri', 'Segoe UI', Arial, sans-serif; margin: 20px; color: #1a1a1a; }
@@ -281,11 +291,11 @@ export class ExportComponent {
     </style></head><body>`;
 
     docHtml += `<h1>💾 PixelSprint - ${sessionTitle}</h1>`;
-    docHtml += `<p><strong>Date:</strong> ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} | <strong>Total Cards:</strong> ${cards.length}</p>`;
+    docHtml += `<p><strong>Date:</strong> ${escapeHtml(new Date().toLocaleDateString())} ${escapeHtml(new Date().toLocaleTimeString())} | <strong>Total Cards:</strong> ${cards.length}</p>`;
 
     CATEGORIES.forEach((cat) => {
       const catCards = cards.filter((c) => c.category === cat.key);
-      const catTitle = categoryMap[cat.key];
+      const catTitle = escapeHtml(categoryMap[cat.key]);
       docHtml += `<h2>${catTitle} (${catCards.length})</h2>`;
 
       if (catCards.length === 0) {
@@ -297,14 +307,14 @@ export class ExportComponent {
           const down = card.downvotes || 0;
           const score = up - down;
           const scoreStr = score > 0 ? `+${score}` : `${score}`;
-          const cleanText = card.text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+          const cleanText = escapeHtml(card.text).replace(/\n/g, '<br>');
 
           docHtml += `<tr>
             <td>${idx + 1}</td>
-            <td><strong>${card.author}</strong></td>
+            <td><strong>${escapeHtml(card.author)}</strong></td>
             <td>${cleanText}</td>
             <td>${scoreStr} (▲${up} / ▼${down})</td>
-            <td>${card.timestamp}</td>
+            <td>${escapeHtml(card.timestamp)}</td>
           </tr>`;
         });
         docHtml += `</tbody></table>`;
@@ -320,7 +330,7 @@ export class ExportComponent {
     audioSynth.playClick();
     const cards = store.getCards();
     const activeSession = store.getActiveSession();
-    const sessionTitle = activeSession ? activeSession.title : 'Sprint Retrospective';
+    const sessionTitle = escapeHtml(activeSession ? activeSession.title : 'Sprint Retrospective');
 
     const categoryMap: Record<RetroCategory, string> = {
       went_well: i18n.t('colWentWellTitle'),
@@ -334,7 +344,7 @@ export class ExportComponent {
       return;
     }
 
-    let pdfHtml = `<!DOCTYPE html><html lang="${i18n.getLanguage()}"><head><meta charset="utf-8">`;
+    let pdfHtml = `<!DOCTYPE html><html lang="${escapeHtml(i18n.getLanguage())}"><head><meta charset="utf-8">`;
     pdfHtml += `<title>PixelSprint Report - ${sessionTitle}</title>`;
     pdfHtml += `<style>
       @media print {
@@ -354,11 +364,11 @@ export class ExportComponent {
     </style></head><body>`;
 
     pdfHtml += `<div class="no-print"><button class="btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button></div>`;
-    pdfHtml += `<div class="header"><h1>💾 PixelSprint - ${sessionTitle}</h1><p>Date: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} | Total Notes: ${cards.length}</p></div>`;
+    pdfHtml += `<div class="header"><h1>💾 PixelSprint - ${sessionTitle}</h1><p>Date: ${escapeHtml(new Date().toLocaleDateString())} ${escapeHtml(new Date().toLocaleTimeString())} | Total Notes: ${cards.length}</p></div>`;
 
     CATEGORIES.forEach((cat) => {
       const catCards = cards.filter((c) => c.category === cat.key);
-      const catTitle = categoryMap[cat.key];
+      const catTitle = escapeHtml(categoryMap[cat.key]);
       pdfHtml += `<div class="section-title">${catTitle} (${catCards.length})</div>`;
 
       if (catCards.length === 0) {
@@ -370,14 +380,14 @@ export class ExportComponent {
           const down = card.downvotes || 0;
           const score = up - down;
           const scoreStr = score > 0 ? `+${score}` : `${score}`;
-          const cleanText = card.text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+          const cleanText = escapeHtml(card.text).replace(/\n/g, '<br>');
 
           pdfHtml += `<tr>
             <td>${idx + 1}</td>
-            <td><strong>${card.author}</strong></td>
+            <td><strong>${escapeHtml(card.author)}</strong></td>
             <td>${cleanText}</td>
             <td>${scoreStr} (▲${up} / ▼${down})</td>
-            <td>${card.timestamp}</td>
+            <td>${escapeHtml(card.timestamp)}</td>
           </tr>`;
         });
         pdfHtml += `</tbody></table>`;

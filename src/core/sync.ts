@@ -179,7 +179,13 @@ class RealtimeSyncEngine {
 
   private connectWebSocket(url: string, sessionId: string): void {
     try {
-      this.ws = new WebSocket(`${url}?session=${sessionId}`);
+      const parsed = new URL(url);
+      if (parsed.protocol !== 'ws:' && parsed.protocol !== 'wss:') {
+        console.warn('[RealtimeSync] Invalid WebSocket protocol:', parsed.protocol);
+        return;
+      }
+      parsed.searchParams.set('session', sessionId);
+      this.ws = new WebSocket(parsed.toString());
       this.ws.onmessage = (event) => {
         try {
           const msg = JSON.parse(event.data) as RealtimeMessage;
