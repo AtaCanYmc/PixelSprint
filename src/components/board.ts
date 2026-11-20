@@ -51,8 +51,12 @@ export class BoardComponent {
     this.mobileTabBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
         audioSynth.playClick();
-        this.mobileTabBtns.forEach((b) => b.classList.remove('active'));
+        this.mobileTabBtns.forEach((b) => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
         btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
 
         const targetTabId = btn.dataset['tab'];
         document.querySelectorAll('.board-column').forEach((col) => {
@@ -207,25 +211,25 @@ export class BoardComponent {
 
           const moveButtonsHtml = isHost
             ? `
-                ${card.category !== 'went_well' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="went_well" title="${escapeHtml(i18n.t('moveCardTitle'))}">🟢</button>` : ''}
-                ${card.category !== 'improvement' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="improvement" title="${escapeHtml(i18n.t('moveCardTitle'))}">🔴</button>` : ''}
-                ${card.category !== 'action' ? `<button class="win-btn win-btn-sm" data-action="move" data-id="${card.id}" data-target="action" title="${escapeHtml(i18n.t('moveCardTitle'))}">💡</button>` : ''}
+                ${card.category !== 'went_well' ? `<button type="button" class="win-btn win-btn-sm" data-action="move" data-id="${escapeHtml(card.id)}" data-target="went_well" title="${escapeHtml(i18n.t('moveCardTitle'))} 🟢" aria-label="${escapeHtml(i18n.t('moveCardTitle'))} 🟢">🟢</button>` : ''}
+                ${card.category !== 'improvement' ? `<button type="button" class="win-btn win-btn-sm" data-action="move" data-id="${escapeHtml(card.id)}" data-target="improvement" title="${escapeHtml(i18n.t('moveCardTitle'))} 🔴" aria-label="${escapeHtml(i18n.t('moveCardTitle'))} 🔴">🔴</button>` : ''}
+                ${card.category !== 'action' ? `<button type="button" class="win-btn win-btn-sm" data-action="move" data-id="${escapeHtml(card.id)}" data-target="action" title="${escapeHtml(i18n.t('moveCardTitle'))} 💡" aria-label="${escapeHtml(i18n.t('moveCardTitle'))} 💡">💡</button>` : ''}
               `
             : '';
 
           const deleteButtonHtml = isHost
             ? `
-                <button class="win-btn win-btn-sm" data-action="delete" data-id="${card.id}" title="Sil">
+                <button type="button" class="win-btn win-btn-sm" data-action="delete" data-id="${escapeHtml(card.id)}" title="${escapeHtml(i18n.t('btnDelete'))}" aria-label="${escapeHtml(i18n.t('btnDelete'))}">
                   ❌
                 </button>
               `
             : '';
 
           return `
-          <div class="win-outset retro-card ${card.category}" data-id="${card.id}">
+          <article class="win-outset retro-card ${card.category}" data-id="${escapeHtml(card.id)}">
             <div class="card-header">
-              <span class="card-author">👤 ${escapeHtml(card.author)}</span>
-              <span class="card-time">⏱️ ${escapeHtml(card.timestamp)}</span>
+              <span class="card-author"><span aria-hidden="true">👤</span> ${escapeHtml(card.author)}</span>
+              <span class="card-time"><span aria-hidden="true">⏱️</span> ${escapeHtml(card.timestamp)}</span>
             </div>
             <div class="card-body">
               ${cardContentHtml}
@@ -235,11 +239,11 @@ export class BoardComponent {
               <div class="card-actions">
                 <!-- Reddit Style Vote Group -->
                 <div class="vote-group">
-                  <button class="win-btn win-btn-sm vote-btn upvote-btn ${upActive}" data-action="upvote" data-id="${card.id}" title="${escapeHtml(i18n.t('upvoteTooltip'))}">
+                  <button type="button" class="win-btn win-btn-sm vote-btn upvote-btn ${upActive}" data-action="upvote" data-id="${escapeHtml(card.id)}" aria-pressed="${userVote === 'up'}" title="${escapeHtml(i18n.t('upvoteTooltip'))}" aria-label="${escapeHtml(i18n.t('upvoteTooltip'))} (${up})">
                     ▲ ${up}
                   </button>
                   <span class="vote-score ${scoreClass}">${scoreStr}</span>
-                  <button class="win-btn win-btn-sm vote-btn downvote-btn ${downActive}" data-action="downvote" data-id="${card.id}" title="${escapeHtml(i18n.t('downvoteTooltip'))}">
+                  <button type="button" class="win-btn win-btn-sm vote-btn downvote-btn ${downActive}" data-action="downvote" data-id="${escapeHtml(card.id)}" aria-pressed="${userVote === 'down'}" title="${escapeHtml(i18n.t('downvoteTooltip'))}" aria-label="${escapeHtml(i18n.t('downvoteTooltip'))} (${down})">
                     ▼ ${down}
                   </button>
                 </div>
@@ -249,7 +253,7 @@ export class BoardComponent {
 
               ${deleteButtonHtml}
             </div>
-          </div>
+          </article>
         `;
         })
         .join('');

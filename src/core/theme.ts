@@ -1,6 +1,6 @@
 /**
  * PixelSprint Core Theme Manager (TypeScript)
- * Handles Light Mode / Dark Mode state, system preferences, and localStorage persistence
+ * Handles Light Mode / Dark Mode state, system preferences, <meta name="color-scheme"> sync, and localStorage persistence
  */
 
 import { ThemeMode } from '../types';
@@ -11,19 +11,20 @@ class ThemeEngine {
   private currentTheme: ThemeMode = 'light';
   private listeners: ThemeChangeListener[] = [];
 
+  private getSystemTheme(): ThemeMode {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
   public init(): void {
     const savedTheme = localStorage.getItem('pixelsprint_theme') as ThemeMode | null;
-    if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+    if (savedTheme === 'light' || savedTheme === 'dark') {
       this.currentTheme = savedTheme;
     } else {
-      // Auto-detect system preference
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      this.currentTheme = prefersDark ? 'dark' : 'light';
+      this.currentTheme = this.getSystemTheme();
     }
 
     this.applyTheme();
 
-    // Listen for system theme changes if user hasn't explicitly set preference
     if (window.matchMedia) {
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
         if (!localStorage.getItem('pixelsprint_theme')) {
@@ -32,6 +33,14 @@ class ThemeEngine {
         }
       });
     }
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'pixelsprint_theme') {
+        const next = e.newValue as ThemeMode | null;
+        this.currentTheme = next === 'light' || next === 'dark' ? next : this.getSystemTheme();
+        this.applyTheme();
+      }
+    });
   }
 
   public getTheme(): ThemeMode {
@@ -39,18 +48,34 @@ class ThemeEngine {
   }
 
   public toggleTheme(): void {
-    this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
-    localStorage.setItem('pixelsprint_theme', this.currentTheme);
+    const target: ThemeMode = this.currentTheme === 'light' ? 'dark' : 'light';
+    const systemTheme = this.getSystemTheme();
+
+    this.currentTheme = target;
+    if (target === systemTheme) {
+      localStorage.removeItem('pixelsprint_theme');
+    } else {
+      localStorage.setItem('pixelsprint_theme', target);
+    }
     this.applyTheme();
   }
 
   public setTheme(theme: ThemeMode): void {
     this.currentTheme = theme;
-    localStorage.setItem('pixelsprint_theme', theme);
+    if (theme === this.getSystemTheme()) {
+      localStorage.removeItem('pixelsprint_theme');
+    } else {
+      localStorage.setItem('pixelsprint_theme', theme);
+    }
     this.applyTheme();
   }
 
   private applyTheme(): void {
+    const saved = localStorage.getItem('pixelsprint_theme');
+    const meta = document.querySelector('meta[name="color-scheme"]') as HTMLMetaElement | null;
+    if (meta) {
+      meta.content = saved === 'light' || saved === 'dark' ? saved : 'light dark';
+    }
     document.documentElement.setAttribute('data-theme', this.currentTheme);
     this.notify();
   }

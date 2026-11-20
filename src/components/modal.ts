@@ -1,12 +1,38 @@
 /**
  * PixelSprint Modal Component (TypeScript)
- * Handles Add Card modal, About modal, and Mobile PWA Setup Guide modal with complete 100% i18n support
+ * Handles native <dialog> modals (Add Card, About, Mobile PWA Setup Guide), light-dismiss fallback, and 100% i18n
  */
 
 import { store } from '../core/store';
 import { audioSynth } from '../core/audio';
 import { i18n } from '../i18n';
 import { RetroCategory } from '../types';
+
+export function showDialogModal(dialogEl: HTMLElement | null, startMenuEl?: HTMLElement | null): void {
+  if (!dialogEl) return;
+  if (startMenuEl) startMenuEl.classList.add('hidden');
+  const startBtn = document.getElementById('start-btn');
+  if (startBtn) {
+    startBtn.classList.remove('pressed');
+    startBtn.setAttribute('aria-expanded', 'false');
+  }
+  const dlg = dialogEl as HTMLDialogElement;
+  if (typeof dlg.showModal === 'function') {
+    if (!dlg.open) dlg.showModal();
+  } else {
+    dialogEl.setAttribute('open', '');
+  }
+}
+
+export function closeDialogModal(dialogEl: HTMLElement | null): void {
+  if (!dialogEl) return;
+  const dlg = dialogEl as HTMLDialogElement;
+  if (typeof dlg.close === 'function') {
+    if (dlg.open) dlg.close();
+  } else {
+    dialogEl.removeAttribute('open');
+  }
+}
 
 export class ModalComponent {
   private modalAddCard: HTMLElement | null;
@@ -29,10 +55,27 @@ export class ModalComponent {
 
     document.querySelectorAll('.btn-close-modal').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const modal = btn.closest('.modal-overlay') as HTMLElement | null;
+        const modal = btn.closest('dialog.modal-overlay') as HTMLElement | null;
         if (modal) this.closeModal(modal);
       });
     });
+
+    // Fallback for browsers without native <dialog closedby="any"> support
+    if (typeof HTMLDialogElement !== 'undefined' && !('closedBy' in HTMLDialogElement.prototype)) {
+      document.querySelectorAll<HTMLDialogElement>('dialog[closedby="any"]').forEach((dialog) => {
+        dialog.addEventListener('click', (event: MouseEvent) => {
+          if (event.target !== dialog) return;
+          const rect = dialog.getBoundingClientRect();
+          const isDialogContent =
+            rect.top <= event.clientY &&
+            event.clientY <= rect.top + rect.height &&
+            rect.left <= event.clientX &&
+            event.clientX <= rect.left + rect.width;
+          if (isDialogContent) return;
+          dialog.close();
+        });
+      });
+    }
 
     const btnOpenAdd = document.getElementById('btn-open-add-modal');
     const smAdd = document.getElementById('sm-add-card');
@@ -94,29 +137,52 @@ export class ModalComponent {
     const showLabels = store.isShowButtonLabels();
 
     if (btnShareLink) {
-      btnShareLink.innerHTML = showLabels ? `<span>📱</span> <strong>${i18n.t('btnShareQr')}</strong>` : '📱';
+      btnShareLink.innerHTML = showLabels
+        ? `<span aria-hidden="true">📱</span> <strong>${i18n.t('btnShareQr')}</strong>`
+        : '<span aria-hidden="true">📱</span>';
       btnShareLink.title = i18n.t('btnShareQr');
+      btnShareLink.setAttribute('aria-label', i18n.t('btnShareQr'));
     }
     if (btnOpenAdd) {
-      btnOpenAdd.innerHTML = showLabels ? `<span>➕</span> <strong>${i18n.t('btnAddCard')}</strong>` : '➕';
+      btnOpenAdd.innerHTML = showLabels
+        ? `<span aria-hidden="true">➕</span> <strong>${i18n.t('btnAddCard')}</strong>`
+        : '<span aria-hidden="true">➕</span>';
       btnOpenAdd.title = i18n.t('btnAddCard');
+      btnOpenAdd.setAttribute('aria-label', i18n.t('btnAddCard'));
     }
     if (btnOpenAi) {
-      btnOpenAi.innerHTML = showLabels ? `<span>🤖</span> <strong>${i18n.t('btnAiPrompt')}</strong>` : '🤖';
+      btnOpenAi.innerHTML = showLabels
+        ? `<span aria-hidden="true">🤖</span> <strong>${i18n.t('btnAiPrompt')}</strong>`
+        : '<span aria-hidden="true">🤖</span>';
       btnOpenAi.title = i18n.t('btnAiPrompt');
+      btnOpenAi.setAttribute('aria-label', i18n.t('btnAiPrompt'));
     }
     if (btnExport) {
-      btnExport.innerHTML = showLabels ? `<span>💾</span> <strong>${i18n.t('btnExportReport')}</strong>` : '💾';
+      btnExport.innerHTML = showLabels
+        ? `<span aria-hidden="true">💾</span> <strong>${i18n.t('btnExportReport')}</strong>`
+        : '<span aria-hidden="true">💾</span>';
       btnExport.title = i18n.t('btnExportReport');
+      btnExport.setAttribute('aria-label', i18n.t('btnExportReport'));
     }
     if (btnClear) {
-      btnClear.innerHTML = showLabels ? `<span>🗑️</span> <strong>${i18n.t('btnClearBoard')}</strong>` : '🗑️';
+      btnClear.innerHTML = showLabels
+        ? `<span aria-hidden="true">🗑️</span> <strong>${i18n.t('btnClearBoard')}</strong>`
+        : '<span aria-hidden="true">🗑️</span>';
       btnClear.title = i18n.t('btnClearBoard');
+      btnClear.setAttribute('aria-label', i18n.t('btnClearBoard'));
     }
     if (btnInstall) {
-      btnInstall.innerHTML = showLabels ? `<span>📱</span> <strong>${i18n.t('btnInstallPwa')}</strong>` : '📱';
+      btnInstall.innerHTML = showLabels
+        ? `<span aria-hidden="true">📱</span> <strong>${i18n.t('btnInstallPwa')}</strong>`
+        : '<span aria-hidden="true">📱</span>';
       btnInstall.title = i18n.t('btnInstallPwa');
+      btnInstall.setAttribute('aria-label', i18n.t('btnInstallPwa'));
     }
+
+    document.querySelectorAll('.btn-close-modal').forEach((btn) => {
+      btn.setAttribute('aria-label', i18n.t('btnClose'));
+      (btn as HTMLElement).title = i18n.t('btnClose');
+    });
 
     // Add Card Modal i18n
     const txtAddTitle = document.getElementById('txt-modal-add-title');
@@ -195,14 +261,13 @@ export class ModalComponent {
   public openModal(modalEl: HTMLElement | null): void {
     if (!modalEl) return;
     audioSynth.playClick();
-    modalEl.classList.remove('hidden');
-    if (this.startMenu) this.startMenu.classList.add('hidden');
+    showDialogModal(modalEl, this.startMenu);
   }
 
   public closeModal(modalEl: HTMLElement | null): void {
     if (!modalEl) return;
     audioSynth.playClick();
-    modalEl.classList.add('hidden');
+    closeDialogModal(modalEl);
   }
 
   public openAddCardModal(): void {

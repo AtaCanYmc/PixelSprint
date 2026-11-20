@@ -2,7 +2,17 @@
 <html lang="tr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      try {
+        const s = localStorage.getItem('pixelsprint_theme');
+        if (s === 'light' || s === 'dark') {
+          document.querySelector('meta[name="color-scheme"]').content = s;
+          document.documentElement.setAttribute('data-theme', s);
+        }
+      } catch {}
+    </script>
     <title>PixelSprint - Retro Sprint Retrospective</title>
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -16,44 +26,69 @@
   </head>
   <body>
     <!-- Retro CRT Scanline Overlay -->
-    <div id="crt-overlay" class="crt-overlay"></div>
+    <div id="crt-overlay" class="crt-overlay" aria-hidden="true"></div>
 
     <!-- Main Application Container -->
-    <div id="app-container">
+    <main id="app-container">
       <!-- Dashboard / Session Launcher Window -->
-      <div
+      <section
         id="window-dashboard"
         class="win-window"
+        aria-labelledby="txt-dashboard-title"
         style="display: flex; flex-direction: column; height: 100%; overflow: hidden"
       >
-        <div class="win-titlebar">
+        <header class="win-titlebar">
           <div class="win-titlebar-title">
-            <span>💾</span>
+            <span aria-hidden="true">💾</span>
             <!-- x-release-please-start-version -->
-            <span id="txt-dashboard-title">PixelSprint v1.3.0 - Retro Oturum Yöneticisi</span>
+            <h1 id="txt-dashboard-title">PixelSprint v1.3.0 - Retro Oturum Yöneticisi</h1>
             <!-- x-release-please-end -->
           </div>
           <div class="win-titlebar-controls">
-            <button class="win-btn win-btn-sm btn-theme-toggle" title="Tema Değiştir (Light/Dark)">🌙</button>
-            <button class="win-btn win-btn-sm btn-labels-toggle" title="Buton Metinlerini Göster/Gizle">🏷️</button>
-            <button class="win-btn win-btn-sm btn-sound-toggle-dash">🔊</button>
-            <button class="win-btn win-btn-sm btn-about-dash">?</button>
+            <button
+              type="button"
+              class="win-btn win-btn-sm btn-theme-toggle"
+              title="Tema Değiştir"
+              aria-label="Tema Değiştir"
+            >
+              🌙
+            </button>
+            <button
+              type="button"
+              class="win-btn win-btn-sm btn-labels-toggle"
+              title="Buton Metinlerini Göster/Gizle"
+              aria-label="Buton Metinlerini Göster/Gizle"
+            >
+              🏷️
+            </button>
+            <button
+              type="button"
+              class="win-btn win-btn-sm btn-sound-toggle-dash"
+              title="Ses Efektlerini Aç/Kapat"
+              aria-label="Ses Efektlerini Aç/Kapat"
+            >
+              🔊
+            </button>
+            <button type="button" class="win-btn win-btn-sm btn-about-dash" title="Hakkında" aria-label="Hakkında">
+              ?
+            </button>
           </div>
-        </div>
+        </header>
 
         <div style="padding: 12px; display: flex; flex-direction: column; gap: 12px; height: 100%; overflow-y: auto">
           <!-- Create New Session Form -->
           <div class="win-outset" style="padding: 12px; display: flex; flex-direction: column; gap: 8px">
-            <h3 style="display: flex; align-items: center; gap: 6px">
-              ➕ <strong id="txt-start-new-session">Yeni Retro Oturumu Başlat</strong>
-            </h3>
+            <h2 style="display: flex; align-items: center; gap: 6px; font-size: 0.875rem">
+              <span aria-hidden="true">➕</span>
+              <span id="txt-start-new-session">Yeni Retro Oturumu Başlat</span>
+            </h2>
             <form id="form-new-session" style="display: flex; gap: 8px; flex-wrap: wrap">
+              <label for="session-title-input" class="visually-hidden">Sprint Başlığı</label>
               <input
                 type="text"
                 id="session-title-input"
                 class="form-control win-inset"
                 placeholder="Sprint Başlığı (örn. Sprint 45 Retrospektif)"
-                aria-label="Sprint Başlığı"
                 required
                 style="flex-grow: 1"
               />
@@ -65,17 +100,17 @@
 
           <!-- Join By ID Terminal -->
           <div class="win-outset" style="padding: 12px; display: flex; flex-direction: column; gap: 8px">
-            <h3 style="display: flex; align-items: center; gap: 6px">
-              🔗 <strong id="txt-join-by-id-title">Oturum Kimliği (Session ID) ile Katıl</strong>
-            </h3>
+            <h2 style="display: flex; align-items: center; gap: 6px; font-size: 0.875rem">
+              <span aria-hidden="true">🔗</span>
+              <span id="txt-join-by-id-title">Oturum Kimliği (Session ID) ile Katıl</span>
+            </h2>
             <div style="display: flex; gap: 8px; flex-wrap: wrap">
               <div class="terminal-search" style="flex-grow: 1; max-width: none">
-                <span>C:\PixelSprint&gt; join</span>
+                <label for="input-join-session">C:\PixelSprint&gt; join</label>
                 <input
                   type="text"
                   id="input-join-session"
                   placeholder="Session ID yapıştır (örn. retro-demo-sprint-1)..."
-                  aria-label="Session ID Katılım Kimliği"
                   autocomplete="off"
                 />
               </div>
@@ -85,174 +120,286 @@
 
           <!-- Existing Sessions List Table -->
           <div class="win-outset" style="padding: 12px; display: flex; flex-direction: column; gap: 8px; flex-grow: 1">
-            <h3>📋 <strong id="txt-my-sessions-title">Mevcut Retro Oturumlarınız</strong></h3>
+            <h2 style="display: flex; align-items: center; gap: 6px; font-size: 0.875rem">
+              <span aria-hidden="true">📋</span>
+              <span id="txt-my-sessions-title">Mevcut Retro Oturumlarınız</span>
+            </h2>
             <div id="session-list-container" style="flex-grow: 1; overflow-y: auto">
               <!-- Rendered by DashboardComponent -->
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       <!-- Active Retro Board Window Container -->
-      <div id="window-board" style="display: none; flex-direction: column; height: 100%; gap: 8px">
+      <section
+        id="window-board"
+        aria-labelledby="board-session-title"
+        style="display: none; flex-direction: column; height: 100%; gap: 8px"
+      >
         <!-- Top Toolbar Window -->
         <div id="toolbar-window" class="win-window">
-          <div class="win-titlebar">
+          <header class="win-titlebar">
             <div class="win-titlebar-title">
-              <span>💾</span>
-              <span id="board-session-title">PixelSprint - Retro Board</span>
+              <span aria-hidden="true">💾</span>
+              <h2 id="board-session-title">PixelSprint - Retro Board</h2>
             </div>
             <div class="win-titlebar-controls">
               <button
+                type="button"
                 class="win-btn win-btn-sm btn-theme-toggle"
                 id="btn-theme-toggle-board"
-                title="Tema Değiştir (Light/Dark)"
+                title="Tema Değiştir"
+                aria-label="Tema Değiştir"
               >
                 🌙
               </button>
               <button
+                type="button"
                 class="win-btn win-btn-sm btn-labels-toggle"
                 id="btn-labels-toggle-board"
                 title="Buton Metinlerini Göster/Gizle"
+                aria-label="Buton Metinlerini Göster/Gizle"
               >
                 🏷️
               </button>
-              <button class="win-btn win-btn-sm" id="btn-sound-toggle" title="Ses Efektlerini Aç/Kapat">🔊</button>
-              <button class="win-btn win-btn-sm" id="btn-about-trigger" title="Hakkında">?</button>
-            </div>
-          </div>
-
-          <div class="toolbar-body">
-            <div class="toolbar-group">
-              <button class="win-btn" id="btn-open-timer" title="Retro Zamanlayıcısı (Timer)">
-                ⏱️ <span id="timer-display-text">--:--</span>
+              <button
+                type="button"
+                class="win-btn win-btn-sm"
+                id="btn-sound-toggle"
+                title="Ses Efektlerini Aç/Kapat"
+                aria-label="Ses Efektlerini Aç/Kapat"
+              >
+                🔊
               </button>
-              <button class="win-btn" id="btn-share-link" title="Paylaş (QR)">📱</button>
-              <button class="win-btn" id="btn-open-add-modal" title="Yeni Kart">➕</button>
-              <button class="win-btn" id="btn-toggle-reveal" title="Kartları Göster / Gizle">👁️</button>
-              <button class="win-btn" id="btn-open-ai-prompt" title="AI Analiz Promptu">🤖</button>
-              <button class="win-btn" id="btn-open-export" title="Rapor İndir">💾</button>
-              <button class="win-btn" id="btn-clear-board" title="Temizle">🗑️</button>
-              <button class="win-btn" id="btn-install-pwa" style="display: none" title="Uygulamayı Yükle">📱</button>
+              <button
+                type="button"
+                class="win-btn win-btn-sm"
+                id="btn-about-trigger"
+                title="Hakkında"
+                aria-label="Hakkında"
+              >
+                ?
+              </button>
+            </div>
+          </header>
+
+          <div class="toolbar-body" role="toolbar" aria-label="Retro Pano Araç Çubuğu">
+            <div class="toolbar-group">
+              <button
+                type="button"
+                class="win-btn"
+                id="btn-open-timer"
+                title="Retro Zamanlayıcısı"
+                aria-label="Retro Zamanlayıcısı"
+              >
+                <span aria-hidden="true">⏱️</span> <span id="timer-display-text">--:--</span>
+              </button>
+              <button type="button" class="win-btn" id="btn-share-link" title="Paylaş" aria-label="Paylaş">📱</button>
+              <button type="button" class="win-btn" id="btn-open-add-modal" title="Yeni Kart" aria-label="Yeni Kart">
+                ➕
+              </button>
+              <button
+                type="button"
+                class="win-btn"
+                id="btn-toggle-reveal"
+                title="Kartları Göster / Gizle"
+                aria-label="Kartları Göster / Gizle"
+              >
+                👁️
+              </button>
+              <button
+                type="button"
+                class="win-btn"
+                id="btn-open-ai-prompt"
+                title="AI Analiz Promptu"
+                aria-label="AI Analiz Promptu"
+              >
+                🤖
+              </button>
+              <button type="button" class="win-btn" id="btn-open-export" title="Rapor İndir" aria-label="Rapor İndir">
+                💾
+              </button>
+              <button type="button" class="win-btn" id="btn-clear-board" title="Temizle" aria-label="Temizle">
+                🗑️
+              </button>
+              <button
+                type="button"
+                class="win-btn"
+                id="btn-install-pwa"
+                style="display: none"
+                title="Uygulamayı Yükle"
+                aria-label="Uygulamayı Yükle"
+              >
+                📱
+              </button>
             </div>
 
             <div class="terminal-search">
-              <span>C:\PixelSprint&gt;</span>
-              <input
-                type="text"
-                id="search-input"
-                placeholder="Filtrele veya ara..."
-                aria-label="Filtrele veya ara"
-                autocomplete="off"
-              />
+              <label for="search-input">C:\PixelSprint&gt;</label>
+              <input type="text" id="search-input" placeholder="Filtrele veya ara..." autocomplete="off" />
             </div>
           </div>
 
           <!-- Mobile Screen Responsive Column Tabs -->
-          <div class="mobile-tabs win-outset">
-            <button class="win-btn mobile-tab-btn active" data-tab="col-went-well" title="Went Well">🟢</button>
-            <button class="win-btn mobile-tab-btn" data-tab="col-improvement" title="Needs Improvement">🔴</button>
-            <button class="win-btn mobile-tab-btn" data-tab="col-action" title="Action Items">💡</button>
+          <div class="mobile-tabs win-outset" role="tablist" aria-label="Retro Sütunları">
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              class="win-btn mobile-tab-btn active"
+              data-tab="col-went-well"
+              title="Went Well"
+              aria-label="Went Well"
+            >
+              🟢
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              class="win-btn mobile-tab-btn"
+              data-tab="col-improvement"
+              title="Needs Improvement"
+              aria-label="Needs Improvement"
+            >
+              🔴
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              class="win-btn mobile-tab-btn"
+              data-tab="col-action"
+              title="Action Items"
+              aria-label="Action Items"
+            >
+              💡
+            </button>
           </div>
         </div>
 
         <!-- Retro Retrospective Columns Grid -->
         <div id="board-container">
           <!-- 🟢 Went Well Column -->
-          <div class="win-window board-column col-went-well active-tab" id="col-went-well">
-            <div class="column-header" title="Neyi İyi Yaptık? (Went Well)">
-              <span>🟢</span>
+          <section class="win-window board-column col-went-well active-tab" id="col-went-well" aria-label="Went Well">
+            <div class="column-header" title="Went Well">
+              <span aria-hidden="true">🟢</span>
               <span class="column-count" id="count-went-well">0</span>
             </div>
             <div class="column-content" id="list-went-well">
               <!-- Retro cards will be dynamically rendered here -->
             </div>
-          </div>
+          </section>
 
           <!-- 🔴 Needs Improvement Column -->
-          <div class="win-window board-column col-improvement" id="col-improvement">
-            <div class="column-header" title="Neyi Batırdık / Gelişmeli? (Bugs & Fixes)">
-              <span>🔴</span>
+          <section class="win-window board-column col-improvement" id="col-improvement" aria-label="Needs Improvement">
+            <div class="column-header" title="Needs Improvement">
+              <span aria-hidden="true">🔴</span>
               <span class="column-count" id="count-improvement">0</span>
             </div>
             <div class="column-content" id="list-improvement">
               <!-- Retro cards will be dynamically rendered here -->
             </div>
-          </div>
+          </section>
 
           <!-- 💡 Action Items / Ideas Column -->
-          <div class="win-window board-column col-action" id="col-action">
-            <div class="column-header" title="Aksiyonlar & Fikirler (Action Items)">
-              <span>💡</span>
+          <section class="win-window board-column col-action" id="col-action" aria-label="Action Items">
+            <div class="column-header" title="Action Items">
+              <span aria-hidden="true">💡</span>
               <span class="column-count" id="count-action">0</span>
             </div>
             <div class="column-content" id="list-action">
               <!-- Retro cards will be dynamically rendered here -->
             </div>
-          </div>
+          </section>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
 
     <!-- Win95 Start Menu Popup -->
-    <div id="start-menu" class="win-outset hidden">
-      <div class="start-menu-banner">PIXELSPRINT 95</div>
+    <nav id="start-menu" class="win-outset hidden" aria-label="Başlat Menüsü">
+      <div class="start-menu-banner" aria-hidden="true">PIXELSPRINT 95</div>
       <div class="start-menu-items">
-        <div class="start-menu-item" id="sm-home"><span>🏠</span> <strong>Ana Sayfaya Dön</strong></div>
-        <div class="start-menu-separator"></div>
-        <div class="start-menu-item" id="sm-add-card"><span>➕</span> Yeni Anonim Kart Ekle</div>
-        <div class="start-menu-item" id="sm-ai-prompt"><span>🤖</span> AI Analiz Promptu Oluştur</div>
-        <div class="start-menu-item" id="sm-share-qr"><span>📱</span> Retro Oturumunu Paylaş</div>
-        <div class="start-menu-item" id="sm-export"><span>💾</span> Retro Raporunu İndir</div>
+        <button type="button" class="start-menu-item" id="sm-home">
+          <span aria-hidden="true">🏠</span> <strong>Ana Sayfaya Dön</strong>
+        </button>
+        <div class="start-menu-separator" role="separator"></div>
+        <button type="button" class="start-menu-item" id="sm-add-card">
+          <span aria-hidden="true">➕</span> Yeni Anonim Kart Ekle
+        </button>
+        <button type="button" class="start-menu-item" id="sm-ai-prompt">
+          <span aria-hidden="true">🤖</span> AI Analiz Promptu Oluştur
+        </button>
+        <button type="button" class="start-menu-item" id="sm-share-qr">
+          <span aria-hidden="true">📱</span> Retro Oturumunu Paylaş
+        </button>
+        <button type="button" class="start-menu-item" id="sm-export">
+          <span aria-hidden="true">💾</span> Retro Raporunu İndir
+        </button>
 
-        <div class="start-menu-item" id="sm-sound"><span>🔊</span> Ses Efektleri</div>
-        <div class="start-menu-item" id="sm-theme"><span>🌙</span> Koyu / Açık Tema</div>
-        <div class="start-menu-item" id="sm-labels"><span>🏷️</span> Buton Metinleri</div>
-        <div class="start-menu-item" id="sm-install" style="display: none"><span>📲</span> PixelSprint.exe Yükle</div>
+        <button type="button" class="start-menu-item" id="sm-sound">
+          <span aria-hidden="true">🔊</span> Ses Efektleri
+        </button>
+        <button type="button" class="start-menu-item" id="sm-theme">
+          <span aria-hidden="true">🌙</span> Koyu / Açık Tema
+        </button>
+        <button type="button" class="start-menu-item" id="sm-labels">
+          <span aria-hidden="true">🏷️</span> Buton Metinleri
+        </button>
+        <button type="button" class="start-menu-item" id="sm-install" style="display: none">
+          <span aria-hidden="true">📲</span> PixelSprint.exe Yükle
+        </button>
 
-        <div class="start-menu-separator"></div>
+        <div class="start-menu-separator" role="separator"></div>
         <div class="start-menu-item-lang">
-          <div class="start-menu-lang-header"><span>🌐</span> <span id="sm-lang-label">Dil / Language:</span></div>
+          <div class="start-menu-lang-header">
+            <span aria-hidden="true">🌐</span> <span id="sm-lang-label">Dil / Language:</span>
+          </div>
           <div class="start-menu-lang-buttons">
             <button type="button" class="win-btn win-btn-sm lang-btn" data-lang="tr">🇹🇷 TR</button>
             <button type="button" class="win-btn win-btn-sm lang-btn" data-lang="en">🇬🇧 EN</button>
             <button type="button" class="win-btn win-btn-sm lang-btn" data-lang="fr">🇫🇷 FR</button>
           </div>
         </div>
-        <div class="start-menu-separator"></div>
-        <div class="start-menu-item" id="sm-about"><span>❓</span> Hakkında</div>
-        <div class="start-menu-item" id="sm-clear"><span>🗑️</span> Panoyu Temizle</div>
+        <div class="start-menu-separator" role="separator"></div>
+        <button type="button" class="start-menu-item" id="sm-about"><span aria-hidden="true">❓</span> Hakkında</button>
+        <button type="button" class="start-menu-item" id="sm-clear">
+          <span aria-hidden="true">🗑️</span> Panoyu Temizle
+        </button>
       </div>
-    </div>
+    </nav>
 
     <!-- Win95 Taskbar at Bottom -->
-    <div id="taskbar">
+    <footer id="taskbar">
       <div class="taskbar-left">
-        <button class="win-btn start-btn" id="start-btn"><span>💾</span> <strong>Başlat</strong></button>
-        <div class="taskbar-divider"></div>
-        <div class="win-outset taskbar-item pressed"><span>📋</span> PixelSprint Board</div>
+        <button type="button" class="win-btn start-btn" id="start-btn" aria-expanded="false" aria-controls="start-menu">
+          <span aria-hidden="true">💾</span> <strong>Başlat</strong>
+        </button>
+        <div class="taskbar-divider" aria-hidden="true"></div>
+        <div class="win-outset taskbar-item pressed"><span aria-hidden="true">📋</span> PixelSprint Board</div>
       </div>
       <div class="taskbar-right win-inset">
-        <span id="network-status-badge" class="network-badge online">🟢 ONLINE</span>
-        <span id="sound-indicator" title="Ses Açık">🔊</span>
+        <span id="network-status-badge" class="network-badge online" role="status" aria-live="polite">🟢 ONLINE</span>
+        <span id="sound-indicator" title="Ses Açık" aria-hidden="true">🔊</span>
         <span id="taskbar-clock">12:00:00</span>
       </div>
-    </div>
+    </footer>
 
     <!-- MODAL: Retro Timer Setup -->
-    <div id="modal-timer" class="modal-overlay hidden">
+    <dialog id="modal-timer" class="modal-overlay" closedby="any" aria-labelledby="txt-modal-timer-title">
       <div class="win-window modal-window" style="max-width: 420px">
         <div class="win-titlebar">
           <div class="win-titlebar-title">
-            <span>⏱️</span>
-            <span id="txt-modal-timer-title">Retro Zamanlayıcısı</span>
+            <span aria-hidden="true">⏱️</span>
+            <h2 id="txt-modal-timer-title">Retro Zamanlayıcısı</h2>
           </div>
           <div class="win-titlebar-controls">
-            <button type="button" class="win-btn win-btn-sm btn-close-modal">X</button>
+            <button type="button" class="win-btn win-btn-sm btn-close-modal" aria-label="Kapat">X</button>
           </div>
         </div>
         <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px">
-          <p id="txt-timer-desc" style="font-size: 11px; color: var(--win-gray-dark)">
+          <p id="txt-timer-desc" style="font-size: 0.75rem; color: var(--color-ink-2)">
             Oturum süresini ayarlayın. Süre tamamlandığında katılımcıların kart girişi otomatik kilitlenir.
           </p>
 
@@ -265,24 +412,21 @@
               align-items: center;
               justify-content: center;
               gap: 8px;
-              background: var(--win-bg);
+              background: var(--color-paper-2);
             "
           >
             <div
               id="timer-modal-clock"
-              style="
-                font-family: var(--font-mono), monospace;
-                font-size: 32px;
-                font-weight: bold;
-                color: var(--win-navy);
-              "
+              style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--color-accent)"
             >
               --:--
             </div>
             <div
               id="timer-modal-status"
               class="win-inset"
-              style="padding: 4px 10px; font-size: 11px; font-weight: bold"
+              role="status"
+              aria-live="polite"
+              style="padding: 4px 10px; font-size: 0.75rem; font-weight: 700"
             >
               ⏱️ Ayarlanmadı
             </div>
@@ -306,29 +450,28 @@
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
 
     <!-- MODAL: Add New Card -->
-    <div id="modal-add-card" class="modal-overlay hidden">
+    <dialog id="modal-add-card" class="modal-overlay" closedby="any" aria-labelledby="txt-modal-add-title">
       <div class="win-window modal-window">
         <div class="win-titlebar">
           <div class="win-titlebar-title">
-            <span>➕</span> <span id="txt-modal-add-title">Yeni Anonim Retro Kartı</span>
+            <span aria-hidden="true">➕</span>
+            <h2 id="txt-modal-add-title">Yeni Anonim Retro Kartı</h2>
           </div>
 
           <div class="win-titlebar-controls">
-            <button class="win-btn win-btn-sm btn-close-modal">X</button>
+            <button type="button" class="win-btn win-btn-sm btn-close-modal" aria-label="Kapat">X</button>
           </div>
         </div>
         <form id="add-card-form" class="modal-body">
           <div class="form-group">
             <label class="form-label" for="card-category" id="txt-label-select-cat">Kategori / Sütun Seçin:</label>
             <select id="card-category" class="form-control win-inset" required>
-              <option value="went_well" id="opt-went-well">🟢 Neyi İyi Yaptık? (Went Well)</option>
-              <option value="improvement" id="opt-improvement">
-                🔴 Neyi Batırdık / Gelişmeli? (Needs Improvement)
-              </option>
-              <option value="action" id="opt-action">💡 Aksiyonlar & Fikirler (Action Items)</option>
+              <option value="went_well" id="opt-went-well">🟢</option>
+              <option value="improvement" id="opt-improvement">🔴</option>
+              <option value="action" id="opt-action">💡</option>
             </select>
           </div>
 
@@ -348,17 +491,18 @@
           </div>
         </form>
       </div>
-    </div>
+    </dialog>
 
     <!-- MODAL: Share QR Code -->
-    <div id="modal-share-qr" class="modal-overlay hidden">
+    <dialog id="modal-share-qr" class="modal-overlay" closedby="any" aria-labelledby="txt-modal-share-title">
       <div class="win-window modal-window" style="max-width: 440px">
         <div class="win-titlebar">
           <div class="win-titlebar-title">
-            <span>📱</span> <span id="txt-modal-share-title">Retro Oturumunu Paylaş (QR Kod)</span>
+            <span aria-hidden="true">📱</span>
+            <h2 id="txt-modal-share-title">Retro Oturumunu Paylaş</h2>
           </div>
           <div class="win-titlebar-controls">
-            <button class="win-btn win-btn-sm btn-close-modal">X</button>
+            <button type="button" class="win-btn win-btn-sm btn-close-modal" aria-label="Kapat">X</button>
           </div>
         </div>
         <div class="modal-body" style="text-align: center; gap: 12px">
@@ -370,8 +514,8 @@
             class="win-inset"
             style="
               padding: 16px;
-              background: var(--win-white);
-              color: var(--win-black);
+              background: var(--color-surface);
+              color: var(--color-ink);
               display: flex;
               flex-direction: column;
               align-items: center;
@@ -381,10 +525,13 @@
           >
             <canvas
               id="qr-code-canvas"
-              style="width: 220px; height: 220px; border: 2px solid var(--win-black)"
+              width="220"
+              height="220"
+              aria-label="Oturum Katılım QR Kodu"
+              style="width: 220px; height: 220px; border: 2px solid var(--color-ink)"
             ></canvas>
             <div
-              style="font-family: var(--font-mono), monospace; font-size: 11px; color: var(--win-black); opacity: 0.8"
+              style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-ink-2)"
               id="share-session-id-label"
             >
               Session ID: --
@@ -398,61 +545,63 @@
                 type="text"
                 id="share-url-input"
                 class="form-control win-inset"
-                aria-label="Doğrudan Katılım Linki"
                 readonly
-                style="font-family: var(--font-mono), monospace; font-size: 11px"
+                style="font-family: var(--font-mono); font-size: 0.6875rem"
               />
-              <button type="button" class="win-btn" id="btn-copy-share-url" title="Kopyala">📋</button>
+              <button type="button" class="win-btn" id="btn-copy-share-url" title="Kopyala" aria-label="Kopyala">
+                📋
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
 
     <!-- MODAL: Export Report -->
-    <div id="modal-export" class="modal-overlay hidden">
+    <dialog id="modal-export" class="modal-overlay" closedby="any" aria-labelledby="txt-modal-export-title">
       <div class="win-window modal-window" style="max-width: 540px">
         <div class="win-titlebar">
           <div class="win-titlebar-title">
-            <span>💾</span> <span id="txt-modal-export-title">Retro Özet Raporu</span>
+            <span aria-hidden="true">💾</span>
+            <h2 id="txt-modal-export-title">Retro Özet Raporu</h2>
           </div>
           <div class="win-titlebar-controls">
-            <button class="win-btn win-btn-sm btn-close-modal">X</button>
+            <button type="button" class="win-btn win-btn-sm btn-close-modal" aria-label="Kapat">X</button>
           </div>
         </div>
         <div class="modal-body">
-          <p id="txt-export-desc">
+          <label for="export-text-area" id="txt-export-desc">
             Sprint Retrospektif özetini metin, CSV veya Excel (XLSX) formatında indirebilirsiniz:
-          </p>
+          </label>
           <textarea
             id="export-text-area"
             class="form-control win-inset"
-            aria-label="Retro Özet Rapor Metni"
-            style="height: 180px; font-family: var(--font-mono), monospace"
+            style="height: 180px; font-family: var(--font-mono)"
             readonly
           ></textarea>
           <div class="modal-footer" style="flex-wrap: wrap; gap: 6px">
             <button type="button" class="win-btn" id="btn-copy-export">📋 Kopyala</button>
-            <button type="button" class="win-btn" id="btn-download-txt"><strong>💾 .TXT</strong></button>
-            <button type="button" class="win-btn" id="btn-download-csv"><strong>📊 .CSV</strong></button>
-            <button type="button" class="win-btn" id="btn-download-xlsx"><strong>📈 .XLSX</strong></button>
-            <button type="button" class="win-btn" id="btn-download-docx"><strong>📄 .DOCX</strong></button>
-            <button type="button" class="win-btn" id="btn-download-pdf"><strong>📕 .PDF</strong></button>
+            <button type="button" class="win-btn" id="btn-download-txt"><strong>.TXT</strong></button>
+            <button type="button" class="win-btn" id="btn-download-csv"><strong>.CSV</strong></button>
+            <button type="button" class="win-btn" id="btn-download-xlsx"><strong>.XLSX</strong></button>
+            <button type="button" class="win-btn" id="btn-download-docx"><strong>.DOCX</strong></button>
+            <button type="button" class="win-btn" id="btn-download-pdf"><strong>.PDF</strong></button>
             <button type="button" class="win-btn" id="btn-send-email"><strong>📧 E-Posta</strong></button>
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
 
     <!-- MODAL: AI Prompt Generator -->
-    <div id="modal-ai-prompt" class="modal-overlay hidden">
+    <dialog id="modal-ai-prompt" class="modal-overlay" closedby="any" aria-labelledby="txt-modal-ai-title">
       <div class="win-window modal-window" style="max-width: 600px">
         <div class="win-titlebar">
           <div class="win-titlebar-title">
-            <span>🤖</span> <span id="txt-modal-ai-title">AI Retrospektif Prompt Oluşturucu</span>
+            <span aria-hidden="true">🤖</span>
+            <h2 id="txt-modal-ai-title">AI Retrospektif Prompt Oluşturucu</h2>
           </div>
           <div class="win-titlebar-controls">
-            <button class="win-btn win-btn-sm btn-close-modal">X</button>
+            <button type="button" class="win-btn win-btn-sm btn-close-modal" aria-label="Kapat">X</button>
           </div>
         </div>
         <div class="modal-body" style="gap: 10px">
@@ -516,37 +665,45 @@
             <textarea
               id="ai-prompt-text-area"
               class="form-control win-inset"
-              aria-label="AI Prompt Metni"
-              style="height: 180px; font-family: var(--font-mono), monospace; font-size: 11px; white-space: pre-wrap"
+              style="height: 180px; font-family: var(--font-mono); font-size: 0.6875rem; white-space: pre-wrap"
             ></textarea>
           </div>
 
           <div class="modal-footer" style="flex-wrap: wrap; gap: 6px">
-            <button type="button" class="win-btn" id="btn-copy-prompt" title="Promptu Kopyala">📋</button>
+            <button
+              type="button"
+              class="win-btn"
+              id="btn-copy-prompt"
+              title="Promptu Kopyala"
+              aria-label="Promptu Kopyala"
+            >
+              📋
+            </button>
             <button type="button" class="win-btn" id="btn-open-chatgpt" title="ChatGPT'de Aç">🚀 ChatGPT</button>
             <button type="button" class="win-btn" id="btn-open-claude" title="Claude'da Aç">🚀 Claude</button>
             <button type="button" class="win-btn" id="btn-open-gemini" title="Gemini'de Aç">🚀 Gemini</button>
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
 
     <!-- MODAL: About PixelSprint -->
-    <div id="modal-about" class="modal-overlay hidden">
+    <dialog id="modal-about" class="modal-overlay" closedby="any" aria-labelledby="txt-modal-about-title">
       <div class="win-window modal-window">
         <div class="win-titlebar">
           <div class="win-titlebar-title">
             <!-- x-release-please-start-version -->
-            <span>❓</span> <span id="txt-modal-about-title">PixelSprint v1.3.0 Hakkında</span>
+            <span aria-hidden="true">❓</span>
+            <h2 id="txt-modal-about-title">PixelSprint v1.3.0 Hakkında</h2>
             <!-- x-release-please-end -->
           </div>
           <div class="win-titlebar-controls">
-            <button class="win-btn win-btn-sm btn-close-modal">X</button>
+            <button type="button" class="win-btn win-btn-sm btn-close-modal" aria-label="Kapat">X</button>
           </div>
         </div>
         <div class="modal-body">
           <div style="display: flex; gap: 12px; align-items: center">
-            <div style="font-size: 36px">💾</div>
+            <div style="font-size: 2.25rem" aria-hidden="true">💾</div>
             <div>
               <h3>PixelSprint 95</h3>
               <p id="txt-about-subhead">Retro Sprint Retrospective Board</p>
@@ -554,7 +711,7 @@
           </div>
           <div
             class="win-inset"
-            style="padding: 10px; font-size: 12px; background: var(--win-white); color: var(--win-black)"
+            style="padding: 10px; font-size: 0.75rem; background: var(--color-surface); color: var(--color-ink)"
           >
             <p id="txt-about-desc1">
               <strong>PixelSprint</strong>, yazılım ekipleri için 90'lar Windows 95 ve Terminal estetiğinde hazırlanmış
@@ -567,25 +724,26 @@
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
 
     <!-- MODAL: Mobile PWA Installation Guide -->
-    <div id="modal-pwa-guide" class="modal-overlay hidden">
+    <dialog id="modal-pwa-guide" class="modal-overlay" closedby="any" aria-labelledby="txt-modal-pwa-title">
       <div class="win-window modal-window" style="max-width: 440px">
         <div class="win-titlebar">
           <div class="win-titlebar-title">
-            <span>📱</span> <span id="txt-modal-pwa-title">PixelSprint.exe - Mobil Kurulum Rehberi</span>
+            <span aria-hidden="true">📱</span>
+            <h2 id="txt-modal-pwa-title">PixelSprint.exe - Mobil Kurulum Rehberi</h2>
           </div>
           <div class="win-titlebar-controls">
-            <button class="win-btn win-btn-sm btn-close-modal">X</button>
+            <button type="button" class="win-btn win-btn-sm btn-close-modal" aria-label="Kapat">X</button>
           </div>
         </div>
         <div class="modal-body" style="gap: 12px">
           <div style="display: flex; gap: 12px; align-items: center">
-            <div style="font-size: 36px">📲</div>
+            <div style="font-size: 2.25rem" aria-hidden="true">📲</div>
             <div>
               <h3 id="txt-pwa-heading">Ana Ekrana Uygulama Olarak Ekle</h3>
-              <p id="txt-pwa-subheading" style="font-size: 11px; opacity: 0.8">
+              <p id="txt-pwa-subheading" style="font-size: 0.6875rem; color: var(--color-ink-2)">
                 PixelSprint'i tek tıkla tam ekran kullanın!
               </p>
             </div>
@@ -595,9 +753,9 @@
             class="win-inset"
             style="
               padding: 12px;
-              font-size: 12px;
-              background: var(--win-white);
-              color: var(--win-black);
+              font-size: 0.75rem;
+              background: var(--color-surface);
+              color: var(--color-ink);
               display: flex;
               flex-direction: column;
               gap: 8px;
@@ -611,7 +769,7 @@
               </ol>
             </div>
 
-            <hr style="border: 0; border-top: 1px solid var(--win-gray-dark); margin: 4px 0" />
+            <hr style="border: 0; border-top: 1px solid var(--color-rule); margin: 4px 0" />
 
             <div id="pwa-android-instructions">
               <strong id="txt-android-title">🤖 Android (Chrome) Kullanıcıları:</strong>
@@ -629,7 +787,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
 
     <!-- Vite TypeScript Entry Point -->
     <script type="module" src="/src/main.ts"></script>

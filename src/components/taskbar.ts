@@ -39,18 +39,33 @@ export class TaskbarComponent {
     themeEngine.subscribe(() => this.updateThemeUI());
 
     if (this.startBtn && this.startMenu) {
+      const closeStartMenu = () => {
+        if (this.startMenu && !this.startMenu.classList.contains('hidden')) {
+          this.startMenu.classList.add('hidden');
+          this.startBtn?.classList.remove('pressed');
+          this.startBtn?.setAttribute('aria-expanded', 'false');
+        }
+      };
+
       this.startBtn.addEventListener('click', (e: MouseEvent) => {
         e.stopPropagation();
         audioSynth.playClick();
-        this.startMenu?.classList.toggle('hidden');
-        this.startBtn?.classList.toggle('pressed');
+        const isHidden = this.startMenu?.classList.toggle('hidden');
+        this.startBtn?.classList.toggle('pressed', !isHidden);
+        this.startBtn?.setAttribute('aria-expanded', String(!isHidden));
       });
 
       document.addEventListener('click', (e: MouseEvent) => {
         const target = e.target as Node | null;
         if (this.startMenu && target && !this.startMenu.contains(target) && target !== this.startBtn) {
-          this.startMenu.classList.add('hidden');
-          this.startBtn?.classList.remove('pressed');
+          closeStartMenu();
+        }
+      });
+
+      document.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Escape' && this.startMenu && !this.startMenu.classList.contains('hidden')) {
+          closeStartMenu();
+          this.startBtn?.focus();
         }
       });
     }
@@ -110,6 +125,9 @@ export class TaskbarComponent {
     if (this.btnSoundToggle) {
       this.btnSoundToggle.addEventListener('click', () => this.handleSoundToggle());
     }
+    document.querySelectorAll('.btn-sound-toggle-dash').forEach((btn) => {
+      btn.addEventListener('click', () => this.handleSoundToggle());
+    });
     if (this.smSound) {
       this.smSound.addEventListener('click', () => {
         this.handleSoundToggle();
@@ -202,9 +220,17 @@ export class TaskbarComponent {
 
   private updateSoundUI(): void {
     const isEnabled = audioSynth.enabled;
-    if (this.btnSoundToggle) this.btnSoundToggle.textContent = isEnabled ? '🔊' : '🔇';
+    const icon = isEnabled ? '🔊' : '🔇';
+    if (this.btnSoundToggle) {
+      this.btnSoundToggle.textContent = icon;
+      this.btnSoundToggle.setAttribute('aria-pressed', String(isEnabled));
+    }
+    document.querySelectorAll('.btn-sound-toggle-dash').forEach((btn) => {
+      btn.textContent = icon;
+      btn.setAttribute('aria-pressed', String(isEnabled));
+    });
     if (this.soundIndicator) {
-      this.soundIndicator.textContent = isEnabled ? '🔊' : '🔇';
+      this.soundIndicator.textContent = icon;
       this.soundIndicator.title = isEnabled ? i18n.t('soundToggleTitle') : 'Mute';
     }
   }

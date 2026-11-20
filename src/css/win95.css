@@ -1,43 +1,46 @@
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 */
+/* Hallmark · genre: editorial · macrostructure: Workbench · design-system: DESIGN.md · designed-as-app */
 /* ==========================================
    PixelSprint - Win95 Components CSS
    ========================================== */
 
 /* Win95 Outset Bevel Border */
 .win-outset {
-  background-color: var(--win-gray);
+  background-color: var(--color-paper-2);
   border: 2px solid;
-  border-color: var(--win-white) var(--win-gray-dark) var(--win-gray-dark) var(--win-white);
-  box-shadow: 1px 1px 0 var(--win-black);
+  border-color: var(--color-bevel-light) var(--color-rule) var(--color-rule) var(--color-bevel-light);
+  box-shadow: 1px 1px 0 var(--color-bevel-dark);
 }
 
 /* Win95 Inset Bevel Border */
 .win-inset {
-  background-color: var(--win-white);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
   border: 2px solid;
-  border-color: var(--win-gray-dark) var(--win-white) var(--win-white) var(--win-gray-dark);
-  box-shadow: inset 1px 1px 0 var(--win-black);
+  border-color: var(--color-rule) var(--color-bevel-light) var(--color-bevel-light) var(--color-rule);
+  box-shadow: inset 1px 1px 0 var(--color-bevel-dark);
 }
 
 /* Win95 Window Component */
 .win-window {
   display: flex;
   flex-direction: column;
-  background-color: var(--win-gray);
+  background-color: var(--color-paper-2);
   border: 2px solid;
-  border-color: var(--win-white) var(--win-gray-dark) var(--win-gray-dark) var(--win-white);
-  box-shadow: 2px 2px 0 var(--win-black);
+  border-color: var(--color-bevel-light) var(--color-rule) var(--color-rule) var(--color-bevel-light);
+  box-shadow: 2px 2px 0 var(--color-bevel-dark);
 }
 
-/* Window Titlebar */
+/* Window Titlebar (Hierarchical Win95 Navy Bar - R-01) */
 .win-titlebar {
-  background: linear-gradient(90deg, var(--win-blue-start), var(--win-blue-end));
-  color: #ffffff;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2));
+  color: var(--color-accent-ink);
   padding: 3px 6px;
-  font-weight: bold;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.02em;
 }
 
 .win-titlebar-title {
@@ -47,7 +50,19 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #ffffff;
+  color: var(--color-accent-ink);
+  font-size: 0.8125rem;
+}
+
+.win-titlebar-title h1,
+.win-titlebar-title h2 {
+  font-size: inherit;
+  font-weight: 700;
+  color: inherit;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .win-titlebar-controls {
@@ -56,109 +71,106 @@
   gap: 3px;
 }
 
-/* Win95 Language Selector Dropdown */
-.lang-selector-select {
-  background-color: var(--win-gray);
-  color: var(--win-black);
-  border: 2px solid;
-  border-color: var(--win-white) var(--win-gray-dark) var(--win-gray-dark) var(--win-white);
-  box-shadow: 1px 1px 0 var(--win-black);
-  font-family: var(--font-retro), sans-serif;
-  font-size: 11px;
-  font-weight: bold;
-  height: 20px;
-  padding: 0 2px 0 4px;
-  cursor: pointer;
-  outline: none;
-  border-radius: 0;
-  margin-right: 2px;
-}
-
-.lang-selector-select option {
-  background-color: var(--win-white);
-  color: var(--win-black);
-  font-family: var(--font-retro), sans-serif;
-  font-size: 12px;
-}
-
-/* Retro Buttons */
+/* Retro Buttons (All 8 Interactive States Covered) */
 .win-btn {
-  background-color: var(--win-gray);
+  background-color: var(--color-paper-2);
   border: 2px solid;
-  border-color: var(--win-white) var(--win-gray-dark) var(--win-gray-dark) var(--win-white);
-  box-shadow: 1px 1px 0 var(--win-black);
-  padding: 3px 8px;
-  font-family: var(--font-retro), sans-serif;
-  font-size: 12px;
-  color: var(--win-black);
+  border-color: var(--color-bevel-light) var(--color-rule) var(--color-rule) var(--color-bevel-light);
+  box-shadow: 1px 1px 0 var(--color-bevel-dark);
+  padding: 4px 10px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: var(--color-ink);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  outline: none;
+  white-space: nowrap;
+  text-decoration: none;
+  user-select: none;
+  min-height: 26px;
 }
 
-.win-btn:active,
+.win-btn:hover:not(:disabled) {
+  background-color: var(--color-paper-3);
+}
+
+.win-btn:active:not(:disabled),
 .win-btn.pressed {
-  border-color: var(--win-gray-dark) var(--win-white) var(--win-white) var(--win-gray-dark);
-  box-shadow: inset 1px 1px 0 var(--win-black);
-  padding: 4px 7px 2px 9px;
+  border-color: var(--color-rule) var(--color-bevel-light) var(--color-bevel-light) var(--color-rule);
+  box-shadow: inset 1px 1px 0 var(--color-bevel-dark);
+  transform: translateY(1px);
 }
 
-.win-btn:disabled {
-  color: var(--win-gray-dark);
-  text-shadow: 1px 1px 0 var(--win-white);
+.win-btn:disabled,
+.win-btn[aria-disabled='true'] {
+  color: var(--color-ink-2);
+  opacity: 0.65;
   cursor: not-allowed;
 }
 
+.win-btn[data-state='loading'] {
+  cursor: progress;
+  opacity: 0.8;
+}
+
+.win-btn[data-state='error'] {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.win-btn[data-state='success'] {
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
 .win-btn-sm {
-  padding: 1px 4px;
-  font-size: 11px;
-  min-width: 18px;
-  height: 18px;
-  line-height: 12px;
-  font-weight: bold;
+  padding: 2px 6px;
+  font-size: 0.6875rem;
+  min-width: 24px;
+  min-height: 24px;
+  line-height: 1;
+  font-weight: 700;
 }
 
-/* Modals & Dialogs */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 12px;
+/* Native <dialog> Modals (Modern Web Guidance Dialog Standard) */
+dialog.modal-overlay {
+  margin: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-ink);
+  max-width: min(560px, calc(100vw - 24px));
+  width: 100%;
+  overflow: visible;
 }
 
-.modal-overlay.hidden {
+dialog.modal-overlay:not([open]) {
   display: none !important;
+}
+
+dialog.modal-overlay[open] {
+  display: flex;
+  flex-direction: column;
+  animation: popIn var(--dur-short) var(--ease-out);
+}
+
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  background-color: var(--color-backdrop);
+  overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 .modal-window {
   width: 100%;
-  max-width: 480px;
-  background-color: var(--win-gray);
-  color: var(--win-black);
-  z-index: 1001;
-}
-
-[data-theme='dark'] .modal-window {
-  background-color: var(--win-gray);
-  color: var(--win-black);
-  border: 2px solid;
-  border-color: var(--win-gray-light) var(--win-gray-dark) var(--win-gray-dark) var(--win-gray-light);
-}
-
-[data-theme='dark'] .win-inset,
-[data-theme='dark'] .form-control.win-inset {
-  background-color: var(--win-white);
-  color: var(--win-black);
+  background-color: var(--color-paper-2);
+  color: var(--color-ink);
 }
 
 [data-theme='dark'] #qr-code-canvas {
@@ -166,27 +178,31 @@
 }
 
 .modal-body {
-  padding: 12px;
+  padding: var(--space-xs);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-xs);
+  max-height: calc(100dvh - 80px);
+  overflow-y: auto;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-3xs);
 }
 
 .form-label {
-  font-weight: bold;
+  font-weight: 700;
+  color: var(--color-ink);
 }
 
 .form-control {
-  font-family: var(--font-retro), sans-serif;
-  font-size: 13px;
-  padding: 6px;
-  outline: none;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  padding: 6px 8px;
+  color: var(--color-ink);
+  background-color: var(--color-surface);
 }
 
 textarea.form-control {
@@ -197,7 +213,7 @@ textarea.form-control {
 .modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--space-2xs);
   padding-top: 6px;
 }
 
@@ -208,13 +224,13 @@ textarea.form-control {
   left: 0;
   width: 100vw;
   height: 36px;
-  background-color: var(--win-gray);
-  border-top: 2px solid var(--win-white);
+  background-color: var(--color-paper-2);
+  border-top: 2px solid var(--color-bevel-light);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 2px 4px;
-  z-index: 9000;
+  z-index: 900;
 }
 
 .taskbar-left {
@@ -224,8 +240,8 @@ textarea.form-control {
 }
 
 .start-btn {
-  font-weight: bold;
-  font-size: 13px;
+  font-weight: 700;
+  font-size: 0.8125rem;
   height: 28px;
   padding: 0 10px;
   display: flex;
@@ -236,15 +252,15 @@ textarea.form-control {
 .taskbar-divider {
   width: 2px;
   height: 22px;
-  border-left: 1px solid var(--win-gray-dark);
-  border-right: 1px solid var(--win-white);
+  border-left: 1px solid var(--color-rule);
+  border-right: 1px solid var(--color-bevel-light);
   margin: 0 2px;
 }
 
 .taskbar-item {
   height: 28px;
   padding: 0 10px;
-  font-size: 12px;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -260,18 +276,18 @@ textarea.form-control {
   gap: 6px;
   height: 28px;
   padding: 0 8px;
-  font-family: var(--font-mono), monospace;
-  font-size: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
 }
 
 #start-menu {
   position: fixed;
   bottom: 36px;
   left: 2px;
-  width: 240px;
-  background-color: var(--win-gray);
+  width: 248px;
+  background-color: var(--color-paper-2);
   display: flex;
-  z-index: 9500;
+  z-index: 950;
 }
 
 #start-menu.hidden {
@@ -279,14 +295,14 @@ textarea.form-control {
 }
 
 .start-menu-banner {
-  background: linear-gradient(0deg, #000080, #1084d0);
-  color: var(--win-white);
+  background: linear-gradient(0deg, var(--color-accent), var(--color-accent-2));
+  color: var(--color-accent-ink);
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   padding: 12px 6px;
-  font-weight: bold;
-  font-size: 16px;
-  letter-spacing: 2px;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -300,25 +316,32 @@ textarea.form-control {
 }
 
 .start-menu-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  text-align: left;
   padding: 8px 12px;
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  font-size: 13px;
-  color: var(--win-black);
+  font-size: 0.8125rem;
+  color: var(--color-ink);
   text-decoration: none;
+  white-space: nowrap;
 }
 
-.start-menu-item:hover {
-  background-color: var(--win-blue-start);
-  color: var(--win-white);
+.start-menu-item:hover,
+.start-menu-item:focus-visible {
+  background-color: var(--color-accent);
+  color: var(--color-accent-ink);
 }
 
 .start-menu-separator {
   height: 2px;
-  border-top: 1px solid var(--win-gray-dark);
-  border-bottom: 1px solid var(--win-white);
+  border-top: 1px solid var(--color-rule);
+  border-bottom: 1px solid var(--color-bevel-light);
   margin: 4px 2px;
 }
 
@@ -334,9 +357,9 @@ textarea.form-control {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
-  font-weight: bold;
-  color: var(--win-black);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-ink);
 }
 
 .start-menu-lang-buttons {
@@ -346,77 +369,72 @@ textarea.form-control {
 
 .start-menu-lang-buttons .lang-btn {
   flex: 1;
-  font-size: 11px;
+  font-size: 0.6875rem;
   padding: 2px 4px;
-  height: 22px;
+  min-height: 24px;
 }
 
 .start-menu-lang-buttons .lang-btn.pressed {
-  font-weight: bold;
-  background-color: var(--win-white);
+  font-weight: 700;
+  background-color: var(--color-surface);
 }
 
 /* Win95 Session Table */
 .session-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
-  background-color: var(--win-white);
-  color: var(--win-black);
+  font-size: 0.75rem;
+  background-color: var(--color-surface);
+  color: var(--color-ink);
 }
 
 .session-table th,
 .session-table td {
   padding: 6px 8px;
   text-align: left;
-  border: 1px solid var(--win-gray-dark);
-  color: var(--win-black);
+  border: 1px solid var(--color-rule);
+  color: var(--color-ink);
 }
 
 .session-table th {
-  background-color: var(--win-gray);
-  color: var(--win-black);
-  font-weight: bold;
+  background-color: var(--color-paper-2);
+  color: var(--color-ink);
+  font-weight: 700;
 }
 
 .session-table tr:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: oklch(0.5 0 0 / 0.06);
 }
 
 .session-code {
-  font-family: var(--font-mono), monospace;
-  background-color: #e8e8e8;
-  color: #111111;
+  font-family: var(--font-mono);
+  background-color: var(--color-code-bg);
+  color: var(--color-code-ink);
   padding: 2px 6px;
-  border: 1px solid #b0b0b0;
-  font-size: 11px;
-  border-radius: 2px;
+  border: 1px solid var(--color-code-border);
+  font-size: 0.6875rem;
 }
 
 .session-badge {
-  font-family: var(--font-mono), monospace;
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #a5d6a7;
+  font-family: var(--font-mono);
+  background-color: var(--color-badge-bg);
+  color: var(--color-badge-ink);
+  border: 1px solid var(--color-badge-border);
   padding: 1px 6px;
-  font-size: 11px;
-  border-radius: 2px;
+  font-size: 0.6875rem;
+  white-space: nowrap;
 }
 
-[data-theme='dark'] .session-table tr:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.04);
+.session-badge-host {
+  background-color: var(--color-host-bg);
+  color: var(--color-host-ink);
+  border-color: var(--color-host-border);
 }
 
-[data-theme='dark'] .session-code {
-  background-color: #0d1117;
-  color: #00ff66;
-  border: 1px solid #30363d;
-}
-
-[data-theme='dark'] .session-badge {
-  background-color: #1c3320;
-  color: #66bb6a;
-  border: 1px solid #2e7d32;
+.session-badge-guest {
+  background-color: var(--color-guest-bg);
+  color: var(--color-guest-ink);
+  border-color: var(--color-guest-border);
 }
 
 .session-actions {
@@ -424,55 +442,35 @@ textarea.form-control {
   gap: 4px;
 }
 
-/* Network Status Indicator Badge */
+/* Network Status Indicator Badge (Static semantic color, no endless pulse loop - R-19, R-31) */
 .network-badge {
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  font-weight: bold;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
   padding: 0 4px;
   background: transparent;
-  color: var(--win-black);
+  color: var(--color-ink);
   border: none;
   cursor: help;
 }
 
 .network-badge.online {
-  color: var(--win-black);
+  color: var(--color-ink);
 }
 
 .network-badge.offline {
-  color: #c62828;
-  animation: pulseOffline 1.5s infinite;
-}
-
-@keyframes pulseOffline {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
-  100% {
-    opacity: 1;
-  }
+  color: var(--color-danger);
 }
 
 /* Card Redacted / Masked State */
 .card-text-masked {
   display: inline-block;
-  background-color: var(--win-black);
-  color: var(--win-black);
+  background-color: var(--color-ink);
+  color: var(--color-ink);
   user-select: none;
-  -webkit-user-select: none;
-  border-radius: 2px;
   padding: 1px 6px;
-  font-family: var(--font-mono), monospace;
+  font-family: var(--font-mono);
   letter-spacing: 2px;
-  filter: blur(5px);
+  filter: blur(4px);
   opacity: 0.85;
-}
-
-[data-theme='dark'] .card-text-masked {
-  background-color: #000000;
-  color: #000000;
 }

@@ -7,6 +7,7 @@
 import { store } from '../core/store';
 import { audioSynth } from '../core/audio';
 import { i18n } from '../i18n';
+import { showDialogModal } from './modal';
 
 export class TimerComponent {
   private modalTimer: HTMLElement | null;
@@ -95,9 +96,7 @@ export class TimerComponent {
 
   public openTimerModal(): void {
     audioSynth.playClick();
-    if (this.modalTimer) {
-      this.modalTimer.classList.remove('hidden');
-    }
+    showDialogModal(this.modalTimer);
   }
 
   private formatTime(totalSeconds: number): string {
@@ -157,19 +156,19 @@ export class TimerComponent {
 
       if (this.timerModalClock) {
         this.timerModalClock.textContent = timeStr;
-        this.timerModalClock.style.color = timerState.isExpired ? '#800000' : 'var(--win-navy)';
+        this.timerModalClock.style.color = timerState.isExpired ? 'var(--color-danger)' : 'var(--color-accent)';
       }
 
       if (this.timerModalStatus) {
         if (timerState.isExpired) {
           this.timerModalStatus.textContent = i18n.t('timerStatusExpired');
-          this.timerModalStatus.style.color = '#800000';
+          this.timerModalStatus.style.color = 'var(--color-danger)';
         } else if (timerState.isRunning) {
           this.timerModalStatus.textContent = `${i18n.t('timerStatusRunning')} (${timeStr})`;
-          this.timerModalStatus.style.color = '#008000';
+          this.timerModalStatus.style.color = 'var(--color-success)';
         } else {
           this.timerModalStatus.textContent = `${i18n.t('timerStatusPaused')} (${timeStr})`;
-          this.timerModalStatus.style.color = '#808000';
+          this.timerModalStatus.style.color = 'var(--color-warning)';
         }
       }
 

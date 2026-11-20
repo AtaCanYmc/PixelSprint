@@ -9,6 +9,7 @@ import { audioSynth } from '../core/audio';
 import { i18n } from '../i18n';
 import { CATEGORIES } from '../utils/constants';
 import { RetroCategory } from '../types';
+import { showDialogModal } from './modal';
 
 export class ExportComponent {
   private modalExport: HTMLElement | null;
@@ -140,8 +141,7 @@ export class ExportComponent {
     if (this.exportTextArea) {
       this.exportTextArea.value = this.generateReportText();
     }
-    if (this.startMenu) this.startMenu.classList.add('hidden');
-    if (this.modalExport) this.modalExport.classList.remove('hidden');
+    showDialogModal(this.modalExport, this.startMenu);
   }
 
   public copyToClipboard(): void {

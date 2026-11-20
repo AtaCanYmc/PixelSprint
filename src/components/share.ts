@@ -7,6 +7,7 @@ import QRCode from 'qrcode';
 import { store } from '../core/store';
 import { audioSynth } from '../core/audio';
 import { i18n } from '../i18n';
+import { showDialogModal } from './modal';
 
 export class ShareComponent {
   private modalShareQr: HTMLElement | null;
@@ -101,7 +102,6 @@ export class ShareComponent {
       );
     }
 
-    if (this.startMenu) this.startMenu.classList.add('hidden');
-    if (this.modalShareQr) this.modalShareQr.classList.remove('hidden');
+    showDialogModal(this.modalShareQr, this.startMenu);
   }
 }

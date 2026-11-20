@@ -44,7 +44,7 @@ export class DashboardComponent {
       });
     }
 
-    // Join Session by ID Terminal
+    // Join Session by ID Terminal (IME-safe Enter handler)
     const handleJoin = () => {
       const sessionId = this.inputJoinSession ? this.inputJoinSession.value.trim() : '';
       if (sessionId) {
@@ -59,7 +59,11 @@ export class DashboardComponent {
     }
     if (this.inputJoinSession) {
       this.inputJoinSession.addEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'Enter') handleJoin();
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (e.isComposing || e.keyCode === 229) return;
+          handleJoin();
+        }
       });
     }
 
@@ -139,27 +143,27 @@ export class DashboardComponent {
       .map((s) => {
         const isHost = store.isHost(s.id);
         const roleBadgeHtml = isHost
-          ? `<span class="session-badge" style="background: #e3f2fd; color: #0d47a1; border-color: #90caf9;">${escapeHtml(i18n.t('badgeHost'))}</span>`
-          : `<span class="session-badge" style="background: #f5f5f5; color: #616161; border-color: #e0e0e0;">${escapeHtml(i18n.t('badgeGuest'))}</span>`;
+          ? `<span class="session-badge session-badge-host">${escapeHtml(i18n.t('badgeHost'))}</span>`
+          : `<span class="session-badge session-badge-guest">${escapeHtml(i18n.t('badgeGuest'))}</span>`;
 
         const deleteBtnHtml = isHost
-          ? `<button class="win-btn win-btn-sm" data-session-action="delete" data-id="${s.id}" title="${escapeHtml(i18n.t('btnDelete'))}">❌</button>`
+          ? `<button type="button" class="win-btn win-btn-sm" data-session-action="delete" data-id="${escapeHtml(s.id)}" title="${escapeHtml(i18n.t('btnDelete'))}" aria-label="${escapeHtml(i18n.t('btnDelete'))} ${escapeHtml(s.title)}">❌</button>`
           : '';
 
         return `
       <tr>
-        <td>
+        <th scope="row">
           <div style="display: flex; align-items: center; gap: 6px;">
-            <strong>🚀 ${escapeHtml(s.title)}</strong>
+            <strong><span aria-hidden="true">🚀</span> ${escapeHtml(s.title)}</strong>
             ${roleBadgeHtml}
           </div>
-        </td>
+        </th>
         <td><code class="session-code">${escapeHtml(s.id)}</code></td>
         <td><span class="session-badge">${s.cardCount || 0}</span></td>
         <td>${escapeHtml(s.createdAt)}</td>
         <td>
           <div class="session-actions">
-            <button class="win-btn win-btn-sm" data-session-action="open" data-id="${s.id}">
+            <button type="button" class="win-btn win-btn-sm" data-session-action="open" data-id="${escapeHtml(s.id)}">
               ${escapeHtml(i18n.t('btnOpen'))}
             </button>
             ${deleteBtnHtml}
@@ -174,28 +178,28 @@ export class DashboardComponent {
       .map((s) => {
         const isHost = store.isHost(s.id);
         const roleBadgeHtml = isHost
-          ? `<span class="session-badge" style="background: #e3f2fd; color: #0d47a1; border-color: #90caf9;">${escapeHtml(i18n.t('badgeHost'))}</span>`
-          : `<span class="session-badge" style="background: #f5f5f5; color: #616161; border-color: #e0e0e0;">${escapeHtml(i18n.t('badgeGuest'))}</span>`;
+          ? `<span class="session-badge session-badge-host">${escapeHtml(i18n.t('badgeHost'))}</span>`
+          : `<span class="session-badge session-badge-guest">${escapeHtml(i18n.t('badgeGuest'))}</span>`;
 
         const deleteBtnHtml = isHost
-          ? `<button class="win-btn win-btn-sm btn-mobile-delete" data-session-action="delete" data-id="${s.id}">❌</button>`
+          ? `<button type="button" class="win-btn win-btn-sm btn-mobile-delete" data-session-action="delete" data-id="${escapeHtml(s.id)}" aria-label="${escapeHtml(i18n.t('btnDelete'))} ${escapeHtml(s.title)}">❌</button>`
           : '';
 
         return `
       <div class="win-outset session-mobile-card">
         <div class="session-mobile-header">
           <div style="display: flex; align-items: center; gap: 6px;">
-            <strong class="session-mobile-title">🚀 ${escapeHtml(s.title)}</strong>
+            <strong class="session-mobile-title"><span aria-hidden="true">🚀</span> ${escapeHtml(s.title)}</strong>
             ${roleBadgeHtml}
           </div>
           <span class="session-badge">${s.cardCount || 0}</span>
         </div>
         <div class="session-mobile-meta">
           <code class="session-code">${escapeHtml(s.id)}</code>
-          <span class="session-mobile-date">📅 ${escapeHtml(s.createdAt)}</span>
+          <span class="session-mobile-date"><span aria-hidden="true">📅</span> ${escapeHtml(s.createdAt)}</span>
         </div>
         <div class="session-mobile-actions">
-          <button class="win-btn win-btn-sm btn-mobile-open" data-session-action="open" data-id="${s.id}">
+          <button type="button" class="win-btn win-btn-sm btn-mobile-open" data-session-action="open" data-id="${escapeHtml(s.id)}">
             ${escapeHtml(i18n.t('btnOpen'))}
           </button>
           ${deleteBtnHtml}
@@ -208,13 +212,14 @@ export class DashboardComponent {
     this.sessionListContainer.innerHTML = `
       <div class="session-table-wrapper desktop-view">
         <table class="session-table win-inset">
+          <caption class="visually-hidden">${escapeHtml(i18n.t('mySessionsTitle'))}</caption>
           <thead>
             <tr>
-              <th>${escapeHtml(i18n.t('colTitle'))}</th>
-              <th>${escapeHtml(i18n.t('colSessionId'))}</th>
-              <th>${escapeHtml(i18n.t('colCardCount'))}</th>
-              <th>${escapeHtml(i18n.t('colCreatedAt'))}</th>
-              <th>${escapeHtml(i18n.t('colActions'))}</th>
+              <th scope="col">${escapeHtml(i18n.t('colTitle'))}</th>
+              <th scope="col">${escapeHtml(i18n.t('colSessionId'))}</th>
+              <th scope="col">${escapeHtml(i18n.t('colCardCount'))}</th>
+              <th scope="col">${escapeHtml(i18n.t('colCreatedAt'))}</th>
+              <th scope="col">${escapeHtml(i18n.t('colActions'))}</th>
             </tr>
           </thead>
           <tbody>

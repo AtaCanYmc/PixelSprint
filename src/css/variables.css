@@ -1,79 +1,232 @@
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 */
+/* Hallmark · genre: editorial · macrostructure: Workbench · design-system: DESIGN.md · designed-as-app */
 /* ==========================================
-   PixelSprint - CSS Variables & Theme
+   PixelSprint - CSS Variables & OKLCH Theme
    ========================================== */
 
 :root {
-  /* Win95 Color Palette */
-  --win-teal: #008080;
-  --win-gray: #c0c0c0;
-  --win-gray-light: #dfdfdf;
-  --win-gray-dark: #808080;
-  --win-black: #000000;
-  --win-white: #ffffff;
-  --win-blue-start: #000080;
-  --win-blue-end: #1084d0;
+  color-scheme: light dark;
 
-  /* Retrospective Category Colors */
-  --cat-went-well-bg: #e6f4ea;
-  --cat-went-well-border: #2e7d32;
-  --cat-went-well-header: #006400;
+  &:has(> head > meta[name='color-scheme'][content='dark']) {
+    color-scheme: dark;
+  }
+  &:has(> head > meta[name='color-scheme'][content='light']) {
+    color-scheme: light;
+  }
 
-  --cat-improve-bg: #fce8e6;
-  --cat-improve-border: #c62828;
-  --cat-improve-header: #8b0000;
+  /* Core Hallmark OKLCH Tokens (Light Win95 Default) */
+  --color-paper: oklch(0.54 0.09 195);
+  --color-paper-2: oklch(0.81 0 0);
+  --color-paper-3: oklch(0.9 0 0);
+  --color-surface: oklch(1 0 0);
+  --color-well: oklch(0.58 0 0);
+  --color-ink: oklch(0.12 0 0);
+  --color-ink-2: oklch(0.38 0 0);
+  --color-rule: oklch(0.55 0 0);
+  --color-bevel-light: oklch(1 0 0);
+  --color-bevel-dark: oklch(0.12 0 0);
+  --color-accent: oklch(0.28 0.14 264);
+  --color-accent-2: oklch(0.58 0.15 248);
+  --color-accent-ink: oklch(1 0 0);
+  --color-focus: oklch(0.52 0.2 260);
+  --color-backdrop: oklch(0.12 0 0 / 0.45);
 
-  --cat-action-bg: #fffde7;
-  --cat-action-border: #f57f17;
-  --cat-action-header: #b8860b;
+  /* Terminal & Badge Tokens */
+  --color-terminal-bg: oklch(0.12 0 0);
+  --color-terminal-ink: oklch(0.86 0.27 142);
+  --color-terminal-muted: oklch(0.62 0.17 142);
+  --color-code-bg: oklch(0.93 0 0);
+  --color-code-ink: oklch(0.16 0 0);
+  --color-code-border: oklch(0.74 0 0);
+  --color-badge-bg: oklch(0.95 0.04 148);
+  --color-badge-ink: oklch(0.45 0.13 148);
+  --color-badge-border: oklch(0.82 0.08 148);
+  --color-host-bg: oklch(0.94 0.04 250);
+  --color-host-ink: oklch(0.38 0.14 255);
+  --color-host-border: oklch(0.78 0.09 250);
+  --color-guest-bg: oklch(0.95 0 0);
+  --color-guest-ink: oklch(0.42 0 0);
+  --color-guest-border: oklch(0.85 0 0);
 
-  /* Fonts */
-  --font-retro: 'MS Sans Serif', Tahoma, Geneva, 'Courier New', monospace;
+  /* Retrospective Category Tokens */
+  --cat-went-well-bg: oklch(0.95 0.03 148);
+  --cat-went-well-border: oklch(0.52 0.14 148);
+  --cat-went-well-header: oklch(0.44 0.13 145);
+
+  --cat-improve-bg: oklch(0.95 0.03 25);
+  --cat-improve-border: oklch(0.52 0.18 27);
+  --cat-improve-header: oklch(0.42 0.17 27);
+
+  --cat-action-bg: oklch(0.97 0.04 95);
+  --cat-action-border: oklch(0.66 0.15 70);
+  --cat-action-header: oklch(0.54 0.13 82);
+
+  /* Status & Vote Tokens */
+  --color-danger: oklch(0.48 0.19 27);
+  --color-success: oklch(0.48 0.15 145);
+  --color-warning: oklch(0.52 0.13 85);
+  --color-upvote-ink: oklch(0.52 0.18 38);
+  --color-upvote-bg: oklch(0.92 0.06 70);
+  --color-downvote-ink: oklch(0.48 0.16 255);
+  --color-downvote-bg: oklch(0.91 0.05 250);
+
+  /* Legacy Alias Tokens (Preserved for existing component compatibility) */
+  --win-teal: var(--color-paper);
+  --win-gray: var(--color-paper-2);
+  --win-gray-light: var(--color-paper-3);
+  --win-gray-dark: var(--color-rule);
+  --win-black: var(--color-ink);
+  --win-white: var(--color-surface);
+  --win-blue-start: var(--color-accent);
+  --win-blue-end: var(--color-accent-2);
+  --win-navy: var(--color-accent);
+  --win-bg: var(--color-paper-2);
+  --card-header-bg: oklch(0.72 0 0);
+
+  /* Typography */
+  --font-display: 'MS Sans Serif', Tahoma, Geneva, system-ui, sans-serif;
+  --font-body: 'MS Sans Serif', Tahoma, Geneva, system-ui, sans-serif;
+  --font-retro: var(--font-body);
   --font-mono: 'Courier New', Courier, monospace;
-  --card-header-bg: #a0a0a0;
+
+  /* 4-Point Spacing Scale */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-short: 150ms;
 }
 
 [data-theme='dark'] {
-  --win-teal: #12181a;
-  --win-gray: #2b2e36;
-  --win-gray-light: #3a3e4a;
-  --win-gray-dark: #15171c;
-  --win-black: #f0f4f8;
-  --win-white: #1e2026;
-  --win-blue-start: #0f1c3f;
-  --win-blue-end: #1e3a8a;
-  --card-header-bg: #1a1c23;
+  --color-paper: oklch(0.2 0.02 220);
+  --color-paper-2: oklch(0.29 0.02 265);
+  --color-paper-3: oklch(0.36 0.02 265);
+  --color-surface: oklch(0.23 0.02 265);
+  --color-well: oklch(0.18 0.02 265);
+  --color-ink: oklch(0.95 0.01 240);
+  --color-ink-2: oklch(0.76 0.02 250);
+  --color-rule: oklch(0.19 0.02 265);
+  --color-bevel-light: oklch(0.42 0.02 265);
+  --color-bevel-dark: oklch(0.1 0.01 265);
+  --color-accent: oklch(0.24 0.08 264);
+  --color-accent-2: oklch(0.39 0.13 260);
+  --color-focus: oklch(0.75 0.16 250);
+
+  --color-code-bg: oklch(0.17 0.02 260);
+  --color-code-ink: oklch(0.86 0.24 148);
+  --color-code-border: oklch(0.32 0.02 260);
+  --color-badge-bg: oklch(0.27 0.05 148);
+  --color-badge-ink: oklch(0.78 0.15 148);
+  --color-badge-border: oklch(0.45 0.11 148);
+  --color-host-bg: oklch(0.26 0.06 255);
+  --color-host-ink: oklch(0.82 0.1 250);
+  --color-host-border: oklch(0.45 0.11 255);
+  --color-guest-bg: oklch(0.26 0.01 260);
+  --color-guest-ink: oklch(0.8 0.01 260);
+  --color-guest-border: oklch(0.4 0.01 260);
+
+  --color-danger: oklch(0.72 0.18 25);
+  --color-success: oklch(0.76 0.17 145);
+  --color-warning: oklch(0.8 0.15 85);
+  --color-upvote-ink: oklch(0.82 0.15 45);
+  --color-upvote-bg: oklch(0.3 0.07 45);
+  --color-downvote-ink: oklch(0.82 0.12 250);
+  --color-downvote-bg: oklch(0.3 0.07 250);
+
+  --card-header-bg: oklch(0.22 0.02 265);
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  user-select: none;
-  -webkit-font-smoothing: none;
 }
 
-body,
-html {
+html,
+body {
   width: 100%;
   height: 100%;
-  font-family: var(--font-retro), sans-serif;
-  background-color: var(--win-teal);
-  color: var(--win-black);
-  overflow: hidden;
-  font-size: 13px;
+  max-width: 100vw;
+  overflow-x: clip;
+  overflow-y: hidden;
+  font-family: var(--font-body);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-size: 0.8125rem;
+  line-height: 1.4;
 }
 
-/* CRT Overlay Effect (Disabled for smooth flat view) */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* Accessible Interaction Affordances & Focus Ring (R-32, R-39) */
+:where(a[href], button, select, summary, label[for], [role='button'], [role='tab']) {
+  cursor: pointer;
+}
+
+:where(button:disabled, select:disabled, input:disabled, textarea:disabled, [aria-disabled='true']) {
+  cursor: not-allowed;
+}
+
+:where(a[href], button, input, select, textarea, summary, [role='button'], [role='tab']):focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Visually Hidden Utility for Screen Readers */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* CRT Overlay Effect */
 .crt-overlay {
   display: none;
 }
 
-/* Main Container */
+/* Main Application Shell */
 #app-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
-  padding: 8px 8px 42px 8px;
-  gap: 8px;
+  padding: var(--space-2xs) var(--space-2xs) 2.625rem var(--space-2xs);
+  gap: var(--space-2xs);
+}
+
+/* Reduced Motion Respect (R-39) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

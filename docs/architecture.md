@@ -20,12 +20,12 @@ PixelSprint is a single-page TypeScript app built with Vite. It has no framework
 | :---------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/core/store.ts`           | Single `RetroStore` instance. Owns sessions, cards, votes, host list, reveal state, timer state, UI preferences. Persists to `localStorage` and broadcasts mutations. |
 | `src/core/sync.ts`            | `RealtimeSyncEngine`. Sends and receives `RealtimeMessage` over BroadcastChannel, PeerJS and an optional WebSocket.                                                   |
-| `src/core/theme.ts`           | Light and dark theme toggle.                                                                                                                                          |
+| `src/core/theme.ts`           | Light and dark theme toggle synchronized with `<meta name="color-scheme">` and `data-theme`.                                                                          |
 | `src/core/audio.ts`           | Web Audio synthesizer for click, success and delete sounds.                                                                                                           |
 | `src/core/pwa.ts`             | `beforeinstallprompt` handling.                                                                                                                                       |
 | `src/components/board.ts`     | Renders columns, cards, votes, toolbar state.                                                                                                                         |
-| `src/components/dashboard.ts` | Session list, create and join.                                                                                                                                        |
-| `src/components/modal.ts`     | Add-card, About and PWA guide modals. Shared open and close logic.                                                                                                    |
+| `src/components/dashboard.ts` | Session list, create and join (IME-safe `Enter` handling).                                                                                                            |
+| `src/components/modal.ts`     | Native `<dialog closedby="any">` modals (Add-card, About, PWA guide) opened with `.showModal()` plus light-dismiss fallback.                                          |
 | `src/components/export.ts`    | Report generation for all export formats.                                                                                                                             |
 | `src/components/share.ts`     | QR code and join link.                                                                                                                                                |
 | `src/components/timer.ts`     | Timer modal and toolbar badge.                                                                                                                                        |

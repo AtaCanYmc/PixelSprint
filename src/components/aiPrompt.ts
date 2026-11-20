@@ -9,6 +9,7 @@ import { audioSynth } from '../core/audio';
 import { i18n } from '../i18n';
 import { CATEGORIES } from '../utils/constants';
 import { RetroCategory, AiAnalysisType, AiRole, Language } from '../types';
+import { showDialogModal } from './modal';
 
 export class AiPromptComponent {
   private modalAiPrompt: HTMLElement | null;
@@ -172,8 +173,7 @@ export class AiPromptComponent {
 
     this.updateGeneratedPrompt();
 
-    if (this.startMenu) this.startMenu.classList.add('hidden');
-    if (this.modalAiPrompt) this.modalAiPrompt.classList.remove('hidden');
+    showDialogModal(this.modalAiPrompt, this.startMenu);
   }
 
   public updateGeneratedPrompt(): void {

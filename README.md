@@ -102,8 +102,10 @@ See [docs/architecture.md](docs/architecture.md) and [docs/sync-protocol.md](doc
 
 ```text
 PixelSprint/
-├── index.html              # App shell, modals, Start Menu markup
+├── index.html              # App shell, native <dialog> modals, Start Menu markup
 ├── vite.config.ts          # Vite and vite-plugin-pwa config
+├── Makefile                # Make targets for install, dev, build, check, format
+├── DESIGN.md               # Locked OKLCH design system and accessibility tokens
 ├── public/                 # Icons and web manifest
 ├── docs/                   # Developer documentation
 └── src/
@@ -126,6 +128,7 @@ PixelSprint/
 | [docs/i18n.md](docs/i18n.md)                   | Adding or changing translations.                  |
 | [docs/storage.md](docs/storage.md)             | `localStorage` keys and data shapes.              |
 | [docs/deployment.md](docs/deployment.md)       | GitHub Pages pipeline and release flow.           |
+| [DESIGN.md](DESIGN.md)                         | OKLCH token palette, spacing, and dialog spec.    |
 
 ## FAQ
 
